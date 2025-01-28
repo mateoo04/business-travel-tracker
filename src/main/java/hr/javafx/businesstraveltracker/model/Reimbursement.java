@@ -6,16 +6,14 @@ import java.time.LocalDate;
 
 public class Reimbursement extends Entity {
     private Expense expense;
-    private Employee employee;
     private ReimbursementStatus status;
-    private LocalDate dateProcessed;
+    private LocalDate approvalDate;
 
-    public Reimbursement(Long id, Expense expense, Employee employee, ReimbursementStatus status, LocalDate dateProcessed) {
+    public Reimbursement(Long id, Expense expense, ReimbursementStatus status, LocalDate dateProcessed) {
         super(id);
         this.expense = expense;
-        this.employee = employee;
         this.status = status;
-        this.dateProcessed = dateProcessed;
+        this.approvalDate = dateProcessed;
     }
 
     public Expense getExpense() {
@@ -26,14 +24,6 @@ public class Reimbursement extends Entity {
         this.expense = expense;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
     public ReimbursementStatus getStatus() {
         return status;
     }
@@ -42,11 +32,11 @@ public class Reimbursement extends Entity {
         this.status = status;
     }
 
-    public LocalDate getDateProcessed() {
-        return dateProcessed;
+    public LocalDate getApprovalDate() {
+        return approvalDate;
     }
 
-    public void setDateProcessed(LocalDate dateProcessed) {
-        this.dateProcessed = dateProcessed;
+    public void setApprovalDate(LocalDate approvalDate) {
+        this.approvalDate = approvalDate;
     }
 }
