@@ -4,6 +4,7 @@ import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.User;
 import hr.javafx.businesstraveltracker.repository.UserDataRepository;
 import hr.javafx.businesstraveltracker.util.PasswordHasher;
+import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -20,6 +21,10 @@ public class LogInController {
 
     private final UserDataRepository userDataRepository = new UserDataRepository();
 
+    private final SceneManager sceneManager = SceneManager.getInstance();
+
+    private static User currentUser;
+
     public void logIn(){
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
@@ -32,6 +37,9 @@ public class LogInController {
                 userFound = true;
                 if(PasswordHasher.checkPassword(password, user.hashedPassword())){
                     System.out.println("Logged in!");
+                    currentUser = user;
+
+                    sceneManager.showEmployeeSearch();
                 }else{
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Password Mismatch");
@@ -42,12 +50,20 @@ public class LogInController {
             }
         }
         if(!userFound){
-            userDataRepository.save(new User(username, PasswordHasher.hashPassword(password), UserPrivileges.LOW));
+            User newUser = new User(username, PasswordHasher.hashPassword(password), UserPrivileges.LOW);
+            userDataRepository.save(newUser);
+            currentUser = newUser;
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New User Created");
             alert.setHeaderText("Welcome " + username + "!");
             alert.showAndWait();
+
+            sceneManager.showEmployeeSearch();
         }
     }
 
+    public static User getCurrentUser() {
+        return currentUser;
+    }
 }

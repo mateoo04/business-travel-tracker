@@ -11,7 +11,7 @@ public class TravelLog extends Entity {
     private LocalDate endDate;
     private TripStatus status;
 
-    public TravelLog(Long id, Employee employee, String destination, LocalDate startDate, LocalDate endDate, TripStatus status) {
+    private TravelLog(Long id, Employee employee, String destination, LocalDate startDate, LocalDate endDate, TripStatus status) {
         super(id);
         this.employee = employee;
         this.destination = destination;

@@ -10,7 +10,33 @@ public class Employee extends Entity {
     private Department department;
     private String email;
 
-    public Employee(Long id, String firstName, String lastName, String role, Department department, String email) {
+    public static class Builder{
+        private Long id;
+        private String firstName;
+        private String lastName;
+        private String role;
+        private Department department;
+        private String email;
+
+        public Builder(Long id,String firstName, String lastName, String role, Department department){
+            this.id = id;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.role = role;
+            this.department = department;
+        }
+
+        public Builder withEmail(String email){
+            this.email = email;
+            return this;
+        }
+
+        public Employee build(){
+            return new Employee(this.id, this.firstName, this.lastName, this.role, this.department, this.email);
+        }
+    }
+
+    private Employee(Long id, String firstName, String lastName, String role, Department department, String email) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;

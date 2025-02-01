@@ -1,6 +1,6 @@
 package hr.javafx.businesstraveltracker.model;
 
-public class Entity {
+public abstract class Entity {
 
     private final Long id;
 

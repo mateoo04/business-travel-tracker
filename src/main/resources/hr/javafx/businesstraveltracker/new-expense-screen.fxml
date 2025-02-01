@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -26,10 +27,14 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
+       <fx:include source="menu-bar.fxml" GridPane.columnSpan="2" GridPane.valignment="TOP" />
       <Label text="New Expense" GridPane.columnSpan="2" GridPane.halignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
+         <GridPane.margin>
+            <Insets top="18.0" />
+         </GridPane.margin>
       </Label>
       <Label text="Select expense category:" GridPane.rowIndex="2" />
       <Label text="Enter amount (€):" GridPane.rowIndex="3" />
@@ -39,7 +44,7 @@
       <ChoiceBox fx:id="travelLogChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <ChoiceBox fx:id="expenseChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="expenseAmountTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextArea fx:id="descriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <DatePicker fx:id="expenseDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Button mnemonicParsing="false" onAction="#createExpense" text="Create" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
    </children>

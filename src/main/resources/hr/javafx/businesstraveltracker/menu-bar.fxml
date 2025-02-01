@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+
+<MenuBar xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="hr.javafx.businesstraveltracker.controller.MenuController">
+  <menus>
+    <Menu mnemonicParsing="false" text="Employee">
+      <items>
+        <MenuItem mnemonicParsing="false" onAction="#openEmployeeSearch" text="Search" />
+            <MenuItem fx:id="addNewEmployeeMenuItem" mnemonicParsing="false" onAction="#openNewEmployeeScreen" text="Add New" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Expense Category">
+      <items>
+            <MenuItem mnemonicParsing="false" onAction="#openExpenseCategorySearch" text="Search" />
+            <MenuItem fx:id="addNewExpenseCategoryMenuItem" mnemonicParsing="false" onAction="#openNewExpenseCategoryScreen" text="Add New" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Expense">
+      <items>
+            <MenuItem mnemonicParsing="false" onAction="#openExpenseSearch" text="Search" />
+            <MenuItem fx:id="addNewExpenseMenuItem" mnemonicParsing="false" onAction="#openNewExpenseScreen" text="Add New" />
+      </items>
+    </Menu>
+      <Menu mnemonicParsing="false" text="Travel Log">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#openTravelLogSearch" text="Search" />
+            <MenuItem fx:id="addNewTravelLogMenuItem" mnemonicParsing="false" onAction="#openNewTravelLogScreen" text="Add New" />
+         </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Reimbursement">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#openReimbursementSearch" text="Search" />
+            <MenuItem fx:id="addNewReimbursementMenuItem" mnemonicParsing="false" onAction="#openNewReimbursementScreen" text="Add New" />
+         </items>
+      </Menu>
+  </menus>
+</MenuBar>

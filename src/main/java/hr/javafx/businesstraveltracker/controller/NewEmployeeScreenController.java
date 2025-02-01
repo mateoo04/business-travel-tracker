@@ -8,21 +8,21 @@ import javafx.scene.control.TextField;
 public class NewEmployeeScreenController {
 
     @FXML
-    private TextField firstNameTextField;
+    public TextField firstNameTextField;
 
     @FXML
-    private TextField lastNameTextField;
+    public TextField lastNameTextField;
 
     @FXML
-    private TextField roleTextField;
+    public TextField roleTextField;
 
     @FXML
-    private ChoiceBox<Department> departmentChoiceBox;
+    public ChoiceBox<Department> departmentChoiceBox;
 
     @FXML
-    private TextField emailTextField;
+    public TextField emailTextField;
 
-    private void createEmployee(){
+    public void createEmployee(){
 
     }
 }

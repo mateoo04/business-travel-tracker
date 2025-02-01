@@ -1,2 +1,3 @@
 mateo55;$argon2id$v=19$m=15360,t=2,p=1$TM+Fsw0FmZK/SmfeZGO1oJ7QrbV+v4jBpPIEcYLJEYK0F/Rjun6TkvZVMRh9ot+3X6rg321HF4k0U3cDAFarJw$6LanHECfL4g72zdiGV8v+I4eyWigVsQHgqrLnUPFwvY;LOW
-korisnik;$argon2id$v=19$m=15360,t=2,p=1$pW2j0hPwJwyIozBBVBZ1qMah3onWYWXi1FGuu+hPiW520UT1NhxqcZcOtuWumj3oPZaU9ugH89Ygrw7ZFIeKJw$IXsYr1I6VX05WwUfH4md4RUcnxEMQaEULddE9OmVt74;LOW
+admin;$argon2id$v=19$m=15360,t=2,p=1$cYAO7rIKrH3X5p0eSxi7A3lBe9jzZWsY6MfLwPZpLIE7WSZKqGFuz9i3pyeaUcofSghspE1honoaseh1Xe/PpA$lQqeDEJQbBZ6IOLX9WIigA3tyPf2vluUrKTQNO7LWAQ;HIGH
+mateo;$argon2id$v=19$m=15360,t=2,p=1$L86UfilOTTWsKF0dvnCYvKdCnWcCuT3y5ysxDsaSgZsrU5ZDv/Gp6kVag1v2G36bLCCjYDWj8/5fv/pdPzOOyw$FmpxWOCMTW7nmuva+v5PzTR/1XpKTcsJoFkY6sAbFkU;LOW

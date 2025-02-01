@@ -5,6 +5,7 @@ import hr.javafx.businesstraveltracker.model.TravelLog;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class NewExpenseScreenController {
@@ -19,7 +20,7 @@ public class NewExpenseScreenController {
     public TextField expenseAmountTextField;
 
     @FXML
-    public TextField descriptionTextField;
+    public TextArea descriptionTextArea;
 
     @FXML
     public DatePicker expenseDatePicker;
