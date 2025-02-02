@@ -8,6 +8,8 @@ import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.util.List;
 
@@ -24,6 +26,15 @@ public class LogInController {
     private final SceneManager sceneManager = SceneManager.getInstance();
 
     private static User currentUser;
+
+    public void initialize() {
+        usernameTextField.setOnKeyPressed(this::handleKeyPressed);
+        passwordTextField.setOnKeyPressed(this::handleKeyPressed);
+    }
+
+    private void handleKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.ENTER) logIn();
+    }
 
     public void logIn(){
         String username = usernameTextField.getText();

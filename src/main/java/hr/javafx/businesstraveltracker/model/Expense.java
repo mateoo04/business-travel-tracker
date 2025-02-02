@@ -18,6 +18,14 @@ public class Expense extends Entity {
         this.description = description;
         this.date = date;
     }
+    public Expense(TravelLog travelLog, ExpenseCategory category, BigDecimal amount, String description, LocalDate date) {
+        super();
+        this.travelLog = travelLog;
+        this.category = category;
+        this.amount = amount;
+        this.description = description;
+        this.date = date;
+    }
 
     public TravelLog getTravelLog() {
         return travelLog;
@@ -57,5 +65,11 @@ public class Expense extends Entity {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Category: " + this.category + "\nAmount: " + this.amount + "\nDescription: " + this.description +
+                "\nDate: " + this.date;
     }
 }

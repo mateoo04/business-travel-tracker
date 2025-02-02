@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -40,9 +40,9 @@
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
          <children>
             <Label text="Select travel log:" />
-            <ChoiceBox fx:id="travelLogChoiceBox" prefWidth="150.0" />
+            <ComboBox fx:id="travelLogComboBox" prefWidth="150.0" />
             <Label text="Select expense category:" />
-            <ChoiceBox fx:id="expenseCategoryChoiceBox" prefWidth="150.0" />
+            <ComboBox fx:id="expenseCategoryComboBox" prefWidth="150.0" />
             <Label text="Enter description:" />
             <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" />
          </children>
@@ -64,13 +64,13 @@
                         <Insets left="4.0" right="4.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="minPriceTextField" />
+                  <TextField fx:id="minAmountTextField" />
                   <Label text="Max:">
                      <HBox.margin>
                         <Insets left="4.0" right="4.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="maxPriceTextField" />
+                  <TextField fx:id="maxAmountTextField" />
                </children>
             </HBox>
             <Label text="Date:">

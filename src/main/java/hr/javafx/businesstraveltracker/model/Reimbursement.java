@@ -9,11 +9,17 @@ public final class Reimbursement extends Entity implements Approvable{
     private ReimbursementStatus status;
     private LocalDate approvalDate;
 
-    public Reimbursement(Long id, Expense expense, ReimbursementStatus status, LocalDate dateProcessed) {
+    public Reimbursement(Long id, Expense expense, ReimbursementStatus status, LocalDate approvalDate) {
         super(id);
         this.expense = expense;
         this.status = status;
-        this.approvalDate = dateProcessed;
+        this.approvalDate = approvalDate;
+    }
+    public Reimbursement(Expense expense, ReimbursementStatus status, LocalDate approvalDate) {
+        super();
+        this.expense = expense;
+        this.status = status;
+        this.approvalDate = approvalDate;
     }
 
     public Expense getExpense() {
@@ -44,5 +50,11 @@ public final class Reimbursement extends Entity implements Approvable{
 
     public ReimbursementStatus getStatus() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return "Reimbursement for Expense: " + this.expense.toString() + "\nStatus: " + this.status.getStatus() +
+                (this.status.equals(ReimbursementStatus.APPROVED) ? "\nDate of approval: " + this.approvalDate : "");
     }
 }

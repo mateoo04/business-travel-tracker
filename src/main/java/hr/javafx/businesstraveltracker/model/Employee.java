@@ -18,12 +18,16 @@ public class Employee extends Entity {
         private Department department;
         private String email;
 
-        public Builder(Long id,String firstName, String lastName, String role, Department department){
-            this.id = id;
+        public Builder(String firstName, String lastName, String role, Department department){
             this.firstName = firstName;
             this.lastName = lastName;
             this.role = role;
             this.department = department;
+        }
+
+        public Builder withId(Long id){
+            this.id = id;
+            return this;
         }
 
         public Builder withEmail(String email){
@@ -83,5 +87,12 @@ public class Employee extends Entity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + this.firstName + " " + this.lastName
+                + "\nRole: " + this.role + "\nDepartment: " + this.department.getName()
+                + (email.isEmpty() ? " " : "\nEmail: " + this.email);
     }
 }

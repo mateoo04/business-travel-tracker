@@ -9,6 +9,11 @@ public class ExpenseCategory extends Entity {
         this.name = name;
         this.description = description;
     }
+    public ExpenseCategory(String name, String description) {
+        super();
+        this.name = name;
+        this.description = description;
+    }
 
     public String getName() {
         return name;
@@ -24,5 +29,10 @@ public class ExpenseCategory extends Entity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " (" + this.description + ")";
     }
 }

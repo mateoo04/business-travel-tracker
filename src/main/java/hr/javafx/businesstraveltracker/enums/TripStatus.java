@@ -1,5 +1,7 @@
 package hr.javafx.businesstraveltracker.enums;
 
+import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
+
 public enum TripStatus {
 
     PLANNED(0L, "Planned"),
@@ -22,5 +24,13 @@ public enum TripStatus {
 
     public String getName() {
         return name;
+    }
+
+    public static TripStatus getByName(String name) throws InvalidEnumValueException {
+        for (TripStatus status : TripStatus.values()) {
+            if (status.getName().equals(name)) return status;
+        }
+
+        throw new InvalidEnumValueException("Invalid trip status: " + name);
     }
 }

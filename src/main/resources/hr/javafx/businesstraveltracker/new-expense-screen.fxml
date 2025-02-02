@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -41,8 +41,8 @@
       <Label text="Enter description:" GridPane.rowIndex="4" />
       <Label text="Select date:" GridPane.rowIndex="5" />
       <Label text="Select travel log:" GridPane.rowIndex="1" />
-      <ChoiceBox fx:id="travelLogChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <ChoiceBox fx:id="expenseChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <ComboBox fx:id="travelLogComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <ComboBox fx:id="expenseCategoryComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="expenseAmountTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <DatePicker fx:id="expenseDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />

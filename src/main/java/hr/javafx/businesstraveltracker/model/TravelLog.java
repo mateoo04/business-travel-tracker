@@ -11,8 +11,16 @@ public class TravelLog extends Entity {
     private LocalDate endDate;
     private TripStatus status;
 
-    private TravelLog(Long id, Employee employee, String destination, LocalDate startDate, LocalDate endDate, TripStatus status) {
+    public TravelLog(Long id, Employee employee, String destination, LocalDate startDate, LocalDate endDate, TripStatus status) {
         super(id);
+        this.employee = employee;
+        this.destination = destination;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+    }
+    public TravelLog(Employee employee, String destination, LocalDate startDate, LocalDate endDate, TripStatus status) {
+        super();
         this.employee = employee;
         this.destination = destination;
         this.startDate = startDate;
@@ -58,5 +66,12 @@ public class TravelLog extends Entity {
 
     public void setStatus(TripStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee: " + this.employee.getFirstName() + " " + this.employee.getLastName() +
+                "\nDestination: " + this.destination + "\nStart Date: " + this.startDate + "\nEnd Date: " +
+                this.endDate + "\nStatus: " + this.status.getName();
     }
 }

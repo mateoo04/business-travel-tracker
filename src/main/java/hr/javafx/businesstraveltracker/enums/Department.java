@@ -1,5 +1,7 @@
 package hr.javafx.businesstraveltracker.enums;
 
+import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
+
 public enum Department {
 
     HUMAN_RESOURCES(0L, "Human Resources Department"),
@@ -28,11 +30,11 @@ public enum Department {
         return name;
     }
 
-    public Department getById(Long id) {
+    public static Department getById(Long id) throws InvalidEnumValueException {
         for(Department department : values()) {
             if(department.getId().equals(id)) return department;
         }
 
-        throw new IllegalArgumentException("Department with id " + id + " not found");
+        throw new InvalidEnumValueException("Department with id " + id + " not found");
     }
 }
