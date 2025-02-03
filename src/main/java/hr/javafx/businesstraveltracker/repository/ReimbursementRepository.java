@@ -1,10 +1,13 @@
 package hr.javafx.businesstraveltracker.repository;
 
+import hr.javafx.businesstraveltracker.controller.LogInController;
 import hr.javafx.businesstraveltracker.enums.ReimbursementStatus;
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.Reimbursement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import production.threads.DatabaseOperationThread;
 
 import java.io.IOException;
@@ -16,9 +19,12 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ReimbursementRepository implements CrudRepository<Reimbursement> {
+
+    private static Logger log = LoggerFactory.getLogger(ReimbursementRepository.class);
+
     @Override
     public List<Reimbursement> findAll() {
-        List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
+        List<Reimbursement> reimbursements = new ArrayList<>();
 
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
             try(Connection connection = Database.connectToDatabase()){
@@ -110,13 +116,35 @@ public class ReimbursementRepository implements CrudRepository<Reimbursement> {
         thread.start();
     }
 
+    @Override
+    public void update(Reimbursement entity) {
+        DatabaseOperationThread thread = new DatabaseOperationThread(()->{
+            try(Connection connection = Database.connectToDatabase()){
+                PreparedStatement stmt = connection.prepareStatement
+                        ("update reimbursement set expense_id = ?, status = ? where id = ?");
+                stmt.setInt(1, entity.getExpense().getId().intValue());
+                stmt.setObject(2, entity.getStatus().getStatus(), java.sql.Types.OTHER);
+                stmt.setInt(3, entity.getId().intValue());
+                stmt.executeUpdate();
+            }catch (SQLException | IOException e) {
+                throw new RepositoryAccessException(e);
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        deleteFromTable("reimbursement",id);
+    }
+
     private Reimbursement extractReimbursementFromResultSet(ResultSet rs) throws SQLException {
         Long reimbursementId = rs.getLong("reimbursement_id");
         ReimbursementStatus status;
         try {
             status = ReimbursementStatus.getByStatus(rs.getString("reimbursement_status"));
         } catch (InvalidEnumValueException e) {
-            System.out.println("Need a log here, check other places like this too.");
+            log.error(e.getMessage());
             status = ReimbursementStatus.UNAPPROVED;
         }
         LocalDate approvalDate = rs.getDate("approval_date").toLocalDate();

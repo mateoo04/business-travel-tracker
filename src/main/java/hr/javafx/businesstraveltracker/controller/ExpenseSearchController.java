@@ -1,12 +1,15 @@
 package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
+import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
+import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
 import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
 import hr.javafx.businesstraveltracker.util.DataValidation;
+import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -15,6 +18,7 @@ import javafx.scene.control.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class ExpenseSearchController {
 
@@ -75,6 +79,35 @@ public class ExpenseSearchController {
         amountColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getAmount()));
         dateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDate()));
         descriptionColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDescription()));
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem editItem = new MenuItem("Edit");
+        MenuItem deleteItem = new MenuItem("Delete");
+        contextMenu.getItems().addAll(editItem,deleteItem);
+
+        editItem.setOnAction(event ->{
+            Expense selectedExpense = expenseTableView.getSelectionModel().getSelectedItem();
+            if(selectedExpense != null) {
+                SceneManager.getInstance().showEditExpenseScreen(selectedExpense);
+            }
+        });
+
+        deleteItem.setOnAction(event ->{
+            Expense selectedExpense = expenseTableView.getSelectionModel().getSelectedItem();
+            if(selectedExpense != null) handleDelete(selectedExpense);
+        });
+
+        expenseTableView.setRowFactory(tv ->{
+            TableRow<Expense> row = new TableRow<>();
+            row.setOnContextMenuRequested(event -> {
+                if(!row.isEmpty()){
+                    expenseTableView.getSelectionModel().select(row.getItem());
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                }
+            });
+
+            return row;
+        });
     }
 
     public void filterExpenses(){
@@ -85,8 +118,8 @@ public class ExpenseSearchController {
         String description = descriptionTextArea.getText();
         LocalDate startDate = startDatePicker.getValue();
         LocalDate endDate = endDatePicker.getValue();
-        BigDecimal minPrice = getPriceFromTextField(minAmountTextField);
-        BigDecimal maxPrice = getPriceFromTextField(maxAmountTextField);
+        BigDecimal minAmount = getAmountFromTextField(minAmountTextField);
+        BigDecimal maxAmount = getAmountFromTextField(maxAmountTextField);
 
         if(minAmountTextField.getText().isEmpty() || DataValidation.isValidDecimalNumber(minAmountTextField.getText()) &&
                 maxAmountTextField.getText().isEmpty() || DataValidation.isValidDecimalNumber(maxAmountTextField.getText())){
@@ -99,8 +132,8 @@ public class ExpenseSearchController {
                             || expense.getDate().isEqual(startDate))
                     .filter(expense -> endDate == null || expense.getDate().isBefore(endDate)
                     || expense.getDate().isEqual(endDate))
-                    .filter(expense -> minAmountTextField.getText().isEmpty() || expense.getAmount().compareTo(minPrice) >= 0)
-                    .filter(expense -> maxAmountTextField.getText().isEmpty() || expense.getAmount().compareTo(maxPrice) <= 0)
+                    .filter(expense -> minAmountTextField.getText().isEmpty() || expense.getAmount().compareTo(minAmount) >= 0)
+                    .filter(expense -> maxAmountTextField.getText().isEmpty() || expense.getAmount().compareTo(maxAmount) <= 0)
                     .toList();
 
             expenseTableView.setItems(FXCollections.observableList(expenses));
@@ -113,11 +146,20 @@ public class ExpenseSearchController {
         }
     }
 
-    private BigDecimal getPriceFromTextField(TextField textField) {
-        String priceString = textField.getText();
-        if (priceString.isEmpty() || !DataValidation.isValidDecimalNumber(priceString)) {
+    private BigDecimal getAmountFromTextField(TextField textField) {
+        String amountString = textField.getText();
+        if (amountString.isEmpty() || !DataValidation.isValidDecimalNumber(amountString)) {
             return BigDecimal.ZERO;
         }
-        return new BigDecimal(priceString);
+        return new BigDecimal(amountString);
+    }
+
+    public void handleDelete(Expense expense){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Delete Expense");
+        dialog.setHeaderText("Are you sure you want to delete the expense?");
+        ConfirmDeletionDialog.show(expense, dialog, () -> expenseRepository.deleteById(expense.getId()));
+
+        filterExpenses();
     }
 }

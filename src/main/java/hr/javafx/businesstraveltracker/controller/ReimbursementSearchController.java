@@ -1,11 +1,14 @@
 package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ReimbursementStatus;
+import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.Reimbursement;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.ReimbursementRepository;
+import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
 import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
+import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -100,6 +103,8 @@ public class ReimbursementSearchController {
 
         approvalDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>
                 (CustomDateFormatter.formatDate(cellData.getValue().getApprovalDate())));
+
+        setMenuOnRowItems();
     }
 
     public void filterReimbursements() {
@@ -120,5 +125,46 @@ public class ReimbursementSearchController {
                 .toList();
 
         reimbursementTableView.setItems(FXCollections.observableList(reimbursements));
+    }
+
+    private void setMenuOnRowItems(){
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem editItem = new MenuItem("Edit");
+        MenuItem deleteItem = new MenuItem("Delete");
+        contextMenu.getItems().addAll(editItem,deleteItem);
+
+        editItem.setOnAction(event ->{
+            Reimbursement selectedReimbursement = reimbursementTableView.getSelectionModel().getSelectedItem();
+            if(selectedReimbursement != null) {
+                SceneManager.getInstance().showEditReimbursementScreen(selectedReimbursement);
+            }
+        });
+
+        deleteItem.setOnAction(event ->{
+            Reimbursement selectedReimbursement = reimbursementTableView.getSelectionModel().getSelectedItem();
+            if(selectedReimbursement != null) handleDelete(selectedReimbursement);
+        });
+
+        reimbursementTableView.setRowFactory(tv ->{
+            TableRow<Reimbursement> row = new TableRow<>();
+            row.setOnContextMenuRequested(event -> {
+                if(!row.isEmpty()){
+                    reimbursementTableView.getSelectionModel().select(row.getItem());
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                }
+            });
+
+            return row;
+        });
+    }
+
+    public void handleDelete(Reimbursement reimbursement){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Delete Reimbursement");
+        dialog.setHeaderText("Are you sure you want to delete the reimbursement?");
+        ConfirmDeletionDialog.show(reimbursement, dialog,
+                () -> reimbursementRepository.deleteById(reimbursement.getId()));
+
+        filterReimbursements();
     }
 }

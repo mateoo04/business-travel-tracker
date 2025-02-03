@@ -83,6 +83,28 @@ public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory
         thread.start();
     }
 
+    @Override
+    public void update(ExpenseCategory entity) {
+        DatabaseOperationThread thread = new DatabaseOperationThread(()->{
+            try(Connection connection = Database.connectToDatabase()){
+                PreparedStatement stmt = connection.prepareStatement
+                        ("update expense_category set name = ?, description = ? where id = ?");
+                stmt.setString(1, entity.getName());
+                stmt.setString(2,entity.getDescription());
+                stmt.setInt(3, entity.getId().intValue());
+                stmt.executeUpdate();
+            }catch (SQLException | IOException e) {
+                throw new RepositoryAccessException(e);
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        deleteFromTable("expense_category",id);
+    }
+
     private ExpenseCategory extractExpenseCategoryFromResultSet(ResultSet rs) throws SQLException {
         Long id = rs.getLong("id");
         String name = rs.getString("name");

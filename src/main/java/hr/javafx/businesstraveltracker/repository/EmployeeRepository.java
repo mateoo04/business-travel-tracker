@@ -1,9 +1,12 @@
 package hr.javafx.businesstraveltracker.repository;
 
+import hr.javafx.businesstraveltracker.controller.LogInController;
 import hr.javafx.businesstraveltracker.enums.Department;
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
 import hr.javafx.businesstraveltracker.model.Employee;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import production.threads.DatabaseOperationThread;
 
 import java.io.IOException;
@@ -14,6 +17,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class EmployeeRepository implements CrudRepository<Employee> {
+
+    private static Logger log = LoggerFactory.getLogger(LogInController.class);
+
     @Override
     public List<Employee> findAll() {
         final List<Employee> employees = new ArrayList<>();
@@ -88,6 +94,32 @@ public class EmployeeRepository implements CrudRepository<Employee> {
         thread.start();
     }
 
+    @Override
+    public void update(Employee entity) {
+        DatabaseOperationThread thread = new DatabaseOperationThread(()->{
+            try(Connection connection = Database.connectToDatabase()){
+                PreparedStatement stmt = connection.prepareStatement
+                        ("update employee set first_name = ?, last_name = ?," +
+                                "role = ?, department_id = ?, email = ? where id = ?");
+                stmt.setString(1, entity.getFirstName());
+                stmt.setString(2, entity.getLastName());
+                stmt.setString(3, entity.getRole());
+                stmt.setLong(4, entity.getDepartment().getId());
+                stmt.setString(5, entity.getEmail());
+                stmt.setLong(6, entity.getId());
+                stmt.executeUpdate();
+            }catch (SQLException | IOException e){
+                throw new RepositoryAccessException(e);
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        deleteFromTable("employee",id);
+    }
+
     private Employee extractEmployeeFromResultSet(ResultSet rs) throws SQLException {
         Long id = rs.getLong("id");
         String firstName = rs.getString("first_name");
@@ -100,7 +132,7 @@ public class EmployeeRepository implements CrudRepository<Employee> {
         try {
             department = Department.getById(departmentId);
         } catch (InvalidEnumValueException e) {
-            System.out.println("Logger pls");
+            log.error(e.getMessage());
         }
 
         return new Employee.Builder(firstName, lastName, role, department)

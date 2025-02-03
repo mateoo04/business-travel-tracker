@@ -47,8 +47,7 @@ public class LogInController {
             if(username.equals(user.username())){
                 userFound = true;
                 if(PasswordHasher.checkPassword(password, user.hashedPassword())){
-                    System.out.println("Logged in!");
-                    currentUser = user;
+                    setCurrentUser(user);
 
                     sceneManager.showEmployeeSearch();
                 }else{
@@ -63,7 +62,7 @@ public class LogInController {
         if(!userFound){
             User newUser = new User(username, PasswordHasher.hashPassword(password), UserPrivileges.LOW);
             userDataRepository.save(newUser);
-            currentUser = newUser;
+            setCurrentUser(newUser);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New User Created");
@@ -72,6 +71,10 @@ public class LogInController {
 
             sceneManager.showEmployeeSearch();
         }
+    }
+
+    private static void setCurrentUser(User user){
+        currentUser = user;
     }
 
     public static User getCurrentUser() {

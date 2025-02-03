@@ -6,6 +6,8 @@ import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.TravelLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import production.threads.DatabaseOperationThread;
 
 import java.io.IOException;
@@ -17,6 +19,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class TravelLogRepository implements CrudRepository<TravelLog> {
+
+    private static Logger log = LoggerFactory.getLogger(TravelLogRepository.class);
+
     @Override
     public List<TravelLog> findAll() {
         List<TravelLog> travelLogs = new ArrayList<>();
@@ -78,7 +83,8 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
             try(Connection connection = Database.connectToDatabase()){
                 PreparedStatement stmt = connection.prepareStatement
-                        ("insert into travel_log(employee_id, destination, start_date, end_date, trip_status) values(?,?,?,?,?)");
+                        ("insert into travel_log(employee_id, destination, start_date, end_date, trip_status) " +
+                                "values(?,?,?,?,?)");
 
                 stmt.setInt(1, entity.getEmployee().getId().intValue());
                 stmt.setString(2, entity.getDestination());
@@ -92,6 +98,32 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
             }
         });
         thread.start();
+    }
+
+    @Override
+    public void update(TravelLog entity) {
+        DatabaseOperationThread thread = new DatabaseOperationThread(()->{
+            try(Connection connection = Database.connectToDatabase()){
+                PreparedStatement stmt = connection.prepareStatement
+                        ("update travel_log set employee_id = ?, destination = ?," +
+                                "start_date = ?, end_date = ?, trip_status = ? where id = ?");
+                stmt.setInt(1, entity.getEmployee().getId().intValue());
+                stmt.setString(2, entity.getDestination());
+                stmt.setDate(3, Date.valueOf(entity.getStartDate()));
+                stmt.setDate(4, Date.valueOf(entity.getEndDate()));
+                stmt.setObject(5, entity.getStatus().getName(), java.sql.Types.OTHER);
+                stmt.setInt(6, entity.getId().intValue());
+                stmt.executeUpdate();
+            }catch (SQLException | IOException e) {
+                throw new RepositoryAccessException(e);
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        deleteFromTable("travel_log",id);
     }
 
     public void save(List<TravelLog> entities) {
@@ -149,7 +181,7 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
         try {
             department = Department.getById((long) rs.getInt("department_id"));
         } catch (InvalidEnumValueException e) {
-            System.out.println("Logger needed here");
+            log.error(e.getMessage());
         }
         String email = rs.getString("email");
 
@@ -157,7 +189,7 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
         try{
             tripStatus = TripStatus.getByName(statusString);
         }catch (InvalidEnumValueException e){
-            System.out.println("Logger needed here");
+            log.error(e.getMessage());
         }
 
         return new TravelLog(id, new Employee.Builder(firstName, lastName, role, department)

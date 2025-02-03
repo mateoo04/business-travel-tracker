@@ -2,10 +2,13 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.TripStatus;
 import hr.javafx.businesstraveltracker.model.Employee;
+import hr.javafx.businesstraveltracker.model.Reimbursement;
 import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
+import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
 import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
+import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -94,6 +97,35 @@ public class TravelLogSearchController {
                 setText(b || tripStatus == null ? "" : tripStatus.getName());
             }
         });
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem editItem = new MenuItem("Edit");
+        MenuItem deleteItem = new MenuItem("Delete");
+        contextMenu.getItems().addAll(editItem,deleteItem);
+
+        editItem.setOnAction(event ->{
+            TravelLog selectedTravelLog = travelLogTableView.getSelectionModel().getSelectedItem();
+            if(selectedTravelLog != null) {
+                SceneManager.getInstance().showEditTravelLogScreen(selectedTravelLog);
+            }
+        });
+
+        deleteItem.setOnAction(event ->{
+            TravelLog selectedTravelLog = travelLogTableView.getSelectionModel().getSelectedItem();
+            if(selectedTravelLog != null) handleDelete(selectedTravelLog);
+        });
+
+        travelLogTableView.setRowFactory(tv ->{
+            TableRow<TravelLog> row = new TableRow<>();
+            row.setOnContextMenuRequested(event -> {
+                if(!row.isEmpty()){
+                    travelLogTableView.getSelectionModel().select(row.getItem());
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                }
+            });
+
+            return row;
+        });
     }
 
     public void filterTravelLogs(){
@@ -116,5 +148,15 @@ public class TravelLogSearchController {
                 .toList();
 
         travelLogTableView.setItems(FXCollections.observableList(travelLogs));
+    }
+
+    public void handleDelete(TravelLog travelLog){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Delete Travel Log");
+        dialog.setHeaderText("Are you sure you want to delete the travel log?");
+        ConfirmDeletionDialog.show(travelLog, dialog,
+                () -> travelLogRepository.deleteById(travelLog.getId()));
+
+        filterTravelLogs();
     }
 }

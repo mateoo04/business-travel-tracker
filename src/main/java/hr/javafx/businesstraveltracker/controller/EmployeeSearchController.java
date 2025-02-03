@@ -2,14 +2,17 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.Department;
 import hr.javafx.businesstraveltracker.model.Employee;
+import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
+import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
+import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class EmployeeSearchController {
 
@@ -76,6 +79,35 @@ public class EmployeeSearchController {
         roleColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getRole()));
         departmentColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDepartment().getName()));
         emailColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getEmail()));
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem editItem = new MenuItem("Edit");
+        MenuItem deleteItem = new MenuItem("Delete");
+        contextMenu.getItems().addAll(editItem,deleteItem);
+
+        editItem.setOnAction(event ->{
+            Employee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+            if(selectedEmployee != null) {
+                SceneManager.getInstance().showEditEmployeeScreen(selectedEmployee);
+            }
+        });
+
+        deleteItem.setOnAction(event ->{
+            Employee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+            if(selectedEmployee != null) handleDelete(selectedEmployee);
+        });
+
+        employeeTableView.setRowFactory(tv ->{
+            TableRow<Employee> row = new TableRow<>();
+            row.setOnContextMenuRequested(event -> {
+                if(!row.isEmpty()){
+                    employeeTableView.getSelectionModel().select(row.getItem());
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                }
+            });
+
+            return row;
+        });
     }
 
     public void filterEmployees() {
@@ -96,5 +128,14 @@ public class EmployeeSearchController {
                 .toList();
 
         employeeTableView.setItems(FXCollections.observableList(employees));
+    }
+
+    public void handleDelete(Employee employee){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Delete Employee");
+        dialog.setHeaderText("Are you sure you want to delete the employee?");
+        ConfirmDeletionDialog.show(employee, dialog, () -> employeeRepository.deleteById(employee.getId()));
+
+        filterEmployees();
     }
 }

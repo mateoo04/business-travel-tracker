@@ -1,10 +1,13 @@
 package hr.javafx.businesstraveltracker.repository;
 
+import hr.javafx.businesstraveltracker.controller.LogInController;
 import hr.javafx.businesstraveltracker.enums.Department;
 import hr.javafx.businesstraveltracker.enums.TripStatus;
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
 import hr.javafx.businesstraveltracker.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import production.threads.DatabaseOperationThread;
 
 import java.io.IOException;
@@ -17,6 +20,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ExpenseRepository implements CrudRepository<Expense> {
+
+    private static Logger log = LoggerFactory.getLogger(LogInController.class);
+
     @Override
     public List<Expense> findAll() {
         List<Expense> expenses = new ArrayList<>();
@@ -105,6 +111,32 @@ public class ExpenseRepository implements CrudRepository<Expense> {
         thread.start();
     }
 
+    @Override
+    public void update(Expense entity) {
+        DatabaseOperationThread thread = new DatabaseOperationThread(()->{
+           try(Connection connection = Database.connectToDatabase()){
+               PreparedStatement stmt = connection.prepareStatement
+                       ("update expense set travel_log_id = ?, expense_category_id = ?," +
+                               "amount = ?, description = ?, date = ? where id = ?");
+               stmt.setInt(1, entity.getTravelLog().getId().intValue());
+               stmt.setInt(2, entity.getCategory().getId().intValue());
+               stmt.setBigDecimal(3, entity.getAmount());
+               stmt.setString(4, entity.getDescription());
+               stmt.setDate(5, Date.valueOf(entity.getDate()));
+               stmt.setInt(6, entity.getId().intValue());
+               stmt.executeUpdate();
+           }catch (SQLException | IOException e){
+               throw new RepositoryAccessException(e);
+           }
+        });
+        thread.start();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        deleteFromTable("expense",id);
+    }
+
     public static Expense extractExpenseFromResultSet(ResultSet rs) throws SQLException {
         Long expenseId = rs.getLong("expense_id");
         BigDecimal amount = rs.getBigDecimal("expense_amount");
@@ -131,7 +163,7 @@ public class ExpenseRepository implements CrudRepository<Expense> {
         try {
             employeeDepartment = Department.getById(rs.getLong("employee_department_id"));
         } catch (InvalidEnumValueException e){
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
 
         Long expenseCategoryId = rs.getLong("expense_category_id");

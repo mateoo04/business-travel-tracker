@@ -1,5 +1,7 @@
 package hr.javafx.businesstraveltracker.repository;
 
+import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
