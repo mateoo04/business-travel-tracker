@@ -2,8 +2,10 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
 import hr.javafx.businesstraveltracker.enums.TripStatus;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.TravelLog;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
 import javafx.fxml.FXML;
@@ -31,6 +33,8 @@ public class EditTravelLogController {
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     private final TravelLogRepository travelLogRepository = new TravelLogRepository();
+
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
     private TravelLog travelLog;
 
@@ -103,6 +107,8 @@ public class EditTravelLogController {
         TripStatus status = statusComboBox.getSelectionModel().getSelectedItem();
         if(status == null) errorMessage.append(ErrorMessage.TRIP_STATUS_REQUIRED.getMessage());
 
+        TravelLog prevTravelLog = new TravelLog(travelLog);
+
         if(errorMessage.isEmpty()){
             if(employee != null && !travelLog.getEmployee().getId().equals(employee.getId()))
                 travelLog.setEmployee(employee);
@@ -124,6 +130,7 @@ public class EditTravelLogController {
             result.ifPresent(response ->{
                 if (response == saveButtonType){
                     travelLogRepository.update(travelLog);
+                    changeLogRepository.log(new ChangeLog<>(prevTravelLog, travelLog));
                 }
             });
         }else{

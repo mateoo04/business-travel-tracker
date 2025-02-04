@@ -1,7 +1,10 @@
 package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
+import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,6 +22,8 @@ public class EditExpenseCategoryController {
 
     private ExpenseCategory expenseCategory;
 
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
     public void initData(ExpenseCategory expenseCategory) {
         this.expenseCategory = expenseCategory;
 
@@ -34,6 +39,8 @@ public class EditExpenseCategoryController {
 
         String categoryDescription = categoryDescriptionTextArea.getText();
         if (categoryDescription.isEmpty()) errorMessage.append(ErrorMessage.DESCRIPTION_REQUIRED.getMessage());
+
+        ExpenseCategory prevExpenseCategoryValue = new ExpenseCategory(expenseCategory);
 
         if (errorMessage.isEmpty()) {
             if(!expenseCategory.getName().equals(categoryName)) expenseCategory.setName(categoryName);
@@ -54,6 +61,7 @@ public class EditExpenseCategoryController {
             result.ifPresent(response ->{
                 if (response == saveButtonType){
                     expenseCategoryRepository.update(expenseCategory);
+                    changeLogRepository.log(new ChangeLog<>(prevExpenseCategoryValue, expenseCategory));
                 }
             });
 

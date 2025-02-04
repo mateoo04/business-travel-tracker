@@ -167,4 +167,8 @@ public class SceneManager {
         BusinessTravelTrackerApplication.getPrimaryStage().show();
     }
 
+    public void showChangeLogScreen(){
+        showScene("change-log-screen.fxml","Change Log");
+    }
+
 }

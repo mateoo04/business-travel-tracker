@@ -4,7 +4,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 
-<MenuBar xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="hr.javafx.businesstraveltracker.controller.MenuController">
+<MenuBar xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.businesstraveltracker.controller.MenuController">
   <menus>
     <Menu mnemonicParsing="false" text="Employee">
       <items>
@@ -35,6 +35,11 @@
             <MenuItem mnemonicParsing="false" onAction="#openReimbursementSearch" text="Search" />
             <MenuItem fx:id="addNewReimbursementMenuItem" mnemonicParsing="false" onAction="#openNewReimbursementScreen" text="Add New" />
          </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Options">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#openChangeLog" text="Change Log" />
+        </items>
       </Menu>
   </menus>
 </MenuBar>

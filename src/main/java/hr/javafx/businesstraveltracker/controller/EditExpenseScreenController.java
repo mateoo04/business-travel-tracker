@@ -1,13 +1,15 @@
 package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.model.TravelLog;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
-import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
+import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import hr.javafx.businesstraveltracker.util.DataValidation;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -38,6 +40,8 @@ public class EditExpenseScreenController {
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
     private Expense expense;
 
     public void initData(Expense expense){
@@ -62,8 +66,8 @@ public class EditExpenseScreenController {
             protected void updateItem(TravelLog travelLog, boolean b) {
                 super.updateItem(travelLog, b);
                 setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateFormatter.formatDate(travelLog.getEndDate()) + ")");
+                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
+                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
             }
         });
         travelLogComboBox.setButtonCell(new ListCell<>(){
@@ -71,8 +75,8 @@ public class EditExpenseScreenController {
             protected void updateItem(TravelLog travelLog, boolean b) {
                 super.updateItem(travelLog, b);
                 setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateFormatter.formatDate(travelLog.getEndDate()) + ")");
+                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
+                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
             }
         });
 
@@ -108,6 +112,8 @@ public class EditExpenseScreenController {
         String description = descriptionTextArea.getText();
         LocalDate expenseDate = expenseDatePicker.getValue();
 
+        Expense prevExpenseValue = new Expense(expense);
+
         if(!hasValidationErrors(errorMessage)){
             updateExistingExpenseObject(travelLog, expenseCategory, amount, description, expenseDate);
 
@@ -124,6 +130,7 @@ public class EditExpenseScreenController {
             result.ifPresent(response ->{
                 if (response == saveButtonType){
                     expenseRepository.update(expense);
+                    changeLogRepository.log(new ChangeLog<>(prevExpenseValue, expense));
                 }
             });
         }else{

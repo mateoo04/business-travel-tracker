@@ -14,6 +14,11 @@ public class ExpenseCategory extends Entity {
         this.name = name;
         this.description = description;
     }
+    public ExpenseCategory(ExpenseCategory other) {
+        super(other.getId());
+        this.name = other.getName();
+        this.description = other.getDescription();
+    }
 
     public String getName() {
         return name;

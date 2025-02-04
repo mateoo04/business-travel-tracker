@@ -9,7 +9,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory> {
     @Override
@@ -66,7 +68,7 @@ public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory
     }
 
     @Override
-    public void save(ExpenseCategory entity) {
+    public void save(ExpenseCategory entity){
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
             try(Connection connection = Database.connectToDatabase()){
                 PreparedStatement stmt = connection.prepareStatement

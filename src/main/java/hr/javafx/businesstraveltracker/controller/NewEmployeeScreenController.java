@@ -1,8 +1,11 @@
 package hr.javafx.businesstraveltracker.controller;
 
+import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.Department;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -29,6 +32,8 @@ public class NewEmployeeScreenController {
     public TextField emailTextField;
 
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
+
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
     public void initialize() {
         departmentComboBox.getItems().addAll(Department.values());
@@ -72,6 +77,7 @@ public class NewEmployeeScreenController {
             Employee employee = builder.build();
 
             employeeRepository.save(employee);
+            changeLogRepository.log(new ChangeLog<>(employee, ChangeLogType.NEW));
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Employee");

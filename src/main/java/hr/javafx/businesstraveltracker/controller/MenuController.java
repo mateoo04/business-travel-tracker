@@ -71,4 +71,8 @@ public class MenuController {
     public void openNewReimbursementScreen(){
         sceneManager.showNewReimbursementScreen();
     }
+
+    public void openChangeLog(){
+        sceneManager.showChangeLogScreen();
+    }
 }

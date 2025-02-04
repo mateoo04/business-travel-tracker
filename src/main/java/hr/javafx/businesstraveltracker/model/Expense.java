@@ -26,6 +26,14 @@ public class Expense extends Entity {
         this.description = description;
         this.date = date;
     }
+    public Expense(Expense other) {
+        super(other.getId());
+        this.travelLog = other.getTravelLog();
+        this.category = other.getCategory();
+        this.amount = other.getAmount();
+        this.description = other.getDescription();
+        this.date = other.getDate();
+    }
 
     public TravelLog getTravelLog() {
         return travelLog;

@@ -1,13 +1,15 @@
 package hr.javafx.businesstraveltracker.controller;
 
+import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
-import hr.javafx.businesstraveltracker.model.Employee;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.model.TravelLog;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
-import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
+import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import hr.javafx.businesstraveltracker.util.DataValidation;
 import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
@@ -18,7 +20,6 @@ import javafx.scene.control.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class ExpenseSearchController {
 
@@ -66,14 +67,16 @@ public class ExpenseSearchController {
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
     public void initialize() {
         idColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getId()));
         travelLogColumn.setCellValueFactory(cellData -> {
             TravelLog travelLog = cellData.getValue().getTravelLog();
 
             return new SimpleObjectProperty<>(travelLog.getDestination() + " (" +
-                    CustomDateFormatter.formatDate(travelLog.getStartDate()) + "-"
-                    + CustomDateFormatter.formatDate(travelLog.getEndDate()) + ")");
+                    CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-"
+                    + CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
         });
         expenseCategoryColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCategory().getName()));
         amountColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getAmount()));
@@ -159,6 +162,8 @@ public class ExpenseSearchController {
         dialog.setTitle("Delete Expense");
         dialog.setHeaderText("Are you sure you want to delete the expense?");
         ConfirmDeletionDialog.show(expense, dialog, () -> expenseRepository.deleteById(expense.getId()));
+
+        changeLogRepository.log(new ChangeLog<>(expense, ChangeLogType.DELETE));
 
         filterExpenses();
     }

@@ -1,9 +1,12 @@
 package hr.javafx.businesstraveltracker.controller;
 
+import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
 import hr.javafx.businesstraveltracker.enums.TripStatus;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.TravelLog;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
 import javafx.fxml.FXML;
@@ -30,6 +33,8 @@ public class NewTravelLogScreenController {
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     private final TravelLogRepository travelLogRepository = new TravelLogRepository();
+
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
     public void initialize() {
         employeeComboBox.getItems().addAll(employeeRepository.findAll());
@@ -88,6 +93,7 @@ public class NewTravelLogScreenController {
         if(errorMessage.isEmpty()){
             TravelLog travelLog = new TravelLog(employee, destination, startDate, endDate, status);
             travelLogRepository.save(travelLog);
+            changeLogRepository.log(new ChangeLog<>(travelLog, ChangeLogType.NEW));
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Travel Log");

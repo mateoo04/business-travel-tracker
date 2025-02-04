@@ -1,13 +1,16 @@
 package hr.javafx.businesstraveltracker.controller;
 
+import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.model.TravelLog;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
-import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
+import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import hr.javafx.businesstraveltracker.util.DataValidation;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -38,6 +41,8 @@ public class NewExpenseScreenController {
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
     public void initialize() {
         travelLogComboBox.getItems().addAll(travelLogRepository.findAll());
         travelLogComboBox.getSelectionModel().select(0);
@@ -46,8 +51,8 @@ public class NewExpenseScreenController {
             protected void updateItem(TravelLog travelLog, boolean b) {
                 super.updateItem(travelLog, b);
                 setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateFormatter.formatDate(travelLog.getEndDate()) + ")");
+                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
+                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
             }
         });
         travelLogComboBox.setButtonCell(new ListCell<>(){
@@ -55,8 +60,8 @@ public class NewExpenseScreenController {
             protected void updateItem(TravelLog travelLog, boolean b) {
                 super.updateItem(travelLog, b);
                 setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateFormatter.formatDate(travelLog.getEndDate()) + ")");
+                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
+                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
             }
         });
 
@@ -102,6 +107,7 @@ public class NewExpenseScreenController {
         if(errorMessage.isEmpty()){
             Expense expense = new Expense(travelLog, expenseCategory, amount, description, expenseDate);
             expenseRepository.save(expense);
+            changeLogRepository.log(new ChangeLog<>(expense, ChangeLogType.NEW));
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Expense");

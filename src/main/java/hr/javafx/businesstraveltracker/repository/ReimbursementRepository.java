@@ -1,6 +1,5 @@
 package hr.javafx.businesstraveltracker.repository;
 
-import hr.javafx.businesstraveltracker.controller.LogInController;
 import hr.javafx.businesstraveltracker.enums.ReimbursementStatus;
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;

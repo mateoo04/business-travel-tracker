@@ -21,6 +21,12 @@ public final class Reimbursement extends Entity implements Approvable{
         this.status = status;
         this.approvalDate = approvalDate;
     }
+    public Reimbursement(Reimbursement other) {
+        super(other.getId());
+        this.expense = other.getExpense();
+        this.status = other.getStatus();
+        this.approvalDate = other.getApprovalDate();
+    }
 
     public Expense getExpense() {
         return expense;

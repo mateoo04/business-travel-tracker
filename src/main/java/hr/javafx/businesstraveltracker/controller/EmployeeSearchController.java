@@ -1,8 +1,11 @@
 package hr.javafx.businesstraveltracker.controller;
 
+import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.Department;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.Expense;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
 import hr.javafx.businesstraveltracker.util.SceneManager;
@@ -53,6 +56,8 @@ public class EmployeeSearchController {
     public TableColumn<Employee, String> emailColumn;
 
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
+
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
     public void initialize() {
         departmentComboBox.getItems().add(null);
@@ -135,6 +140,8 @@ public class EmployeeSearchController {
         dialog.setTitle("Delete Employee");
         dialog.setHeaderText("Are you sure you want to delete the employee?");
         ConfirmDeletionDialog.show(employee, dialog, () -> employeeRepository.deleteById(employee.getId()));
+
+        changeLogRepository.log(new ChangeLog<>(employee, ChangeLogType.DELETE));
 
         filterEmployees();
     }

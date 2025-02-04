@@ -1,8 +1,11 @@
 package hr.javafx.businesstraveltracker.controller;
 
+import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.Department;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -29,6 +32,8 @@ public class EditEmployeeScreenController {
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     private Employee employee;
+
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
     public void initData(Employee employee) {
         this.employee = employee;
@@ -66,6 +71,8 @@ public class EditEmployeeScreenController {
         Department department = departmentComboBox.getSelectionModel().getSelectedItem();
         String email = emailTextField.getText();
 
+        Employee prevEmployeeValue = new Employee(employee);
+
         if(!hasValidationErrors(errorMessage)){
             if(!employee.getFirstName().equals(firstName)) employee.setFirstName(firstName);
             if(!employee.getLastName().equals(lastName)) employee.setLastName(lastName);
@@ -86,6 +93,7 @@ public class EditEmployeeScreenController {
             result.ifPresent(response ->{
                 if (response == saveButtonType){
                     employeeRepository.update(employee);
+                    changeLogRepository.log(new ChangeLog<>(prevEmployeeValue, employee));
                 }
             });
         }else{

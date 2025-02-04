@@ -2,11 +2,13 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
 import hr.javafx.businesstraveltracker.enums.ReimbursementStatus;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.Reimbursement;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.ReimbursementRepository;
-import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
+import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -22,6 +24,8 @@ public class EditReimbursementScreenController {
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
+
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
     private Reimbursement reimbursement;
 
@@ -45,7 +49,7 @@ public class EditReimbursementScreenController {
             protected void updateItem(Expense expense, boolean b) {
                 super.updateItem(expense, b);
                 setText(b || expense == null ? "" : expense.getCategory().getName() + ", " + expense.getAmount() + "€, " +
-                        CustomDateFormatter.formatDate(expense.getDate()));
+                        CustomDateTimeFormatter.formatDate(expense.getDate()));
             }
         });
         expenseComboBox.setButtonCell(new ListCell<>() {
@@ -53,7 +57,7 @@ public class EditReimbursementScreenController {
             protected void updateItem(Expense expense, boolean b) {
                 super.updateItem(expense, b);
                 setText(b || expense == null ? "" : expense.getCategory().getName() + ", " + expense.getAmount() + "€, " +
-                        CustomDateFormatter.formatDate(expense.getDate()));
+                        CustomDateTimeFormatter.formatDate(expense.getDate()));
             }
         });
 
@@ -84,6 +88,8 @@ public class EditReimbursementScreenController {
         ReimbursementStatus reimbursementStatus = reimbursementStatusComboBox.getSelectionModel().getSelectedItem();
         if (reimbursementStatus == null) errorMessage.append(ErrorMessage.REIMBURSEMENT_STATUS_REQUIRED);
 
+        Reimbursement prevReimbursementValue = new Reimbursement(reimbursement);
+
         if(errorMessage.isEmpty()){
             if(!reimbursement.getExpense().equals(expense))
                 reimbursement.setExpense(expense);
@@ -107,6 +113,7 @@ public class EditReimbursementScreenController {
             result.ifPresent(response ->{
                 if (response == saveButtonType){
                     reimbursementRepository.update(reimbursement);
+                    changeLogRepository.log(new ChangeLog<>(prevReimbursementValue, reimbursement));
                 }
             });
         }else{

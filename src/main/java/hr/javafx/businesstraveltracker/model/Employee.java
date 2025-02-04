@@ -49,6 +49,15 @@ public class Employee extends Entity {
         this.email = email;
     }
 
+    public Employee(Employee other) {
+        super(other.getId());
+        this.firstName = other.getFirstName();
+        this.lastName = other.getLastName();
+        this.role = other.getRole();
+        this.department = other.getDepartment();
+        this.email = other.getEmail();
+    }
+
     public String getFirstName() {
         return firstName;
     }

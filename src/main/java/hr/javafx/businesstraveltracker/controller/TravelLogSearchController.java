@@ -1,13 +1,15 @@
 package hr.javafx.businesstraveltracker.controller;
 
+import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.TripStatus;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
-import hr.javafx.businesstraveltracker.model.Reimbursement;
 import hr.javafx.businesstraveltracker.model.TravelLog;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
 import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
-import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
+import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -60,15 +62,17 @@ public class TravelLogSearchController {
 
     private final TravelLogRepository travelLogRepository = new TravelLogRepository();
 
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
     public void initialize() {
         idColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getId()));
         employeeColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>
                 (cellData.getValue().getEmployee().getFirstName() + " " + cellData.getValue().getEmployee().getLastName()));
         destinationColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDestination()));
         startDateColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(CustomDateFormatter.formatDate(cellData.getValue().getStartDate())));
+                new SimpleObjectProperty<>(CustomDateTimeFormatter.formatDate(cellData.getValue().getStartDate())));
         endDateColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(CustomDateFormatter.formatDate(cellData.getValue().getEndDate())));
+                new SimpleObjectProperty<>(CustomDateTimeFormatter.formatDate(cellData.getValue().getEndDate())));
         statusColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStatus().getName()));
 
         employeeListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -98,6 +102,32 @@ public class TravelLogSearchController {
             }
         });
 
+        setContextMenuOnRowItems();
+    }
+
+    public void filterTravelLogs(){
+        List<TravelLog> travelLogs = travelLogRepository.findAll();
+
+        List<Long> employeeIds = employeeListView.getSelectionModel().getSelectedItems().stream()
+                .map(Employee::getId).toList();
+        String destination = destinationTextField.getText();
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        TripStatus tripStatus = tripStatusComboBox.getSelectionModel().getSelectedItem();
+
+        travelLogs = travelLogs.stream()
+                .filter(travelLog -> employeeIds.isEmpty() || employeeIds.contains(travelLog.getEmployee().getId()))
+                .filter(travelLog -> destination.isEmpty() || travelLog.getDestination().toLowerCase()
+                        .contains(destination.toLowerCase()))
+                .filter(travelLog -> startDate == null || travelLog.getStartDate().equals(startDate))
+                .filter(travelLog -> endDate == null || travelLog.getEndDate().equals(endDate))
+                .filter(travelLog -> tripStatus == null || travelLog.getStatus().getId().equals(tripStatus.getId()))
+                .toList();
+
+        travelLogTableView.setItems(FXCollections.observableList(travelLogs));
+    }
+
+    public void setContextMenuOnRowItems(){
         ContextMenu contextMenu = new ContextMenu();
         MenuItem editItem = new MenuItem("Edit");
         MenuItem deleteItem = new MenuItem("Delete");
@@ -128,34 +158,14 @@ public class TravelLogSearchController {
         });
     }
 
-    public void filterTravelLogs(){
-        List<TravelLog> travelLogs = travelLogRepository.findAll();
-
-        List<Long> employeeIds = employeeListView.getSelectionModel().getSelectedItems().stream()
-                .map(Employee::getId).toList();
-        String destination = destinationTextField.getText();
-        LocalDate startDate = startDatePicker.getValue();
-        LocalDate endDate = endDatePicker.getValue();
-        TripStatus tripStatus = tripStatusComboBox.getSelectionModel().getSelectedItem();
-
-        travelLogs = travelLogs.stream()
-                .filter(travelLog -> employeeIds.isEmpty() || employeeIds.contains(travelLog.getEmployee().getId()))
-                .filter(travelLog -> destination.isEmpty() || travelLog.getDestination().toLowerCase()
-                        .contains(destination.toLowerCase()))
-                .filter(travelLog -> startDate == null || travelLog.getStartDate().equals(startDate))
-                .filter(travelLog -> endDate == null || travelLog.getEndDate().equals(endDate))
-                .filter(travelLog -> tripStatus == null || travelLog.getStatus().getId().equals(tripStatus.getId()))
-                .toList();
-
-        travelLogTableView.setItems(FXCollections.observableList(travelLogs));
-    }
-
     public void handleDelete(TravelLog travelLog){
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Delete Travel Log");
         dialog.setHeaderText("Are you sure you want to delete the travel log?");
         ConfirmDeletionDialog.show(travelLog, dialog,
                 () -> travelLogRepository.deleteById(travelLog.getId()));
+
+        changeLogRepository.log(new ChangeLog<>(travelLog, ChangeLogType.DELETE));
 
         filterTravelLogs();
     }

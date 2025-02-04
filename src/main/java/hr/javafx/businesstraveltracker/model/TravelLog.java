@@ -27,6 +27,14 @@ public class TravelLog extends Entity {
         this.endDate = endDate;
         this.status = status;
     }
+    public TravelLog(TravelLog other) {
+        super(other.getId());
+        this.employee = other.getEmployee();
+        this.destination = other.getDestination();
+        this.startDate = other.getStartDate();
+        this.endDate = other.getEndDate();
+        this.status = other.getStatus();
+    }
 
     public Employee getEmployee() {
         return employee;

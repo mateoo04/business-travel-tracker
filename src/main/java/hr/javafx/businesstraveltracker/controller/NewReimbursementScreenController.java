@@ -1,12 +1,15 @@
 package hr.javafx.businesstraveltracker.controller;
 
+import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
 import hr.javafx.businesstraveltracker.enums.ReimbursementStatus;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.Reimbursement;
+import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.ReimbursementRepository;
-import hr.javafx.businesstraveltracker.util.CustomDateFormatter;
+import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
@@ -26,6 +29,8 @@ public class NewReimbursementScreenController {
 
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
 
+    private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
     public void initialize() {
         expenseComboBox.getItems().addAll(expenseRepository.findAll());
         expenseComboBox.getSelectionModel().select(0);
@@ -34,7 +39,7 @@ public class NewReimbursementScreenController {
             protected void updateItem(Expense expense, boolean b) {
                 super.updateItem(expense, b);
                 setText(b || expense == null ? "" : expense.getCategory().getName() + ", " + expense.getAmount() + "€, " +
-                        CustomDateFormatter.formatDate(expense.getDate()));
+                        CustomDateTimeFormatter.formatDate(expense.getDate()));
             }
         });
         expenseComboBox.setButtonCell(new ListCell<>() {
@@ -42,7 +47,7 @@ public class NewReimbursementScreenController {
             protected void updateItem(Expense expense, boolean b) {
                 super.updateItem(expense, b);
                 setText(b || expense == null ? "" : expense.getCategory().getName() + ", " + expense.getAmount() + "€, " +
-                        CustomDateFormatter.formatDate(expense.getDate()));
+                        CustomDateTimeFormatter.formatDate(expense.getDate()));
             }
         });
 
@@ -76,6 +81,7 @@ public class NewReimbursementScreenController {
         if(errorMessage.isEmpty()){
             Reimbursement reimbursement = new Reimbursement(expense, reimbursementStatus, LocalDate.now());
             reimbursementRepository.save(reimbursement);
+            changeLogRepository.log(new ChangeLog<>(reimbursement, ChangeLogType.NEW));
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Reimbursement");

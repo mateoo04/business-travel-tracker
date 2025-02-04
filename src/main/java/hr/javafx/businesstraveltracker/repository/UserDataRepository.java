@@ -1,7 +1,7 @@
 package hr.javafx.businesstraveltracker.repository;
 
 import hr.javafx.businesstraveltracker.enums.UserPrivileges;
-import hr.javafx.businesstraveltracker.exception.UserDataRepositoryAccessException;
+import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
 import hr.javafx.businesstraveltracker.model.User;
 
 import java.io.FileWriter;
@@ -32,7 +32,7 @@ public class UserDataRepository {
                 users.add(new User(username,hashedPassword, UserPrivileges.valueOf(privileges)));
             }
         }catch(IOException e){
-            throw new UserDataRepositoryAccessException(e);
+            throw new RepositoryAccessException(e);
         }
 
         return users;
@@ -42,7 +42,7 @@ public class UserDataRepository {
         try(PrintWriter writer = new PrintWriter(new FileWriter(USER_DATA_FILE_PATH, true))){
             writer.println(user.username() + ";" + user.hashedPassword() + ";" + user.privileges());
         }catch(IOException e){
-            throw new UserDataRepositoryAccessException(e);
+            throw new RepositoryAccessException(e);
         }
     }
 }
