@@ -13,10 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Klasa repozitorija sa korisničkim podacima.
+ */
 public class UserDataRepository {
 
     private static final String USER_DATA_FILE_PATH = "dat/user_data.dat";
 
+    /**
+     * Pronalazi i vraća sve spremljene korisnike.
+     * @return sve spremljene korisnike
+     */
     public List<User> findAllUsers(){
         List<User> users = new ArrayList<>();
 
@@ -38,6 +45,10 @@ public class UserDataRepository {
         return users;
     }
 
+    /**
+     * Sprema novog korisnika u repozitorij.
+     * @param user novi korisnik
+     */
     public void save(User user){
         try(PrintWriter writer = new PrintWriter(new FileWriter(USER_DATA_FILE_PATH, true))){
             writer.println(user.username() + ";" + user.hashedPassword() + ";" + user.privileges());

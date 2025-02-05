@@ -7,13 +7,16 @@ import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
+import hr.javafx.businesstraveltracker.util.DataValidation;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 
-
+/**
+ * Kontroler za dodavanje novih zaposlenika.
+ */
 public class NewEmployeeScreenController {
 
     @FXML
@@ -34,7 +37,9 @@ public class NewEmployeeScreenController {
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         departmentComboBox.getItems().addAll(Department.values());
         departmentComboBox.getSelectionModel().select(0);
@@ -54,6 +59,9 @@ public class NewEmployeeScreenController {
         });
     }
 
+    /**
+     * Zahtjeva unos novog zaposlenika u bazu podataka ukoliko su svi podaci točno uneseni.
+     */
     public void createEmployee(){
         StringBuilder errorMessage = new StringBuilder();
 
@@ -70,10 +78,12 @@ public class NewEmployeeScreenController {
         if (department == null) errorMessage.append(ErrorMessage.DEPARTMENT_REQUIRED.getMessage());
 
         String email = emailTextField.getText();
+        if(!email.isEmpty() && !DataValidation.isValidEmail(email))
+            errorMessage.append(ErrorMessage.INVALID_EMAIL.getMessage());
 
         if(errorMessage.isEmpty()){
             Employee.Builder builder = new Employee.Builder(firstName,lastName,role,department);
-            if(email != null && !email.isEmpty()) builder.withEmail(email);
+            if(!email.isEmpty()) builder.withEmail(email);
             Employee employee = builder.build();
 
             employeeRepository.save(employee);

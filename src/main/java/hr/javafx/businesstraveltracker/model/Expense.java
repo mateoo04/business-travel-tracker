@@ -1,8 +1,13 @@
 package hr.javafx.businesstraveltracker.model;
 
+import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Klasa koja predstavlja trošak.
+ */
 public class Expense extends Entity {
     private TravelLog travelLog;
     private ExpenseCategory category;
@@ -10,6 +15,15 @@ public class Expense extends Entity {
     private String description;
     private LocalDate date;
 
+    /**
+     * Konstruktor objekta s ID-jem
+     * @param id
+     * @param travelLog bilješka putovanja
+     * @param category kategorija troška
+     * @param amount novčani iznos
+     * @param description opis
+     * @param date datum
+     */
     public Expense(Long id, TravelLog travelLog, ExpenseCategory category, BigDecimal amount, String description, LocalDate date) {
         super(id);
         this.travelLog = travelLog;
@@ -18,6 +32,15 @@ public class Expense extends Entity {
         this.description = description;
         this.date = date;
     }
+
+    /**
+     * Konstruktor objekta bez ID-a
+     * @param travelLog bilješka putovanja
+     * @param category kategorija troška
+     * @param amount novčani iznos
+     * @param description opis
+     * @param date datum
+     */
     public Expense(TravelLog travelLog, ExpenseCategory category, BigDecimal amount, String description, LocalDate date) {
         super();
         this.travelLog = travelLog;
@@ -26,6 +49,11 @@ public class Expense extends Entity {
         this.description = description;
         this.date = date;
     }
+
+    /**
+     * Kopirni konstruktor
+     * @param other objekt čija će se vrijednost kopirati
+     */
     public Expense(Expense other) {
         super(other.getId());
         this.travelLog = other.getTravelLog();
@@ -78,6 +106,6 @@ public class Expense extends Entity {
     @Override
     public String toString() {
         return "Category: " + this.category + "\nAmount: " + this.amount + "\nDescription: " + this.description +
-                "\nDate: " + this.date;
+                "\nDate: " + CustomDateTimeFormatter.formatDate(this.date);
     }
 }

@@ -17,6 +17,9 @@ import javafx.scene.control.ListCell;
 
 import java.time.LocalDate;
 
+/**
+ * Kontroler za unos novih nadoknada troškova u bazu podataka.
+ */
 public class NewReimbursementScreenController {
 
     @FXML
@@ -30,7 +33,9 @@ public class NewReimbursementScreenController {
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         expenseComboBox.getItems().addAll(expenseRepository.findAll());
         expenseComboBox.getSelectionModel().select(0);
@@ -69,6 +74,9 @@ public class NewReimbursementScreenController {
         });
     }
 
+    /**
+     * Zahtjeva unos novih nadoknada troškova u bazu podataka ukoliko su svi podaci točno uneseni.
+     */
     public void createReimbursement(){
         StringBuilder errorMessage = new StringBuilder();
 

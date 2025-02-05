@@ -1,5 +1,8 @@
 package hr.javafx.businesstraveltracker.exception;
 
+/**
+ * Iznimka koja se baca u slučaju neuspješnog upravljanja Scene-om.
+ */
 public class SceneManagerException extends RuntimeException {
     public SceneManagerException(String message) {
         super(message);

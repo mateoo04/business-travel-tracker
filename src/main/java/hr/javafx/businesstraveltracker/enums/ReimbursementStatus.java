@@ -2,6 +2,9 @@ package hr.javafx.businesstraveltracker.enums;
 
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 
+/**
+ * Predstavlja status nadoknade troška.
+ */
 public enum ReimbursementStatus {
     UNAPPROVED(0L, "Unapproved"),
     APPROVED(1L, "Approved");
@@ -22,6 +25,12 @@ public enum ReimbursementStatus {
         return status;
     }
 
+    /**
+     * Dohvaća objekt nadoknade troška prema statusu
+     * @param status status
+     * @return objekt nadoknade troška
+     * @throws InvalidEnumValueException
+     */
     public static ReimbursementStatus getByStatus(String status) throws InvalidEnumValueException {
         for (ReimbursementStatus reimbursementStatus : ReimbursementStatus.values())
             if(reimbursementStatus.status.equals(status)) return reimbursementStatus;

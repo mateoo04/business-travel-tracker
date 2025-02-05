@@ -2,7 +2,6 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
 import hr.javafx.businesstraveltracker.model.ChangeLog;
-import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
@@ -11,6 +10,9 @@ import javafx.scene.control.*;
 
 import java.util.Optional;
 
+/**
+ * Kontroler za uređivanje kategorije troška.
+ */
 public class EditExpenseCategoryController {
     @FXML
     public TextField categoryNameTextField;
@@ -24,6 +26,10 @@ public class EditExpenseCategoryController {
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
+    /**
+     * Postavlja kategoriju troška koja će biti uređivana
+     * @param expenseCategory kategorija troška koja će biti uređivana
+     */
     public void initData(ExpenseCategory expenseCategory) {
         this.expenseCategory = expenseCategory;
 
@@ -31,6 +37,9 @@ public class EditExpenseCategoryController {
         categoryDescriptionTextArea.setText(expenseCategory.getDescription());
     }
 
+    /**
+     * Sprema promjene koje je korisnik napravio.
+     */
     public void saveChanges() {
         StringBuilder errorMessage = new StringBuilder();
 

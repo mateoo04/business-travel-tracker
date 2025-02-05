@@ -2,6 +2,7 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.TripStatus;
+import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.TravelLog;
@@ -63,7 +64,9 @@ public class TravelLogSearchController {
     private final TravelLogRepository travelLogRepository = new TravelLogRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         idColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getId()));
         employeeColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>
@@ -102,9 +105,15 @@ public class TravelLogSearchController {
             }
         });
 
-        setContextMenuOnRowItems();
+        travelLogTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
+            setContextMenuOnRowItemsOnRowItems();
     }
 
+    /**
+     * Filtrira podatke prema parametrima koje je korisnik odredio.
+     */
     public void filterTravelLogs(){
         List<TravelLog> travelLogs = travelLogRepository.findAll();
 
@@ -126,8 +135,10 @@ public class TravelLogSearchController {
 
         travelLogTableView.setItems(FXCollections.observableList(travelLogs));
     }
-
-    public void setContextMenuOnRowItems(){
+    /**
+     * Postavlja ContextMenu izbornik koji se prikazuje klikom sekundarnog gumba miša na redak u tablici.
+     */
+    private void setContextMenuOnRowItemsOnRowItems(){
         ContextMenu contextMenu = new ContextMenu();
         MenuItem editItem = new MenuItem("Edit");
         MenuItem deleteItem = new MenuItem("Delete");

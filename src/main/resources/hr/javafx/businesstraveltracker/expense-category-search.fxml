@@ -10,41 +10,64 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.businesstraveltracker.controller.ExpenseCategorySearchController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@global-styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.businesstraveltracker.controller.ExpenseCategorySearchController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="491.0" minWidth="10.0" prefWidth="400.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="407.0" minWidth="10.0" prefWidth="400.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="Infinity" minWidth="10.0" prefWidth="400.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="Infinity" minWidth="10.0" prefWidth="400.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="101.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="104.0" minHeight="10.0" prefHeight="104.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="126.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="114.0" minHeight="3.0" prefHeight="55.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="237.0" minHeight="10.0" prefHeight="211.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="194.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="114.0" minHeight="3.0" prefHeight="24.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="Infinity" minHeight="10.0" prefHeight="211.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-       <fx:include source="menu-bar.fxml" GridPane.columnSpan="2" GridPane.valignment="TOP" />
-      <Label text="Expense Categories" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+       <fx:include source="menu-bar.fxml" GridPane.columnSpan="3" GridPane.valignment="TOP" />
+      <Label text="Expense Categories" GridPane.columnSpan="2" GridPane.halignment="LEFT">
          <font>
-            <Font size="36.0" />
+            <Font size="26.0" />
          </font>
          <GridPane.margin>
-            <Insets top="12.0" />
+            <Insets left="30.0" top="12.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Enter category name:" GridPane.rowIndex="1" />
-      <Label text="Enter description:" GridPane.rowIndex="2" />
-      <TableView fx:id="expenseCategoryTableView" prefHeight="241.0" prefWidth="800.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+      <TableView GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"  fx:id="expenseCategoryTableView" prefHeight="241.0" prefWidth="800.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
         <columns>
           <TableColumn fx:id="idTableColumn" prefWidth="75.0" text="ID" />
-          <TableColumn fx:id="nameTableColumn" prefWidth="150.0" text="Name" />
-            <TableColumn fx:id="descriptionTableColumn" minWidth="0.0" prefWidth="440.0" text="Description" />
+          <TableColumn fx:id="nameTableColumn" prefWidth="228.0" text="Name" />
+            <TableColumn fx:id="descriptionTableColumn" minWidth="0.0" prefWidth="476.0" text="Description" />
         </columns>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
       </TableView>
-      <Button mnemonicParsing="false" onAction="#filterExpenseCategories" text="Filter" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button mnemonicParsing="false" onAction="#filterExpenseCategories" text="Search" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <VBox maxWidth="300.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <children>
+            <Label text="Enter category name:" />
+            <TextField fx:id="nameTextField" />
+         </children>
+         <GridPane.margin>
+            <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+         </GridPane.margin>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <VBox maxWidth="300.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <children>
+            <Label text="Enter description:" />
+            <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+         <GridPane.margin>
+            <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+         </GridPane.margin>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
    </children>
 </GridPane>

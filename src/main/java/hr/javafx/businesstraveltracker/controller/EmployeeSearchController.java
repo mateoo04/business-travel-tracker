@@ -2,9 +2,9 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.Department;
+import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
-import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
@@ -15,8 +15,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Kontroler za pretraživanje zaposlenika.
+ */
 public class EmployeeSearchController {
 
     @FXML
@@ -58,7 +60,9 @@ public class EmployeeSearchController {
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         departmentComboBox.getItems().add(null);
         departmentComboBox.getItems().addAll(Department.values());
@@ -85,6 +89,16 @@ public class EmployeeSearchController {
         departmentColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDepartment().getName()));
         emailColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getEmail()));
 
+        employeeTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
+            setContextMenuOnRowItems();
+    }
+
+    /**
+     * Postavlja ContextMenu izbornik koji se prikazuje klikom sekundarnog gumba miša na redak u tablici.
+     */
+    private void setContextMenuOnRowItems(){
         ContextMenu contextMenu = new ContextMenu();
         MenuItem editItem = new MenuItem("Edit");
         MenuItem deleteItem = new MenuItem("Delete");
@@ -115,6 +129,9 @@ public class EmployeeSearchController {
         });
     }
 
+    /**
+     * Filtrira podatke prema parametrima koje je korisnik odredio.
+     */
     public void filterEmployees() {
         List<Employee> employees = employeeRepository.findAll();
 
@@ -135,6 +152,10 @@ public class EmployeeSearchController {
         employeeTableView.setItems(FXCollections.observableList(employees));
     }
 
+    /**
+     * Izvodi brisanje zapisa.
+     * @param employee zaposlenik koji će biti izbrisan
+     */
     public void handleDelete(Employee employee){
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Delete Employee");

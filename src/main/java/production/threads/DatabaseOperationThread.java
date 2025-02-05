@@ -14,7 +14,7 @@ public class DatabaseOperationThread extends Thread {
     public void run() {
         synchronized (Database.class){
             try{
-                while(Database.isActiveConnectionWithDatabase()){
+                while(Boolean.TRUE.equals(Database.isActiveConnectionWithDatabase())){
                     Database.class.wait();
                 }
             } catch (InterruptedException e) {

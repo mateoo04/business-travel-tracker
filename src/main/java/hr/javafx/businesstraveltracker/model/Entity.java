@@ -2,15 +2,25 @@ package hr.javafx.businesstraveltracker.model;
 
 import java.io.Serializable;
 
+/**
+ * Predstavlja entitet
+ */
 public abstract class Entity implements Serializable {
 
     private Long id;
 
-    public Entity(Long id) {
+    /**
+     * Konstruktor entiteta s definiranim ID-jem.
+     * @param id
+     */
+    protected Entity(Long id) {
         this.id = id;
     }
 
-    public Entity() {
+    /**
+     * Konstruktor entiteta bez ID-a.
+     */
+    protected Entity() {
     }
 
     public Long getId() {

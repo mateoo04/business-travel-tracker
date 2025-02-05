@@ -1,9 +1,13 @@
 package hr.javafx.businesstraveltracker.model;
 
 import hr.javafx.businesstraveltracker.enums.TripStatus;
+import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 
 import java.time.LocalDate;
 
+/**
+ * Klasa koja predstavlja bilješku putovanja.
+ */
 public class TravelLog extends Entity {
     private Employee employee;
     private String destination;
@@ -11,6 +15,15 @@ public class TravelLog extends Entity {
     private LocalDate endDate;
     private TripStatus status;
 
+    /**
+     * Konstruktor za objekt s ID-jem.
+     * @param id
+     * @param employee zaposlenik
+     * @param destination destinacija
+     * @param startDate datum početka putovanja
+     * @param endDate datum kraja putovanja
+     * @param status status
+     */
     public TravelLog(Long id, Employee employee, String destination, LocalDate startDate, LocalDate endDate, TripStatus status) {
         super(id);
         this.employee = employee;
@@ -19,6 +32,15 @@ public class TravelLog extends Entity {
         this.endDate = endDate;
         this.status = status;
     }
+
+    /**
+     * Konstruktor za objekt bez ID-a.
+     * @param employee zaposlenik
+     * @param destination destinacija
+     * @param startDate datum početka putovanja
+     * @param endDate datum kraja putovanja
+     * @param status status
+     */
     public TravelLog(Employee employee, String destination, LocalDate startDate, LocalDate endDate, TripStatus status) {
         super();
         this.employee = employee;
@@ -27,6 +49,11 @@ public class TravelLog extends Entity {
         this.endDate = endDate;
         this.status = status;
     }
+
+    /**
+     * Kopirni konstruktor
+     * @param other objekt čija će se vrijednost kopirati
+     */
     public TravelLog(TravelLog other) {
         super(other.getId());
         this.employee = other.getEmployee();
@@ -79,7 +106,8 @@ public class TravelLog extends Entity {
     @Override
     public String toString() {
         return "Employee: " + this.employee.getFirstName() + " " + this.employee.getLastName() +
-                "\nDestination: " + this.destination + "\nStart Date: " + this.startDate + "\nEnd Date: " +
-                this.endDate + "\nStatus: " + this.status.getName();
+                "\nDestination: " + this.destination + "\nStart Date: " +
+                CustomDateTimeFormatter.formatDate(this.startDate) + "\nEnd Date: " +
+                CustomDateTimeFormatter.formatDate(this.endDate) + "\nStatus: " + this.status.getName();
     }
 }

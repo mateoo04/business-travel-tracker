@@ -14,6 +14,9 @@ import javafx.scene.control.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Kontroler za uređivanje zapisa putovanja.
+ */
 public class EditTravelLogController {
     @FXML
     public ComboBox<Employee> employeeComboBox;
@@ -38,6 +41,10 @@ public class EditTravelLogController {
 
     private TravelLog travelLog;
 
+    /**
+     * Postavlja objekt koji će biti uređivan.
+     * @param travelLog objekt koji će biti uređivan
+     */
     public void initData(TravelLog travelLog) {
         this.travelLog = travelLog;
 
@@ -52,7 +59,9 @@ public class EditTravelLogController {
         endDatePicker.setValue(travelLog.getEndDate());
         statusComboBox.setValue(travelLog.getStatus());
     }
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize(){
         employeeComboBox.getItems().addAll(employeeRepository.findAll());
         employeeComboBox.getSelectionModel().select(0);
@@ -89,56 +98,97 @@ public class EditTravelLogController {
         });
     }
 
-    public void saveChanges(){
+    /**
+     * Sprema promjene koje je korisnik napravio.
+     */
+    public void saveChanges() {
+        StringBuilder errorMessage = validateFields();
+
+        if (errorMessage.isEmpty()) {
+            showConfirmationDialog();
+        } else {
+            showErrorDialog(errorMessage.toString());
+        }
+    }
+
+    /**
+     * Validira polja unosa
+     * @return StringBuilder za poruku s pogreškama kod unosa.
+     */
+    private StringBuilder validateFields() {
         StringBuilder errorMessage = new StringBuilder();
 
         Employee employee = employeeComboBox.getSelectionModel().getSelectedItem();
-        if(employee == null) errorMessage.append(ErrorMessage.EMPLOYEE_REQUIRED.getMessage());
+        if (employee == null) errorMessage.append(ErrorMessage.EMPLOYEE_REQUIRED.getMessage());
 
         String destination = destinationTextField.getText();
-        if(destination.isEmpty()) errorMessage.append(ErrorMessage.DESTINATION_REQUIRED.getMessage());
+        if (destination.isEmpty()) errorMessage.append(ErrorMessage.DESTINATION_REQUIRED.getMessage());
 
         LocalDate startDate = startDatePicker.getValue();
-        if(startDate == null) errorMessage.append(ErrorMessage.START_DATE_REQUIRED.getMessage());
+        if (startDate == null) errorMessage.append(ErrorMessage.START_DATE_REQUIRED.getMessage());
 
         LocalDate endDate = endDatePicker.getValue();
-        if(endDate == null) errorMessage.append(ErrorMessage.END_DATE_REQUIRED.getMessage());
+        if (endDate == null) errorMessage.append(ErrorMessage.END_DATE_REQUIRED.getMessage());
 
         TripStatus status = statusComboBox.getSelectionModel().getSelectedItem();
-        if(status == null) errorMessage.append(ErrorMessage.TRIP_STATUS_REQUIRED.getMessage());
+        if (status == null) errorMessage.append(ErrorMessage.TRIP_STATUS_REQUIRED.getMessage());
 
-        TravelLog prevTravelLog = new TravelLog(travelLog);
+        return errorMessage;
+    }
 
-        if(errorMessage.isEmpty()){
-            if(employee != null && !travelLog.getEmployee().getId().equals(employee.getId()))
-                travelLog.setEmployee(employee);
-            if(!travelLog.getDestination().equals(destination)) travelLog.setDestination(destination);
-            if(!travelLog.getStartDate().equals(startDate)) travelLog.setStartDate(startDate);
-            if(!travelLog.getEndDate().equals(endDate)) travelLog.setEndDate(endDate);
-            if(!travelLog.getStatus().equals(status)) travelLog.setStatus(status);
+    /**
+     * Prikazuje dijalog potvrde ažuriranja.
+     */
+    private void showConfirmationDialog() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Travel Log");
+        dialog.setHeaderText("Are you sure you want to save changes to this travel log?");
+        dialog.setContentText(travelLog.toString());
 
-            Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setTitle("Travel Log");
-            dialog.setHeaderText("Are you sure you want to save changes to this travel log?");
-            dialog.setContentText(travelLog.toString());
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, cancelButtonType);
 
-            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-            ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, cancelButtonType);
-
-            Optional<ButtonType> result = dialog.showAndWait();
-            result.ifPresent(response ->{
-                if (response == saveButtonType){
-                    travelLogRepository.update(travelLog);
-                    changeLogRepository.log(new ChangeLog<>(prevTravelLog, travelLog));
-                }
-            });
-        }else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error while editing the travel log");
-            alert.setContentText(errorMessage.toString());
-            alert.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == saveButtonType) {
+            updateTravelLog();
         }
     }
+
+    /**
+     * Šalje zahtjev za ažuriranje u repozitorij.
+     */
+    private void updateTravelLog() {
+        TravelLog prevTravelLog = new TravelLog(travelLog);
+
+        Employee employee = employeeComboBox.getSelectionModel().getSelectedItem();
+        String destination = destinationTextField.getText();
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        TripStatus status = statusComboBox.getSelectionModel().getSelectedItem();
+
+        if (employee != null && !travelLog.getEmployee().getId().equals(employee.getId())) {
+            travelLog.setEmployee(employee);
+        }
+        if (!travelLog.getDestination().equals(destination)) travelLog.setDestination(destination);
+        if (!travelLog.getStartDate().equals(startDate)) travelLog.setStartDate(startDate);
+        if (!travelLog.getEndDate().equals(endDate)) travelLog.setEndDate(endDate);
+        if (!travelLog.getStatus().equals(status)) travelLog.setStatus(status);
+
+        travelLogRepository.update(travelLog);
+        changeLogRepository.log(new ChangeLog<>(prevTravelLog, travelLog));
+    }
+
+    /**
+     * Prikazuje dijalog pogreškaka.
+     * @param errorMessage poruka o pogreškama
+     */
+    private void showErrorDialog(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error while editing the travel log");
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
+    }
+
 }

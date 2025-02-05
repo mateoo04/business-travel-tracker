@@ -16,28 +16,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.businesstraveltracker.controller.ExpenseSearchController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@global-styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.businesstraveltracker.controller.ExpenseSearchController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="394.0" minWidth="10.0" prefWidth="379.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="421.0" minWidth="10.0" prefWidth="421.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="Infinity" minWidth="10.0" prefWidth="379.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="Infinity" minWidth="10.0" prefWidth="421.0" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints maxHeight="105.0" minHeight="10.0" prefHeight="83.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="321.0" minHeight="10.0" prefHeight="279.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="199.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="NEVER" />
+    <RowConstraints maxHeight="321.0" minHeight="10.0" prefHeight="237.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="199.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="Infinity" minHeight="10.0" prefHeight="202.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
        <fx:include source="menu-bar.fxml" GridPane.columnSpan="2" GridPane.valignment="TOP" />
-      <Label text="Expenses" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+      <Label text="Expenses" GridPane.columnSpan="2" GridPane.halignment="LEFT">
          <font>
-            <Font size="36.0" />
+            <Font size="26.0" />
          </font>
          <GridPane.margin>
-            <Insets top="20.0" />
+            <Insets left="30.0" top="20.0" />
          </GridPane.margin>
       </Label>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+      <VBox maxWidth="400.0" prefHeight="200.0" prefWidth="100.0" spacing="6.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <children>
             <Label text="Select travel log:" />
             <ComboBox fx:id="travelLogComboBox" prefWidth="150.0" />
@@ -49,66 +49,75 @@
          <padding>
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
          </padding>
+         <GridPane.margin>
+            <Insets left="6.0" right="2.0" />
+         </GridPane.margin>
       </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <VBox maxWidth="420.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <children>
-            <Label text="Amount (€):">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Label text="Min:">
+                  <Label alignment="CENTER_RIGHT" text="Amount (€):">
                      <HBox.margin>
-                        <Insets left="4.0" right="4.0" />
+                        <Insets top="27.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="minAmountTextField" />
-                  <Label text="Max:">
-                     <HBox.margin>
-                        <Insets left="4.0" right="4.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="maxAmountTextField" />
+                  <VBox maxWidth="150.0" prefHeight="200.0" prefWidth="100.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Min:" />
+                        <TextField fx:id="minAmountTextField" />
+                     </children>
+                  </VBox>
+                  <VBox maxWidth="150.0" prefHeight="200.0" prefWidth="100.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Max:" />
+                        <TextField fx:id="maxAmountTextField" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
-            <Label text="Date:">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Label text="From">
+                  <Label text="Date:">
+                     <padding>
+                        <Insets bottom="6.0" />
+                     </padding>
                      <HBox.margin>
-                        <Insets left="4.0" right="4.0" />
+                        <Insets top="27.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker fx:id="startDatePicker" />
-                  <Label text="to">
-                     <HBox.margin>
-                        <Insets left="4.0" right="4.0" />
-                     </HBox.margin>
-                  </Label>
-                  <DatePicker fx:id="endDatePicker" />
+                  <VBox maxWidth="150.0" prefHeight="200.0" prefWidth="100.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="From:" />
+                        <DatePicker fx:id="startDatePicker" />
+                     </children>
+                  </VBox>
+                  <VBox maxWidth="150.0" prefHeight="200.0" prefWidth="100.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="To:" />
+                        <DatePicker fx:id="endDatePicker" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
          </children>
          <GridPane.margin>
-            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            <Insets bottom="4.0" left="4.0" right="6.0" top="4.0" />
          </GridPane.margin>
       </VBox>
-      <Button mnemonicParsing="false" onAction="#filterExpenses" text="Filter" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-      <TableView fx:id="expenseTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+      <Button mnemonicParsing="false" onAction="#filterExpenses" text="Search" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <TableView fx:id="expenseTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="60.0" text="ID" />
           <TableColumn fx:id="travelLogColumn" prefWidth="106.0" text="Travel log" />
             <TableColumn fx:id="expenseCategoryColumn" minWidth="0.0" prefWidth="113.0" text="Expense category" />
             <TableColumn fx:id="amountColumn" prefWidth="172.0" text="Amount (€)" />
             <TableColumn fx:id="dateColumn" prefWidth="130.0" text="Date" />
-            <TableColumn fx:id="descriptionColumn" prefWidth="218.0" text="Description" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="198.0" text="Description" />
         </columns>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </GridPane.margin>
       </TableView>
    </children>
 </GridPane>

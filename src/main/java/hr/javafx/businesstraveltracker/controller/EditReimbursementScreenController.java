@@ -14,6 +14,9 @@ import javafx.scene.control.*;
 
 import java.util.Optional;
 
+/**
+ * Kontroler za uređivanje nadoknade troška.
+ */
 public class EditReimbursementScreenController {
     @FXML
     public ComboBox<Expense> expenseComboBox;
@@ -33,14 +36,16 @@ public class EditReimbursementScreenController {
         this.reimbursement = reimbursement;
 
         Optional<Expense> preselectedExpense = expenseComboBox.getItems().stream()
-                .filter(item -> item.getId().equals(reimbursement.getId()))
+                .filter(item -> item.getId().equals(reimbursement.getExpense().getId()))
                 .findFirst();
 
         preselectedExpense.ifPresent(expense -> expenseComboBox.getSelectionModel().select(expense));
 
         reimbursementStatusComboBox.getSelectionModel().select(reimbursement.getStatus());
     }
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         expenseComboBox.getItems().addAll(expenseRepository.findAll());
         expenseComboBox.getSelectionModel().select(0);
@@ -79,6 +84,9 @@ public class EditReimbursementScreenController {
         });
     }
 
+    /**
+     * Sprema promjene koje je korisnik napravio.
+     */
     public void saveChanges(){
         StringBuilder errorMessage = new StringBuilder();
 

@@ -2,6 +2,7 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
+import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
@@ -21,6 +22,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Kontroler za pretraživanje troškova.
+ */
 public class ExpenseSearchController {
 
     @FXML
@@ -68,7 +72,9 @@ public class ExpenseSearchController {
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         idColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getId()));
         travelLogColumn.setCellValueFactory(cellData -> {
@@ -83,6 +89,15 @@ public class ExpenseSearchController {
         dateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDate()));
         descriptionColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDescription()));
 
+        expenseTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
+            setContextMenuOnRowItems();
+    }
+    /**
+     * Postavlja ContextMenu izbornik koji se prikazuje klikom sekundarnog gumba miša na redak u tablici.
+     */
+    private void setContextMenuOnRowItems(){
         ContextMenu contextMenu = new ContextMenu();
         MenuItem editItem = new MenuItem("Edit");
         MenuItem deleteItem = new MenuItem("Delete");
@@ -113,6 +128,9 @@ public class ExpenseSearchController {
         });
     }
 
+    /**
+     * Filtrira podatke prema parametrima koje je korisnik odredio.
+     */
     public void filterExpenses(){
         List<Expense> expenses = expenseRepository.findAll();
 
@@ -149,6 +167,11 @@ public class ExpenseSearchController {
         }
     }
 
+    /**
+     * Validira i pretvara unos u polje novčanog iznosa u odgovrajaući tip podatka
+     * @param textField polje unosa
+     * @return novčani iznos u obliku BigDecimal-a
+     */
     private BigDecimal getAmountFromTextField(TextField textField) {
         String amountString = textField.getText();
         if (amountString.isEmpty() || !DataValidation.isValidDecimalNumber(amountString)) {
@@ -157,6 +180,10 @@ public class ExpenseSearchController {
         return new BigDecimal(amountString);
     }
 
+    /**
+     * Izvodi brisanje zapisa.
+     * @param expense trošak koji će biti obrisan.
+     */
     public void handleDelete(Expense expense){
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Delete Expense");

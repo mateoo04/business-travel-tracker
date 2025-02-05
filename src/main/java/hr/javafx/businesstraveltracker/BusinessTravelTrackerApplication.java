@@ -1,37 +1,45 @@
 package hr.javafx.businesstraveltracker;
 
-import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
+import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * Glavna klasa aplikacije za praćenje troškova putovanja
+ */
 public class BusinessTravelTrackerApplication extends Application {
 
-    private static Logger log = LoggerFactory.getLogger(EmployeeRepository.class);
+    private static Logger log = LoggerFactory.getLogger(BusinessTravelTrackerApplication.class);
 
     private static Stage primaryStage;
 
     @Override
     public void start(Stage stage) throws IOException {
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            log.error(thread.getName(), throwable);
-        });
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> log.error(thread.getName(), throwable));
 
-        primaryStage = stage;
+        setPrimaryStage(stage);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(BusinessTravelTrackerApplication.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setTitle("Business Travel Expenses Tracker - Log in");
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("plane-icon.png")));
+
+        SceneManager.getInstance().showLogInScene();
     }
 
+    /**
+     * Vraća primarni Stage objekt
+     * @return primarni Stage
+     */
     public static Stage getPrimaryStage() {return primaryStage;}
+
+    /**
+     * Postavlja primarni stage objekt
+     * @param nextPrimaryStage
+     */
+    private static void setPrimaryStage(Stage nextPrimaryStage) { primaryStage = nextPrimaryStage;}
 
     public static void main(String[] args) {
         launch();

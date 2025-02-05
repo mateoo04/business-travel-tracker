@@ -6,9 +6,19 @@ import javafx.scene.control.Dialog;
 
 import java.util.Optional;
 
+/**
+ * Klasa dijaloga kojim se potvrđuje brisanje podataka iz baze podataka.
+ */
 public class ConfirmDeletionDialog {
     private ConfirmDeletionDialog(){}
 
+    /**
+     * Prikazuje dijalog kojim se potvrđuje brisanje podataka iz baze podataka
+     * @param item podatak za brisanje
+     * @param dialog dijalog
+     * @param onConfirmation radnja koja se izvršava na potvrdu brisanja
+     * @param <T> klasa entiteta koji će bit obrisan iz baze podataka
+     */
     public static <T> void show(T item, Dialog<ButtonType> dialog, Runnable onConfirmation){
         dialog.setContentText(item.toString());
 

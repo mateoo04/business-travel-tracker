@@ -10,42 +10,44 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.businesstraveltracker.controller.NewExpenseScreenController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@global-styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.businesstraveltracker.controller.NewExpenseScreenController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="398.0" minWidth="10.0" prefWidth="398.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="409.0" minWidth="10.0" prefWidth="402.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="Infinity" minWidth="10.0" prefWidth="398.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="Infinity" minWidth="10.0" prefWidth="402.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="Infinity" minWidth="10.0" prefWidth="402.0" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="403.0" minHeight="10.0" prefHeight="380.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="101.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-       <fx:include source="menu-bar.fxml" GridPane.columnSpan="2" GridPane.valignment="TOP" />
-      <Label text="New Expense" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+       <fx:include source="menu-bar.fxml" GridPane.columnSpan="3" GridPane.valignment="TOP" />
+      <Label text="New Expense" GridPane.columnSpan="3" GridPane.halignment="LEFT">
          <font>
-            <Font size="36.0" />
+            <Font size="26.0" />
          </font>
          <GridPane.margin>
-            <Insets top="18.0" />
+            <Insets left="30.0" top="18.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Select expense category:" GridPane.rowIndex="2" />
-      <Label text="Enter amount (€):" GridPane.rowIndex="3" />
-      <Label text="Enter description:" GridPane.rowIndex="4" />
-      <Label text="Select date:" GridPane.rowIndex="5" />
-      <Label text="Select travel log:" GridPane.rowIndex="1" />
-      <ComboBox fx:id="travelLogComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <ComboBox fx:id="expenseCategoryComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="expenseAmountTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <DatePicker fx:id="expenseDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <Button mnemonicParsing="false" onAction="#createExpense" text="Create" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+      <Button mnemonicParsing="false" onAction="#createExpense" text="Create" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Label text="Select travel log:" />
+            <ComboBox fx:id="travelLogComboBox" prefWidth="150.0" VBox.vgrow="ALWAYS" />
+            <Label text="Select expense category:" />
+            <ComboBox fx:id="expenseCategoryComboBox" prefWidth="150.0" VBox.vgrow="ALWAYS" />
+            <Label text="Enter amount (€):" />
+            <TextField fx:id="expenseAmountTextField" />
+            <Label text="Enter description:" />
+            <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" />
+            <Label text="Select date:" />
+            <DatePicker fx:id="expenseDatePicker" />
+         </children>
+      </VBox>
    </children>
 </GridPane>

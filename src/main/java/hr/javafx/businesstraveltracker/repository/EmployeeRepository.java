@@ -1,6 +1,5 @@
 package hr.javafx.businesstraveltracker.repository;
 
-import hr.javafx.businesstraveltracker.controller.LogInController;
 import hr.javafx.businesstraveltracker.enums.Department;
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
@@ -16,10 +15,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Klasa koja upravlja zapisima zaposlenika.
+ */
 public class EmployeeRepository implements CrudRepository<Employee> {
 
-    private static Logger log = LoggerFactory.getLogger(LogInController.class);
+    private static Logger log = LoggerFactory.getLogger(EmployeeRepository.class);
 
+    /**
+     * Pronalazi i vraća sve zaposlenike u bazi podataka.
+     * @return sve spremljene zaposlenike
+     */
     @Override
     public List<Employee> findAll() {
         final List<Employee> employees = new ArrayList<>();
@@ -47,6 +53,12 @@ public class EmployeeRepository implements CrudRepository<Employee> {
         return employees;
     }
 
+    /**
+     * Pronalazi zaposlenika s odgovarajućim ID-jem
+     * @param id ID zapisa
+     * @return Optional koji sadržava zaposlenika s odgovarajućim ID-jem ako je pronađen
+     * @throws RepositoryAccessException
+     */
     @Override
     public Optional<Employee> findById(Long id) throws RepositoryAccessException {
         AtomicReference<Employee> employee = new AtomicReference<>();
@@ -73,6 +85,10 @@ public class EmployeeRepository implements CrudRepository<Employee> {
         return Optional.ofNullable(employee.get());
     }
 
+    /**
+     * Sprema zaposlenika u bazu podataka.
+     * @param entity
+     */
     @Override
     public void save(Employee entity) {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -94,6 +110,10 @@ public class EmployeeRepository implements CrudRepository<Employee> {
         thread.start();
     }
 
+    /**
+     * Ažurira zaposlenika u bazi podataka.
+     * @param entity
+     */
     @Override
     public void update(Employee entity) {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -115,11 +135,21 @@ public class EmployeeRepository implements CrudRepository<Employee> {
         thread.start();
     }
 
+    /**
+     * Briše zaposlenika sa zadanim ID-jem
+     * @param id ID zapisa zaposlenika
+     */
     @Override
     public void deleteById(Long id) {
         deleteFromTable("employee",id);
     }
 
+    /**
+     * Extracta zaposlenika iz ResultSeta
+     * @param rs
+     * @return zaposlenika
+     * @throws SQLException
+     */
     private Employee extractEmployeeFromResultSet(ResultSet rs) throws SQLException {
         Long id = rs.getLong("id");
         String firstName = rs.getString("first_name");

@@ -18,6 +18,9 @@ import javafx.scene.control.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Kontroler za dodavanje novih troškova.
+ */
 public class NewExpenseScreenController {
 
     @FXML
@@ -42,7 +45,9 @@ public class NewExpenseScreenController {
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         travelLogComboBox.getItems().addAll(travelLogRepository.findAll());
         travelLogComboBox.getSelectionModel().select(0);
@@ -83,6 +88,9 @@ public class NewExpenseScreenController {
         });
     }
 
+    /**
+     * Zahtjeva dodavanje novih troškova u bazu podataka ukoliko su svi podaci točno uneseni.
+     */
     public void createExpense() {
         StringBuilder errorMessage = new StringBuilder();
 

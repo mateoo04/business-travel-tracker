@@ -1,5 +1,8 @@
 package hr.javafx.businesstraveltracker.exception;
 
+/**
+ * Iznimka koja se baca u slučaju neispravnog pokušaja dohvata vrijednosti enuma.
+ */
 public class InvalidEnumValueException extends Exception {
     public InvalidEnumValueException() {
     }

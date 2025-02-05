@@ -2,6 +2,9 @@ package hr.javafx.businesstraveltracker.enums;
 
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 
+/**
+ * Predstavlja odjel unutar tvrtke.
+ */
 public enum Department {
 
     HUMAN_RESOURCES(0L, "Human Resources Department"),
@@ -30,6 +33,12 @@ public enum Department {
         return name;
     }
 
+    /**
+     * Dohvaća odjel prema ID-u.
+     * @param id
+     * @return odjel
+     * @throws InvalidEnumValueException
+     */
     public static Department getById(Long id) throws InvalidEnumValueException {
         for(Department department : values()) {
             if(department.getId().equals(id)) return department;

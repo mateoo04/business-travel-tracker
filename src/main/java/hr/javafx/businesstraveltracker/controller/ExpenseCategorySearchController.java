@@ -1,8 +1,8 @@
 package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ChangeLogType;
+import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.ChangeLog;
-import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
@@ -14,8 +14,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Kontroler za pretraživanje kategorija troškova.
+ */
 public class ExpenseCategorySearchController {
 
     @FXML
@@ -39,12 +41,23 @@ public class ExpenseCategorySearchController {
     private final ExpenseCategoryRepository expenseCategoryRepository = new ExpenseCategoryRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         idTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getId()));
         nameTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getName()));
         descriptionTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDescription()));
 
+        expenseCategoryTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
+            setContextMenuOnRowItems();
+    }
+    /**
+     * Postavlja ContextMenu izbornik koji se prikazuje klikom sekundarnog gumba miša na redak u tablici.
+     */
+    private void setContextMenuOnRowItems(){
         ContextMenu contextMenu = new ContextMenu();
         MenuItem editItem = new MenuItem("Edit");
         MenuItem deleteItem = new MenuItem("Delete");
@@ -75,6 +88,9 @@ public class ExpenseCategorySearchController {
         });
     }
 
+    /**
+     * Filtrira podatke prema parametrima koje je korisnik odredio.
+     */
     public void filterExpenseCategories(){
         List<ExpenseCategory> expenseCategories = expenseCategoryRepository.findAll();
 

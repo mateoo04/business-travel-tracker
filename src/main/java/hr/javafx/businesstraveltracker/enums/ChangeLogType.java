@@ -1,5 +1,8 @@
 package hr.javafx.businesstraveltracker.enums;
 
+/**
+ * Predstavlja tip zabilješke promjene.
+ */
 public enum ChangeLogType {
     NEW("New"),
     MODIFICATION("Modification"),

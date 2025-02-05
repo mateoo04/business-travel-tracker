@@ -18,6 +18,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Kontroler za uređivanje troška.
+ */
 public class EditExpenseScreenController {
     @FXML
     public ComboBox<TravelLog> travelLogComboBox;
@@ -44,11 +47,15 @@ public class EditExpenseScreenController {
 
     private Expense expense;
 
+    /**
+     * Postavlja objekt troška koji će biti uređivan.
+     * @param expense objekt troška koji će biti uređivan
+     */
     public void initData(Expense expense){
         this.expense = expense;
 
         Optional<TravelLog> preselectedTravelLog = travelLogComboBox.getItems().stream()
-                .filter(item -> item.getId().equals(expense.getId()))
+                .filter(item -> item.getId().equals(expense.getTravelLog().getId()))
                 .findFirst();
 
         preselectedTravelLog.ifPresent(travelLog -> travelLogComboBox.getSelectionModel().select(travelLog));
@@ -57,7 +64,9 @@ public class EditExpenseScreenController {
         descriptionTextArea.setText(expense.getDescription());
         expenseDatePicker.setValue(expense.getDate());
     }
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         travelLogComboBox.getItems().addAll(travelLogRepository.findAll());
         travelLogComboBox.getSelectionModel().select(0);
@@ -98,6 +107,9 @@ public class EditExpenseScreenController {
         });
     }
 
+    /**
+     * Sprema promjene koje je korisnik napravio.
+     */
     public void saveChanges(){
         StringBuilder errorMessage = new StringBuilder();
 
@@ -142,6 +154,14 @@ public class EditExpenseScreenController {
         }
     }
 
+    /**
+     * Ažurira postojeći objekt troška
+     * @param travelLog bilješka putovanja
+     * @param expenseCategory kategorija troška
+     * @param amount novčani iznos
+     * @param description opis
+     * @param expenseDate datum troška
+     */
     private void updateExistingExpenseObject(TravelLog travelLog, ExpenseCategory expenseCategory, BigDecimal amount, String description, LocalDate expenseDate){
         if(travelLog != null && !expense.getTravelLog().getId().equals(travelLog.getId()))
             expense.setTravelLog(travelLog);
@@ -154,7 +174,11 @@ public class EditExpenseScreenController {
         if(!expense.getDate().equals(expenseDate))
             expense.setDate(expenseDate);
     }
-
+    /**
+     * Validira sve unose.
+     * @param errorMessage objekt klase StringBuilder koji predstavlja poruku o pogreškama
+     * @return boolean koji predstavlja valjanost unosa
+     */
     private boolean hasValidationErrors(StringBuilder errorMessage) {
         validateTravelLog(errorMessage);
         validateExpenseCategory(errorMessage);
@@ -165,16 +189,28 @@ public class EditExpenseScreenController {
         return !errorMessage.isEmpty();
     }
 
+    /**
+     * Validira zapis putovanja
+     * @param errorMessage objekt klase StringBuilder koji predstavlja poruku o pogreškama
+     */
     private void validateTravelLog(StringBuilder errorMessage) {
         TravelLog travelLog = travelLogComboBox.getSelectionModel().getSelectedItem();
         if (travelLog == null) errorMessage.append(ErrorMessage.TRAVEL_LOG_REQUIRED.getMessage());
     }
 
+    /**
+     * Validira kategoriju troška.
+     * @param errorMessage objekt klase StringBuilder koji predstavlja poruku o pogreškama
+     */
     private void validateExpenseCategory(StringBuilder errorMessage) {
         ExpenseCategory expenseCategory = expenseCategoryComboBox.getSelectionModel().getSelectedItem();
         if (expenseCategory == null) errorMessage.append(ErrorMessage.EXPENSE_CATEGORY_REQUIRED.getMessage());
     }
 
+    /**
+     * Validira novčani iznos.
+     * @param errorMessage objekt klase StringBuilder koji predstavlja poruku o pogreškama
+     */
     private void validateAmount(StringBuilder errorMessage) {
         String amountString = expenseAmountTextField.getText();
         if (amountString == null || amountString.isEmpty() || !DataValidation.isValidDecimalNumber(amountString)) {
@@ -182,11 +218,19 @@ public class EditExpenseScreenController {
         }
     }
 
+    /**
+     * Validira opis.
+     * @param errorMessage objekt klase StringBuilder koji predstavlja poruku o pogreškama
+     */
     private void validateDescription(StringBuilder errorMessage) {
         String description = descriptionTextArea.getText();
         if (description.isEmpty()) errorMessage.append(ErrorMessage.DESCRIPTION_REQUIRED.getMessage());
     }
 
+    /**
+     * Validira datum troška.
+     * @param errorMessage objekt klase StringBuilder koji predstavlja poruku o pogreškama
+     */
     private void validateExpenseDate(StringBuilder errorMessage) {
         LocalDate expenseDate = expenseDatePicker.getValue();
         if (expenseDate == null) errorMessage.append(ErrorMessage.DATE_REQUIRED.getMessage());

@@ -36,9 +36,15 @@
             <MenuItem fx:id="addNewReimbursementMenuItem" mnemonicParsing="false" onAction="#openNewReimbursementScreen" text="Add New" />
          </items>
       </Menu>
+      <Menu mnemonicParsing="false" text="Stats">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#openStats" text="Show Stats" />
+        </items>
+      </Menu>
       <Menu mnemonicParsing="false" text="Options">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#openChangeLog" text="Change Log" />
+            <MenuItem mnemonicParsing="false" onAction="#demandLogOut" text="Log out" />
         </items>
       </Menu>
   </menus>

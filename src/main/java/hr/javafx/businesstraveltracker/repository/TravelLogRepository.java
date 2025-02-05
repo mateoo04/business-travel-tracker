@@ -18,10 +18,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Klasa koja upravlja repozitorijem zabilješki putovanja.
+ */
 public class TravelLogRepository implements CrudRepository<TravelLog> {
 
     private static Logger log = LoggerFactory.getLogger(TravelLogRepository.class);
 
+    /**
+     * Pronalazi i vraća sve zabilješke troškova iz baze podataka.
+     * @return sve zabilješke troškova iz baze podataka
+     */
     @Override
     public List<TravelLog> findAll() {
         List<TravelLog> travelLogs = new ArrayList<>();
@@ -50,6 +57,11 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
         return travelLogs;
     }
 
+    /**
+     * Pronalazi zabilješku putovanja sa odgovarajućim ID-jem
+     * @param id ID zapisa
+     * @return Optional koji sadržava zabiješku putovanja sa zadanim ID-jem ako je pronađen
+     */
     @Override
     public Optional<TravelLog> findById(Long id) {
         AtomicReference<TravelLog> travelLogRef = new AtomicReference<>();
@@ -78,6 +90,10 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
         return Optional.ofNullable(travelLogRef.get());
     }
 
+    /**
+     * Sprema zabilješku putovanja u bazu podataka
+     * @param entity
+     */
     @Override
     public void save(TravelLog entity) {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -100,6 +116,10 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
         thread.start();
     }
 
+    /**
+     * Ažurira zabilješku putovanja u bazi podataka.
+     * @param entity
+     */
     @Override
     public void update(TravelLog entity) {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -121,11 +141,19 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
         thread.start();
     }
 
+    /**
+     * Briše zabilješku putovanja iz baze podataka.
+     * @param id ID zapisa
+     */
     @Override
     public void deleteById(Long id) {
         deleteFromTable("travel_log",id);
     }
 
+    /**
+     * Sprema listu zabilješki putovanja u bazu podataka.
+     * @param entities lista zabilješki putovanja
+     */
     public void save(List<TravelLog> entities) {
 
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -166,6 +194,12 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
         thread.start();
     }
 
+    /**
+     * Extracta zabilješku putovanja iz ResultSeta
+     * @param rs
+     * @return zabilješku putovanja
+     * @throws SQLException
+     */
     private TravelLog extractTravelLogFromResultSet(ResultSet rs) throws SQLException{
         Long id = rs.getLong("id");
         String destination = rs.getString("destination");

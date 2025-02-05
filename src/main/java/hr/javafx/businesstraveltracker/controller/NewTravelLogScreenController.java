@@ -14,6 +14,9 @@ import javafx.scene.control.*;
 
 import java.time.LocalDate;
 
+/**
+ * Kontroler za dodavanje novih zabilješki putovanja.
+ */
 public class NewTravelLogScreenController {
     @FXML
     public ComboBox<Employee> employeeComboBox;
@@ -35,7 +38,9 @@ public class NewTravelLogScreenController {
     private final TravelLogRepository travelLogRepository = new TravelLogRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
+    /**
+     * Inicijalizira ekran.
+     */
     public void initialize() {
         employeeComboBox.getItems().addAll(employeeRepository.findAll());
         employeeComboBox.getSelectionModel().select(0);
@@ -72,6 +77,9 @@ public class NewTravelLogScreenController {
         });
     }
 
+    /**
+     * Zahtjeva unos novih zabilješki putovanja u bazu podataka ukoliko su svi podaci točno uneseni.
+     */
     public void createTravelLog(){
         StringBuilder errorMessage = new StringBuilder();
 

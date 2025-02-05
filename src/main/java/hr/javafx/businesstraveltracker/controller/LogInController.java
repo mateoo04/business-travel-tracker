@@ -13,6 +13,9 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.List;
 
+/**
+ * Kontroler za prijavu.
+ */
 public class LogInController {
 
     @FXML
@@ -26,16 +29,30 @@ public class LogInController {
     private final SceneManager sceneManager = SceneManager.getInstance();
 
     private static User currentUser;
-
+    /**
+     * Inicijalizira ekran za prijavu.
+     */
     public void initialize() {
         usernameTextField.setOnKeyPressed(this::handleKeyPressed);
         passwordTextField.setOnKeyPressed(this::handleKeyPressed);
     }
 
+    /**
+     * Olakšava prijavu upotrebom tipkovnike.
+     * @param keyEvent događaj tipkovnice
+     */
     private void handleKeyPressed(KeyEvent keyEvent) {
-        if(keyEvent.getCode() == KeyCode.ENTER) logIn();
+        if(keyEvent.getCode() == KeyCode.ENTER) {
+            if(usernameTextField.isFocused())
+                passwordTextField.requestFocus();
+            else if(passwordTextField.isFocused())
+                logIn();
+        }
     }
 
+    /**
+     * Provodi prijavu pri čemu provjerava unesene podatke.
+     */
     public void logIn(){
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
@@ -73,10 +90,18 @@ public class LogInController {
         }
     }
 
+    /**
+     * Postavlja trenutnog korisnika
+     * @param user korisnik
+     */
     private static void setCurrentUser(User user){
         currentUser = user;
     }
 
+    /**
+     * Vraća trenutnog korisnika
+     * @return trenutni korisnik
+     */
     public static User getCurrentUser() {
         return currentUser;
     }

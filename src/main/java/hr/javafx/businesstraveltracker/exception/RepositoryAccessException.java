@@ -1,5 +1,8 @@
 package hr.javafx.businesstraveltracker.exception;
 
+/**
+ * Iznimka koja se baca u slučaju neuspjelog pristupa repozitoriju.
+ */
 public class RepositoryAccessException extends RuntimeException {
     public RepositoryAccessException() {
     }

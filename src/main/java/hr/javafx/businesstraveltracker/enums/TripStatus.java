@@ -2,6 +2,9 @@ package hr.javafx.businesstraveltracker.enums;
 
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
 
+/**
+ * Predstavlja status putovanja.
+ */
 public enum TripStatus {
 
     PLANNED(0L, "Planned"),
@@ -26,6 +29,12 @@ public enum TripStatus {
         return name;
     }
 
+    /**
+     * Dohvaća objekt statusa putovanja prema nazivu
+     * @param name naziv
+     * @return objekt statusa
+     * @throws InvalidEnumValueException
+     */
     public static TripStatus getByName(String name) throws InvalidEnumValueException {
         for (TripStatus status : TripStatus.values()) {
             if (status.getName().equals(name)) return status;

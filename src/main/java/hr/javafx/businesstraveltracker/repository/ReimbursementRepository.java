@@ -17,10 +17,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Klasa koja upravalja repozitorijem nadoknade troškova.
+ */
 public class ReimbursementRepository implements CrudRepository<Reimbursement> {
 
     private static Logger log = LoggerFactory.getLogger(ReimbursementRepository.class);
 
+    /**
+     * Pronalazi i vraća sve zabilješke nadoknadi troskova koje su spremljene u bazu podataka.
+     * @return sve zabilješke nadoknadi troskova koje su spremljene u bazu podataka
+     */
     @Override
     public List<Reimbursement> findAll() {
         List<Reimbursement> reimbursements = new ArrayList<>();
@@ -59,6 +66,11 @@ public class ReimbursementRepository implements CrudRepository<Reimbursement> {
         return reimbursements;
     }
 
+    /**
+     * Pronalazi zabilješku nadoknade troškova sa zadanim ID-jem
+     * @param id ID zapisa
+     * @return Optional koji sadržava nadoknadu troška sa zadanim ID-jem ako je pronađen
+     */
     @Override
     public Optional<Reimbursement> findById(Long id) {
         AtomicReference<Reimbursement> reimbursementAtomicReference = new AtomicReference<>();
@@ -115,6 +127,10 @@ public class ReimbursementRepository implements CrudRepository<Reimbursement> {
         thread.start();
     }
 
+    /**
+     * Ažurira zabilješku nadoknade troškova u bazi podataka.
+     * @param entity
+     */
     @Override
     public void update(Reimbursement entity) {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -132,11 +148,21 @@ public class ReimbursementRepository implements CrudRepository<Reimbursement> {
         thread.start();
     }
 
+    /**
+     * Briše zabilješku sa odgovrajućim ID-jem iz baze podataka.
+     * @param id ID zabilješke
+     */
     @Override
     public void deleteById(Long id) {
         deleteFromTable("reimbursement",id);
     }
 
+    /**
+     * Extacta zabilješku nadoknade troškova iz ResultSeta.
+     * @param rs
+     * @return zabilješku nadoknade troškova
+     * @throws SQLException
+     */
     private Reimbursement extractReimbursementFromResultSet(ResultSet rs) throws SQLException {
         Long reimbursementId = rs.getLong("reimbursement_id");
         ReimbursementStatus status;

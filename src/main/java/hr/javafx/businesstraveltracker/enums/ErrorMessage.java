@@ -1,5 +1,8 @@
 package hr.javafx.businesstraveltracker.enums;
 
+/**
+ * Sadrže poruke koje se prikazuju korisniku u slučaju krivog unosa.
+ */
 public enum ErrorMessage {
 
     FIRST_NAME_REQUIRED("First name is required!"),
@@ -20,7 +23,8 @@ public enum ErrorMessage {
     DATE_REQUIRED("Date selection is required!"),
     AMOUNT_INPUT_ERROR("Amount is required and must be a whole or a decimal number, for example: 60 or 870.50!"),
     EXPENSE_REQUIRED("Expense must be selected!"),
-    REIMBURSEMENT_STATUS_REQUIRED("Selecting a reimbursement status is required!"),;
+    REIMBURSEMENT_STATUS_REQUIRED("Selecting a reimbursement status is required!"),
+    INVALID_EMAIL("Invalid email address! Example of a valid email address: example@example.com"),;
 
     private final String message;
 

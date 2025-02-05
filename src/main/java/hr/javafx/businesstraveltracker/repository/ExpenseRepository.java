@@ -1,6 +1,5 @@
 package hr.javafx.businesstraveltracker.repository;
 
-import hr.javafx.businesstraveltracker.controller.LogInController;
 import hr.javafx.businesstraveltracker.enums.Department;
 import hr.javafx.businesstraveltracker.enums.TripStatus;
 import hr.javafx.businesstraveltracker.exception.InvalidEnumValueException;
@@ -19,10 +18,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Klasa koja upravlja repozitorijem troškova.
+ */
 public class ExpenseRepository implements CrudRepository<Expense> {
 
-    private static Logger log = LoggerFactory.getLogger(LogInController.class);
+    private static Logger log = LoggerFactory.getLogger(ExpenseRepository.class);
 
+    /**
+     * Pronalazi i vraća sve troškove u bazi podataka.
+     * @return sve troškove u bazi podataka
+     */
     @Override
     public List<Expense> findAll() {
         List<Expense> expenses = new ArrayList<>();
@@ -57,6 +63,11 @@ public class ExpenseRepository implements CrudRepository<Expense> {
         return expenses;
     }
 
+    /**
+     * Pronalazi zapis troška prema ID-u.
+     * @param id ID zapisa
+     * @return Optional koji sadržava zapis troška sa zadanim ID-jem ako je pronađen
+     */
     @Override
     public Optional<Expense> findById(Long id) {
         AtomicReference<Expense> expenseAtomicReference  = new AtomicReference<>();
@@ -90,6 +101,10 @@ public class ExpenseRepository implements CrudRepository<Expense> {
         return Optional.ofNullable(expenseAtomicReference.get());
     }
 
+    /**
+     * Sprema zabilješku troška u bazu podataka.
+     * @param expense
+     */
     @Override
     public void save(Expense expense) {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -111,6 +126,10 @@ public class ExpenseRepository implements CrudRepository<Expense> {
         thread.start();
     }
 
+    /**
+     * Ažurira zapis troška u bazi podataka.
+     * @param entity
+     */
     @Override
     public void update(Expense entity) {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -132,11 +151,21 @@ public class ExpenseRepository implements CrudRepository<Expense> {
         thread.start();
     }
 
+    /**
+     * Briše zabilješku sa zadanim ID-jem iz baze podataka
+     * @param id ID zabilješke troška
+     */
     @Override
     public void deleteById(Long id) {
         deleteFromTable("expense",id);
     }
 
+    /**
+     * Extracta zabilješku troška iz ResultSeta
+     * @param rs
+     * @return zabilješku troška
+     * @throws SQLException
+     */
     public static Expense extractExpenseFromResultSet(ResultSet rs) throws SQLException {
         Long expenseId = rs.getLong("expense_id");
         BigDecimal amount = rs.getBigDecimal("expense_amount");

@@ -14,6 +14,9 @@ import javafx.scene.control.TextField;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Kontroler za dodavanje nove kategorije troškova.
+ */
 public class NewExpenseCategoryScreenController {
 
     @FXML
@@ -26,6 +29,9 @@ public class NewExpenseCategoryScreenController {
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
+    /**
+     * Zahtjeva unos nove kategorije troškova u bazu podataka ukoliko su svi podaci točno uneseni.
+     */
     public void createExpenseCategory() {
         StringBuilder errorMessage = new StringBuilder();
 

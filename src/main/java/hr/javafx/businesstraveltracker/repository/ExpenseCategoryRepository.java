@@ -9,11 +9,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
+/**
+ * Upravlja repozitorijem kategorija troškova.
+ */
 public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory> {
+    /**
+     * Pronalazi i vraća sve spremljene kategorije troškova
+     * @return spremljene kategorije troškova
+     */
     @Override
     public List<ExpenseCategory> findAll() {
         final List<ExpenseCategory> employees = new ArrayList<>();
@@ -41,6 +46,12 @@ public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory
         return employees;
     }
 
+    /**
+     * Pronalazi kategoriju troškova sa zadanim ID-jem
+     * @param id ID zapisa
+     * @return Optional koji sadržava kategoriju troškova sa zadanim ID-jem ako je pronađena
+     * @throws RepositoryAccessException
+     */
     @Override
     public Optional<ExpenseCategory> findById(Long id) throws RepositoryAccessException {
         AtomicReference<ExpenseCategory> employee = new AtomicReference<>();
@@ -67,6 +78,10 @@ public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory
         return Optional.ofNullable(employee.get());
     }
 
+    /**
+     * Sprema kategoriju troškova
+     * @param entity
+     */
     @Override
     public void save(ExpenseCategory entity){
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -85,6 +100,10 @@ public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory
         thread.start();
     }
 
+    /**
+     * Ažurira podatke o kategoriji troškova u bazi podataka
+     * @param entity
+     */
     @Override
     public void update(ExpenseCategory entity) {
         DatabaseOperationThread thread = new DatabaseOperationThread(()->{
@@ -102,11 +121,21 @@ public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory
         thread.start();
     }
 
+    /**
+     * Briše zapis kategorije troškova sa zadanim ID-jem
+     * @param id ID zapisa
+     */
     @Override
     public void deleteById(Long id) {
         deleteFromTable("expense_category",id);
     }
 
+    /**
+     * Extracta zapis kategorije troškova iz ResultSeta
+     * @param rs
+     * @return kategoriju troškova
+     * @throws SQLException
+     */
     private ExpenseCategory extractExpenseCategoryFromResultSet(ResultSet rs) throws SQLException {
         Long id = rs.getLong("id");
         String name = rs.getString("name");

@@ -1,0 +1,135 @@
+.root{
+    -fx-accent:#A6CDC6
+;
+}
+
+*{
+    -fx-font-family: "Arial Nova", sans-serif, Arial;
+}
+
+.root{
+    -fx-background-color: white;
+}
+
+.text-field, .button, .combo-box{
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+}
+
+.text-field{
+    -fx-padding: 6px 10px;
+    -fx-background-color: white;
+    -fx-border-color: #cfcfcf;
+}
+
+.text-area{
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-border-color: #cfcfcf;
+    -fx-background-color: white;
+    -fx-padding: 6px 10px;
+
+}.text-area .content {
+     -fx-background-color: white;
+     -fx-padding: 2px;
+ }
+
+.date-picker{
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-background-color: #cfcfcf;
+    -fx-max-width: infinity;
+}
+
+.date-picker .arrow-button{
+    -fx-background-color: #cfcfcf;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+}
+
+.date-picker .arrow-button:hover, .date-picker:hover{
+    -fx-background-color: #bababa;
+}
+
+.date-picker .month-year-pane {
+    -fx-background-color: white;
+    -fx-border-color: #cfcfcf;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+}
+
+.date-picker .button{
+    -fx-background-color: white;
+}
+
+.combo-box{
+    -fx-background-color: white;
+    -fx-border-color: #cfcfcf;
+    -fx-max-width: infinity;
+}
+
+.combo-box .list-cell{
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 8px 12px;
+}
+
+.combo-box .list-view .list-cell:hover, .combo-box .list-view .list-cell:filled:selected {
+    -fx-background-color: #A6CDC6
+;
+    -fx-text-fill: white;
+}
+
+.list-view .list-cell:hover, .list-view .list-cell:filled:selected {
+    -fx-background-color: #A6CDC6
+;
+    -fx-text-fill: white;
+}
+
+.button{
+    -fx-background-color: #16404D;
+    -fx-text-fill: white;
+    -fx-padding: 8px 18px;
+    -fx-font-weight: 900;
+}
+
+.button:hover{
+    -fx-opacity: 0.95;
+    -fx-cursor: hand;
+}
+
+.h-box{
+    -fx-content-display: fl;
+}
+
+.table-view{
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+}
+
+.table-view .column-header-background, .table-view .column-header{
+    -fx-background-color: #A6CDC6
+;
+    -fx-border-radius: 16px 16px 0 0;
+    -fx-background-radius: 16px 16px 0 0;
+}
+
+.table-view .column-header .label{
+    -fx-text-fill: white;
+}
+
+.list-view{
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-border-color: #cfcfcf;
+    -fx-background-color: white;
+}
+
+.menu-bar{
+    -fx-background-color: #f1f1f1;
+    fx-border-width: 0 0 1px 0;
+}
+
+.menu:hover, .menu:selected, .menu .menu-item:hover, .menu .menu-item:selected{
+    -fx-text-fill: #000;
+}

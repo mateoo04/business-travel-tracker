@@ -1,10 +1,11 @@
 module hr.javafx.businesstraveltracker.businesstraveltracker {
-    requires javafx.controls;
     requires javafx.fxml;
     requires password4j;
     requires java.sql;
-    requires java.desktop;
     requires org.slf4j;
+    requires org.jfree.chart.fx;
+    requires org.jfree.jfreechart;
+    requires javafx.controls;
 
     exports hr.javafx.businesstraveltracker.controller;
     exports hr.javafx.businesstraveltracker;
