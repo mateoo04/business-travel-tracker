@@ -6,6 +6,7 @@ import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
+import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import hr.javafx.businesstraveltracker.util.DataValidation;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,7 +16,7 @@ import java.util.Optional;
 /**
  * Kontroler za uređivanje zaposlenika.
  */
-public class EditEmployeeScreenController {
+public class EditEmployeeScreenController implements EditScreenController<Employee> {
 
     @FXML
     public TextField firstNameTextField;
@@ -54,21 +55,7 @@ public class EditEmployeeScreenController {
      * Inicijalizira ekran.
      */
     public void initialize(){
-        departmentComboBox.getItems().addAll(Department.values());
-        departmentComboBox.setCellFactory(department -> new ListCell<>(){
-            @Override
-            protected void updateItem(Department department, boolean empty) {
-                super.updateItem(department, empty);
-                setText(empty || department == null ? "" : department.getName());
-            }
-        });
-        departmentComboBox.setButtonCell(new ListCell<>(){
-            @Override
-            protected void updateItem(Department department, boolean empty) {
-                super.updateItem(department, empty);
-                setText(empty || department == null ? "" : department.getName());
-            }
-        });
+        ComboBoxSetter.setDepartmentComboBox(departmentComboBox);
     }
 
     /**

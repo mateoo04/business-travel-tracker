@@ -23,6 +23,9 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Kontroler za prikazvianje grafova o potrošnji.
+ */
 public class StatsScreenController {
 
     @FXML
@@ -39,6 +42,9 @@ public class StatsScreenController {
 
     private static final String TOTAL_SPENT = "Total spent";
 
+    /**
+     * Inicilalizira ekran i postavlja elemente view-a.
+     */
     public void initialize() {
         List<Expense> expenseList = expenseRepository.findAll();
         List<Employee> employeeList = employeeRepository.findAll();
@@ -73,6 +79,12 @@ public class StatsScreenController {
         });
     }
 
+    /**
+     * Kreira stupčasti graf potrošnje prema zaposlenicima.
+     * @param employeeList lista zaposlenika
+     * @param expenseList lista troškova
+     * @return graf potrošnje prema zaposlenicima
+     */
     private JFreeChart getSpendingByEmployeeChart(List<Employee> employeeList, List<Expense> expenseList){
         List<EntitySetOfEntitiesPair<Employee, Expense>> listOfExpensesByEmployee = new ArrayList<>();
 
@@ -97,6 +109,12 @@ public class StatsScreenController {
         return chart;
     }
 
+    /**
+     * Kreira pie chart graf potrošnje na pojedinim putovanjima.
+     * @param travelLogList lista putovanja
+     * @param expenseList lista troškova
+     * @return pie chart graf potrošnje na pojedinim putovanjima
+     */
     private JFreeChart getSpendingByTravelLogChart(List<TravelLog> travelLogList, List<Expense> expenseList){
         List<EntitySetOfEntitiesPair<TravelLog, Expense>> listOfExpensesByTravelLog = new ArrayList<>();
 
@@ -121,6 +139,11 @@ public class StatsScreenController {
         return chart;
     }
 
+    /**
+     * Kreira linijski graf potrošnje prema mjesecima.
+     * @param expenseList lista troškova
+     * @return linijski graf potrošnje prema mjesecima
+     */
     private JFreeChart getSpendingByMonth(List<Expense> expenseList){
         List<YearMonth> yearMonthList = expenseList.stream()
                 .map(expense -> YearMonth.of(expense.getDate().getYear(), expense.getDate().getMonth()))
@@ -147,6 +170,10 @@ public class StatsScreenController {
         return chart;
     }
 
+    /**
+     * Stilizira grafove
+     * @param chart graf
+     */
     private void styleChart(JFreeChart chart) {
         chart.setPadding(new RectangleInsets(24, 24, 24, 24));
     }

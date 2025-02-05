@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * Kontroler za uređivanje kategorije troška.
  */
-public class EditExpenseCategoryController {
+public class EditExpenseCategoryController implements EditScreenController<ExpenseCategory>{
     @FXML
     public TextField categoryNameTextField;
 

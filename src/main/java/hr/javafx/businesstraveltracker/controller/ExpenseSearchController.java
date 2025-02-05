@@ -8,13 +8,8 @@ import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
-import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
-import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
-import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
-import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
-import hr.javafx.businesstraveltracker.util.DataValidation;
-import hr.javafx.businesstraveltracker.util.SceneManager;
+import hr.javafx.businesstraveltracker.util.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -73,10 +68,6 @@ public class ExpenseSearchController {
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
-    private final TravelLogRepository travelLogRepository = new TravelLogRepository();
-
-    private final ExpenseCategoryRepository expenseCategoryRepository = new ExpenseCategoryRepository();
-
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
     /**
      * Inicijalizira ekran.
@@ -96,49 +87,16 @@ public class ExpenseSearchController {
         descriptionColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDescription()));
 
         travelLogComboBox.getItems().add(null);
-        travelLogComboBox.getItems().addAll(travelLogRepository.findAll());
         travelLogComboBox.getSelectionModel().select(0);
-        travelLogComboBox.setCellFactory(item -> new ListCell<>(){
-            @Override
-            protected void updateItem(TravelLog travelLog, boolean b) {
-                super.updateItem(travelLog, b);
-                setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
-            }
-        });
-        travelLogComboBox.setButtonCell(new ListCell<>(){
-            @Override
-            protected void updateItem(TravelLog travelLog, boolean b) {
-                super.updateItem(travelLog, b);
-                setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
-            }
-        });
+        ComboBoxSetter.setTravelLogComboBox(travelLogComboBox);
 
         expenseCategoryComboBox.getItems().add(null);
-        expenseCategoryComboBox.getItems().addAll(expenseCategoryRepository.findAll());
         expenseCategoryComboBox.getSelectionModel().select(0);
-        expenseCategoryComboBox.setCellFactory(item -> new ListCell<>(){
-            @Override
-            protected void updateItem(ExpenseCategory expenseCategory, boolean b) {
-                super.updateItem(expenseCategory, b);
-                setText(b || expenseCategory == null ? "" : expenseCategory.getName());
-            }
-        });
-        expenseCategoryComboBox.setButtonCell(new ListCell<>(){
-            @Override
-            protected void updateItem(ExpenseCategory expenseCategory, boolean b) {
-                super.updateItem(expenseCategory, b);
-                setText(b || expenseCategory == null ? "" : expenseCategory.getName());
-            }
-        });
+        ComboBoxSetter.setExpenseCategoryComboBox(expenseCategoryComboBox);
 
         expenseTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
-            setContextMenuOnRowItems();
+        setContextMenuOnRowItems();
     }
     /**
      * Postavlja ContextMenu izbornik koji se prikazuje klikom sekundarnog gumba miša na redak u tablici.
@@ -151,14 +109,18 @@ public class ExpenseSearchController {
 
         editItem.setOnAction(event ->{
             Expense selectedExpense = expenseTableView.getSelectionModel().getSelectedItem();
-            if(selectedExpense != null) {
+            if(selectedExpense != null && (LogInController.getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH) ||
+                    LogInController.getCurrentUser().getEmployeeId().equals(selectedExpense.getTravelLog().getEmployee().getId()))) {
                 SceneManager.getInstance().showEditExpenseScreen(selectedExpense);
-            }
+            } else if (selectedExpense != null) UnauthorisedAlert.show();
         });
 
         deleteItem.setOnAction(event ->{
             Expense selectedExpense = expenseTableView.getSelectionModel().getSelectedItem();
-            if(selectedExpense != null) handleDelete(selectedExpense);
+            if(selectedExpense != null && (LogInController.getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH) ||
+                    LogInController.getCurrentUser().getEmployeeId().equals(selectedExpense.getTravelLog().getEmployee().getId())))
+                handleDelete(selectedExpense);
+         else if (selectedExpense != null) UnauthorisedAlert.show();
         });
 
         expenseTableView.setRowFactory(tv ->{

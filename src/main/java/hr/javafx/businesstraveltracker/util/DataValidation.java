@@ -16,6 +16,10 @@ public class DataValidation {
         return numberString.matches("\\d+(\\.\\d{1,2})?");
     }
 
+    public static boolean isValidNumber(String numberString){
+        return numberString.matches("-?\\d+");
+    }
+
     /**
      * Provjerava ispravnost emaila
      * @param email

@@ -1,6 +1,7 @@
 package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
+import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
@@ -9,6 +10,7 @@ import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
+import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import hr.javafx.businesstraveltracker.util.DataValidation;
 import javafx.fxml.FXML;
@@ -16,12 +18,13 @@ import javafx.scene.control.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Kontroler za uređivanje troška.
  */
-public class EditExpenseScreenController {
+public class EditExpenseScreenController implements EditScreenController<Expense>{
     @FXML
     public ComboBox<TravelLog> travelLogComboBox;
 
@@ -74,43 +77,8 @@ public class EditExpenseScreenController {
      * Inicijalizira ekran.
      */
     public void initialize() {
-        travelLogComboBox.getItems().addAll(travelLogRepository.findAll());
-        travelLogComboBox.getSelectionModel().select(0);
-        travelLogComboBox.setCellFactory(item -> new ListCell<>(){
-            @Override
-            protected void updateItem(TravelLog travelLog, boolean b) {
-                super.updateItem(travelLog, b);
-                setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
-            }
-        });
-        travelLogComboBox.setButtonCell(new ListCell<>(){
-            @Override
-            protected void updateItem(TravelLog travelLog, boolean b) {
-                super.updateItem(travelLog, b);
-                setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
-            }
-        });
-
-        expenseCategoryComboBox.getItems().addAll(expenseCategoryRepository.findAll());
-        expenseCategoryComboBox.getSelectionModel().select(0);
-        expenseCategoryComboBox.setCellFactory(item -> new ListCell<>(){
-            @Override
-            protected void updateItem(ExpenseCategory expenseCategory, boolean b) {
-                super.updateItem(expenseCategory, b);
-                setText(b || expenseCategory == null ? "" : expenseCategory.getName());
-            }
-        });
-        expenseCategoryComboBox.setButtonCell(new ListCell<>(){
-            @Override
-            protected void updateItem(ExpenseCategory expenseCategory, boolean b) {
-                super.updateItem(expenseCategory, b);
-                setText(b || expenseCategory == null ? "" : expenseCategory.getName());
-            }
-        });
+        ComboBoxSetter.setTravelLogComboBox(travelLogComboBox);
+        ComboBoxSetter.setExpenseCategoryComboBox(expenseCategoryComboBox);
     }
 
     /**

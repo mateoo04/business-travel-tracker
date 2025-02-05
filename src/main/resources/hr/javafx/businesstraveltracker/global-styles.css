@@ -11,12 +11,12 @@
     -fx-background-color: white;
 }
 
-.text-field, .button, .combo-box{
+.text-field, .button, .combo-box, .password-field{
     -fx-border-radius: 16px;
     -fx-background-radius: 16px;
 }
 
-.text-field{
+.text-field, .password-field{
     -fx-padding: 6px 10px;
     -fx-background-color: white;
     -fx-border-color: #cfcfcf;

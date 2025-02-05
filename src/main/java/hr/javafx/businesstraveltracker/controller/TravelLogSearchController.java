@@ -9,9 +9,7 @@ import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
-import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
-import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
-import hr.javafx.businesstraveltracker.util.SceneManager;
+import hr.javafx.businesstraveltracker.util.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -64,6 +62,7 @@ public class TravelLogSearchController {
     private final TravelLogRepository travelLogRepository = new TravelLogRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
     /**
      * Inicijalizira ekran.
      */
@@ -84,37 +83,22 @@ public class TravelLogSearchController {
             @Override
             protected void updateItem(Employee employee, boolean b) {
                 super.updateItem(employee, b);
-                setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName() );
+                setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName());
             }
         });
 
         tripStatusComboBox.getItems().add(null);
-        tripStatusComboBox.getItems().addAll(TripStatus.values());
-        tripStatusComboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(TripStatus tripStatus, boolean b) {
-                super.updateItem(tripStatus, b);
-                setText(b || tripStatus == null ? "" : tripStatus.getName());
-            }
-        });
-        tripStatusComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(TripStatus tripStatus, boolean b) {
-                super.updateItem(tripStatus, b);
-                setText(b || tripStatus == null ? "" : tripStatus.getName());
-            }
-        });
+        ComboBoxSetter.setTripStatusComboBox(tripStatusComboBox);
 
         travelLogTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
-            setContextMenuOnRowItemsOnRowItems();
+        setContextMenuOnRowItemsOnRowItems();
     }
 
     /**
      * Filtrira podatke prema parametrima koje je korisnik odredio.
      */
-    public void filterTravelLogs(){
+    public void filterTravelLogs() {
         List<TravelLog> travelLogs = travelLogRepository.findAll();
 
         List<Long> employeeIds = employeeListView.getSelectionModel().getSelectedItems().stream()
@@ -135,31 +119,36 @@ public class TravelLogSearchController {
 
         travelLogTableView.setItems(FXCollections.observableList(travelLogs));
     }
+
     /**
      * Postavlja ContextMenu izbornik koji se prikazuje klikom sekundarnog gumba miša na redak u tablici.
      */
-    private void setContextMenuOnRowItemsOnRowItems(){
+    private void setContextMenuOnRowItemsOnRowItems() {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem editItem = new MenuItem("Edit");
         MenuItem deleteItem = new MenuItem("Delete");
-        contextMenu.getItems().addAll(editItem,deleteItem);
+        contextMenu.getItems().addAll(editItem, deleteItem);
 
-        editItem.setOnAction(event ->{
+        editItem.setOnAction(event -> {
             TravelLog selectedTravelLog = travelLogTableView.getSelectionModel().getSelectedItem();
-            if(selectedTravelLog != null) {
+            if (selectedTravelLog != null && (LogInController.getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH) ||
+                    LogInController.getCurrentUser().getEmployeeId().equals(selectedTravelLog.getEmployee().getId()))) {
                 SceneManager.getInstance().showEditTravelLogScreen(selectedTravelLog);
-            }
+            } else if (selectedTravelLog != null) UnauthorisedAlert.show();
         });
 
-        deleteItem.setOnAction(event ->{
+        deleteItem.setOnAction(event -> {
             TravelLog selectedTravelLog = travelLogTableView.getSelectionModel().getSelectedItem();
-            if(selectedTravelLog != null) handleDelete(selectedTravelLog);
+            if (selectedTravelLog != null && (LogInController.getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH) ||
+                    LogInController.getCurrentUser().getEmployeeId().equals(selectedTravelLog.getEmployee().getId()))) {
+                handleDelete(selectedTravelLog);
+            } else if (selectedTravelLog != null) UnauthorisedAlert.show();
         });
 
-        travelLogTableView.setRowFactory(tv ->{
+        travelLogTableView.setRowFactory(tv -> {
             TableRow<TravelLog> row = new TableRow<>();
             row.setOnContextMenuRequested(event -> {
-                if(!row.isEmpty()){
+                if (!row.isEmpty()) {
                     travelLogTableView.getSelectionModel().select(row.getItem());
                     contextMenu.show(row, event.getScreenX(), event.getScreenY());
                 }
@@ -169,7 +158,7 @@ public class TravelLogSearchController {
         });
     }
 
-    public void handleDelete(TravelLog travelLog){
+    public void handleDelete(TravelLog travelLog) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Delete Travel Log");
         dialog.setHeaderText("Are you sure you want to delete the travel log?");

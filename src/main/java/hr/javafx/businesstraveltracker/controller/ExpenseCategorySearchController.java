@@ -51,7 +51,7 @@ public class ExpenseCategorySearchController {
 
         expenseCategoryTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
+        if(LogInController.getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH))
             setContextMenuOnRowItems();
     }
     /**

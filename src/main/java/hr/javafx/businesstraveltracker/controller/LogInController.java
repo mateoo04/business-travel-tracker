@@ -7,6 +7,7 @@ import hr.javafx.businesstraveltracker.util.PasswordHasher;
 import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -22,11 +23,13 @@ public class LogInController {
     public TextField usernameTextField;
 
     @FXML
-    public TextField passwordTextField;
+    public PasswordField passwordTextField;
 
     private final UserDataRepository userDataRepository = new UserDataRepository();
 
     private final SceneManager sceneManager = SceneManager.getInstance();
+    
+    private static final String ADMIN = "admin";
 
     private static User currentUser;
     /**
@@ -57,36 +60,37 @@ public class LogInController {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
-        List<User> users = userDataRepository.findAllUsers();
-
-        boolean userFound = false;
-        for(User user : users){
-            if(username.equals(user.username())){
-                userFound = true;
-                if(PasswordHasher.checkPassword(password, user.hashedPassword())){
-                    setCurrentUser(user);
-
-                    sceneManager.showEmployeeSearch();
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Password Mismatch");
-                    alert.setHeaderText("Incorrect Password Entered!");
-                    alert.showAndWait();
-                }
-                break;
-            }
-        }
-        if(!userFound){
-            User newUser = new User(username, PasswordHasher.hashPassword(password), UserPrivileges.LOW);
-            userDataRepository.save(newUser);
-            setCurrentUser(newUser);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("New User Created");
-            alert.setHeaderText("Welcome " + username + "!");
-            alert.showAndWait();
-
+        
+        if(username.equals(ADMIN) && password.equals(ADMIN)){
+            setCurrentUser(new User.Builder(ADMIN, UserPrivileges.HIGH).build());
+            
             sceneManager.showEmployeeSearch();
+        }else {
+            List<User> users = userDataRepository.findAllUsers();
+
+            boolean userFound = false;
+            for (User user : users) {
+                if (username.equals(user.getUsername())) {
+                    userFound = true;
+                    if (PasswordHasher.checkPassword(password, user.getHashedPassword())) {
+                        setCurrentUser(user);
+
+                        sceneManager.showEmployeeSearch();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Password Mismatch");
+                        alert.setHeaderText("Incorrect Password Entered!");
+                        alert.showAndWait();
+                    }
+                    break;
+                }
+            }
+            if (!userFound) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("No such user");
+                alert.setHeaderText("User not found!");
+                alert.showAndWait();
+            }
         }
     }
 

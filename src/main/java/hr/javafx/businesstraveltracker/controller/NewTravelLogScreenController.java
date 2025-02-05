@@ -3,16 +3,19 @@ package hr.javafx.businesstraveltracker.controller;
 import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
 import hr.javafx.businesstraveltracker.enums.TripStatus;
+import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
+import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * Kontroler za dodavanje novih zabilješki putovanja.
@@ -42,39 +45,23 @@ public class NewTravelLogScreenController {
      * Inicijalizira ekran.
      */
     public void initialize() {
-        employeeComboBox.getItems().addAll(employeeRepository.findAll());
-        employeeComboBox.getSelectionModel().select(0);
-        employeeComboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(Employee employee, boolean b) {
-                super.updateItem(employee, b);
-                setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName());
-            }
-        });
-        employeeComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Employee employee, boolean b) {
-                super.updateItem(employee, b);
-                setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName());
-            }
-        });
+        setEmployeeComboBox();
+        ComboBoxSetter.setTripStatusComboBox(statusComboBox);
+    }
 
-        statusComboBox.getItems().addAll(TripStatus.values());
-        statusComboBox.getSelectionModel().select(0);
-        statusComboBox.setCellFactory(item -> new ListCell<>(){
-            @Override
-            protected void updateItem(TripStatus tripStatus, boolean b) {
-                super.updateItem(tripStatus, b);
-                setText(b || tripStatus == null ? "" : tripStatus.getName());
-            }
-        });
-        statusComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(TripStatus tripStatus, boolean b) {
-                super.updateItem(tripStatus, b);
-                setText(b || tripStatus == null ? "" : tripStatus.getName());
-            }
-        });
+    /**
+     * Postavlja Employee ComboBox dodavajući raličite elemente obzirom tko je korisnik.
+     */
+    private void setEmployeeComboBox(){
+        if(LogInController.getCurrentUser().getPrivileges().equals(UserPrivileges.LOW) &&
+                LogInController.getCurrentUser().getEmployeeId() != null) {
+            Optional<Employee> employeeOptional = employeeRepository.findById(LogInController.getCurrentUser().getEmployeeId());
+            employeeOptional.ifPresent(employee -> employeeComboBox.getItems().add(employee));
+        }
+        else employeeComboBox.getItems().addAll(employeeRepository.findAll());
+
+        employeeComboBox.getSelectionModel().select(0);
+        ComboBoxSetter.setCellFactoriesOnEmployeeComboBox(employeeComboBox);
     }
 
     /**

@@ -8,6 +8,7 @@ import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
+import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -17,7 +18,7 @@ import java.util.Optional;
 /**
  * Kontroler za uređivanje zapisa putovanja.
  */
-public class EditTravelLogController {
+public class EditTravelLogController implements EditScreenController<TravelLog> {
     @FXML
     public ComboBox<Employee> employeeComboBox;
 
@@ -63,39 +64,8 @@ public class EditTravelLogController {
      * Inicijalizira ekran.
      */
     public void initialize(){
-        employeeComboBox.getItems().addAll(employeeRepository.findAll());
-        employeeComboBox.getSelectionModel().select(0);
-        employeeComboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(Employee employee, boolean b) {
-                super.updateItem(employee, b);
-                setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName());
-            }
-        });
-        employeeComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Employee employee, boolean b) {
-                super.updateItem(employee, b);
-                setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName());
-            }
-        });
-
-        statusComboBox.getItems().addAll(TripStatus.values());
-        statusComboBox.getSelectionModel().select(0);
-        statusComboBox.setCellFactory(item -> new ListCell<>(){
-            @Override
-            protected void updateItem(TripStatus tripStatus, boolean b) {
-                super.updateItem(tripStatus, b);
-                setText(b || tripStatus == null ? "" : tripStatus.getName());
-            }
-        });
-        statusComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(TripStatus tripStatus, boolean b) {
-                super.updateItem(tripStatus, b);
-                setText(b || tripStatus == null ? "" : tripStatus.getName());
-            }
-        });
+        ComboBoxSetter.setEmployeeComboBox(employeeComboBox);
+        ComboBoxSetter.setTripStatusComboBox(statusComboBox);
     }
 
     /**

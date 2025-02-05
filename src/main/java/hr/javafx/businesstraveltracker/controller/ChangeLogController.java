@@ -72,27 +72,27 @@ public class ChangeLogController {
         });
 
         dateTimeColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(CustomDateTimeFormatter.formatDateTime(cellData.getValue().getDateTime())));
+                new SimpleObjectProperty<>(CustomDateTimeFormatter.formatDateTime(cellData.getValue().dateTime())));
 
         changeLogTypeColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getType().getName()));
+                new SimpleObjectProperty<>(cellData.getValue().type().getName()));
 
-        userColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getUser().username()));
+        userColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().user().getUsername()));
 
         previousValueColumn.setCellValueFactory(cellData ->
-        {   if(cellData.getValue().getType().equals(ChangeLogType.DELETE))
-                return new SimpleObjectProperty<>(cellData.getValue().getLogValue().toString());
-            else if(cellData.getValue().getPreviousValue() == null)
+        {   if(cellData.getValue().type().equals(ChangeLogType.DELETE))
+                return new SimpleObjectProperty<>(cellData.getValue().logValue().toString());
+            else if(cellData.getValue().previousValue() == null)
                 return new SimpleObjectProperty<>("");
 
-                return new SimpleObjectProperty<>(cellData.getValue().getPreviousValue().toString());
+                return new SimpleObjectProperty<>(cellData.getValue().previousValue().toString());
         });
 
         newValueColumn.setCellValueFactory(cellData ->
-        {   if(cellData.getValue().getLogValue() == null || cellData.getValue().getType().equals(ChangeLogType.DELETE))
+        {   if(cellData.getValue().logValue() == null || cellData.getValue().type().equals(ChangeLogType.DELETE))
                 return new SimpleObjectProperty<>("");
 
-            return new SimpleObjectProperty<>(cellData.getValue().getLogValue().toString());
+            return new SimpleObjectProperty<>(cellData.getValue().logValue().toString());
         });
 
         setUpEntityColumn();
@@ -114,9 +114,9 @@ public class ChangeLogController {
             LocalDate endDate = endDatePicker.getValue();
 
             changeLogs = changeLogs.stream()
-                    .filter(log -> changeLogType == null || log.getType().equals(changeLogType))
-                    .filter(log -> startDate == null || log.getDateTime().isAfter(startDate.atStartOfDay()))
-                    .filter(log -> endDate == null || log.getDateTime().isBefore(endDate.atStartOfDay()))
+                    .filter(log -> changeLogType == null || log.type().equals(changeLogType))
+                    .filter(log -> startDate == null || log.dateTime().isAfter(startDate.atStartOfDay()))
+                    .filter(log -> endDate == null || log.dateTime().isBefore(endDate.atStartOfDay()))
                     .toList();
 
             changeLogTableView.setItems(FXCollections.observableList(changeLogs.reversed()));
@@ -134,11 +134,13 @@ public class ChangeLogController {
      */
     private void setUpEntityColumn(){
         entityColumn.setCellValueFactory(cellData -> {
-            String entityName = "Employee";
-            if(cellData.getValue().getLogValue() instanceof Expense) entityName = "Expense";
-            else if(cellData.getValue().getLogValue() instanceof ExpenseCategory) entityName = "Expense Category";
-            else if(cellData.getValue().getLogValue() instanceof TravelLog) entityName = "Travel Log";
-            else if(cellData.getValue().getLogValue() instanceof Reimbursement) entityName = "Reimbursement";
+            String entityName = "Unknown";
+            if(cellData.getValue().logValue() instanceof Expense) entityName = "Expense";
+            else if(cellData.getValue().logValue() instanceof ExpenseCategory) entityName = "Expense Category";
+            else if(cellData.getValue().logValue() instanceof TravelLog) entityName = "Travel Log";
+            else if(cellData.getValue().logValue() instanceof Reimbursement) entityName = "Reimbursement";
+            else if(cellData.getValue().logValue() instanceof User) entityName = "User";
+            else if(cellData.getValue().logValue() instanceof Employee) entityName = "Employee";
 
             return new SimpleObjectProperty<>(entityName);
         });

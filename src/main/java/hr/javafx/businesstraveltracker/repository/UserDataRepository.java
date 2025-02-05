@@ -3,6 +3,7 @@ package hr.javafx.businesstraveltracker.repository;
 import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
 import hr.javafx.businesstraveltracker.model.User;
+import hr.javafx.businesstraveltracker.util.DataValidation;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,14 +33,25 @@ public class UserDataRepository {
 
             try (Stream<String> stream = Files.lines(Path.of(USER_DATA_FILE_PATH))) {
                 List<String> fileRows = stream.toList();
+                if(fileRows.isEmpty()) return users;
 
                 for (String row : fileRows) {
                     String[] userData = row.split(";");
-                    String username = userData[0];
-                    String hashedPassword = userData[1];
-                    String privileges = userData[2];
+                    if(row.chars().filter(ch -> ch == ';').count() != 4 || userData.length != 5 ||
+                            !DataValidation.isValidNumber(userData[0]) || !DataValidation.isValidNumber(userData[4]))
+                        continue;
 
-                    users.add(new User(username, hashedPassword, UserPrivileges.valueOf(privileges)));
+                    Long userId = Long.valueOf(userData[0]);
+                    String username = userData[1];
+                    String hashedPassword = userData[2];
+                    String privileges = userData[3];
+                    long employeeId = Long.parseLong(userData[4]);
+
+                    User.Builder builder = new User.Builder(username, UserPrivileges.valueOf(privileges))
+                            .withId(userId).withHashedPassword(hashedPassword);
+                    if(employeeId >= 0)  builder.withEmployeeId(employeeId);
+
+                    users.add(builder.build());
                 }
             } catch (IOException e) {
                 throw new RepositoryAccessException(e);
@@ -56,7 +68,8 @@ public class UserDataRepository {
     public void save(User user){
         synchronized (lock){
             try (PrintWriter writer = new PrintWriter(new FileWriter(USER_DATA_FILE_PATH, true))) {
-                writer.println(user.username() + ";" + user.hashedPassword() + ";" + user.privileges());
+                writer.println(user.getId() + ";" + user.getUsername() + ";" + user.getHashedPassword() + ";" + user.getPrivileges() +
+                        ";" + (user.getEmployeeId() == null ? -1 : user.getEmployeeId()));
             } catch (IOException e) {
                 throw new RepositoryAccessException(e);
             }
@@ -67,11 +80,29 @@ public class UserDataRepository {
         synchronized (lock){
             try(PrintWriter writer = new PrintWriter(new FileWriter(USER_DATA_FILE_PATH))){
                 for(User user : users){
-                    writer.println(user.username() + ";" + user.hashedPassword() + ";" + user.privileges());
+                    writer.println(user.getId() + ";" + user.getUsername() + ";" + user.getHashedPassword() + ";" + user.getPrivileges() +
+                            ";" + (user.getEmployeeId() == null ? -1 : user.getEmployeeId()));
                 }
             }catch (IOException e){
                 throw new RepositoryAccessException(e);
             }
         }
+    }
+
+    public void delete(User user){
+        List<User> userList = findAllUsers();
+        save(userList.stream().filter(item -> !item.getId().equals(user.getId())).toList());
+    }
+
+    public void update(User user){
+        List<User> userList = findAllUsers();
+        userList = userList.stream().map(item -> {
+            if(user.getId().equals(item.getId())){
+                return user;
+            }
+            return item;
+        }).toList();
+
+        save(userList);
     }
 }

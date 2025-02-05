@@ -7,6 +7,7 @@ import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
+import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
 import hr.javafx.businesstraveltracker.util.SceneManager;
 import javafx.beans.property.SimpleObjectProperty;
@@ -65,22 +66,8 @@ public class EmployeeSearchController {
      */
     public void initialize() {
         departmentComboBox.getItems().add(null);
-        departmentComboBox.getItems().addAll(Department.values());
         departmentComboBox.getSelectionModel().select(0);
-        departmentComboBox.setCellFactory(department -> new ListCell<Department>(){
-            @Override
-            protected void updateItem(Department department, boolean empty) {
-                super.updateItem(department, empty);
-                setText(empty || department == null ? "" : department.getName());
-            }
-        });
-        departmentComboBox.setButtonCell(new ListCell<Department>(){
-            @Override
-            protected void updateItem(Department department, boolean empty) {
-                super.updateItem(department, empty);
-                setText(empty || department == null ? "" : department.getName());
-            }
-        });
+        ComboBoxSetter.setDepartmentComboBox(departmentComboBox);
 
         idColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getId()));
         firstNameColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getFirstName()));
@@ -91,7 +78,7 @@ public class EmployeeSearchController {
 
         employeeTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
+        if(LogInController.getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH))
             setContextMenuOnRowItems();
     }
 

@@ -53,20 +53,32 @@ public class SceneManager {
         BusinessTravelTrackerApplication.getPrimaryStage().show();
     }
 
+    /**
+     * Vraća širinu prozora ili zadanu širinu ako je aplikacija tek pokrenuta.
+     *
+     * @return širinu prozora
+     */
     private double getWidth(){
-        return BusinessTravelTrackerApplication.getPrimaryStage().getWidth() == 0 ?
-                800 : BusinessTravelTrackerApplication.getPrimaryStage().getWidth();
+        double width = BusinessTravelTrackerApplication.getPrimaryStage().getWidth();
+        if(width >700 && width < 900) return 800;
+        return width == 0 ?800 : width;
     }
 
+    /**
+     * Vraća visinu prozora ili zadanu visinu ako je aplikacija tek pokrenuta.
+     *
+     * @return visinu prozora
+     */
     private double getHeight(){
-        return BusinessTravelTrackerApplication.getPrimaryStage().getHeight() == 0 ?
-                600 : BusinessTravelTrackerApplication.getPrimaryStage().getHeight();
+        double height = BusinessTravelTrackerApplication.getPrimaryStage().getHeight();
+        if(height >500 && height < 700) return 600;
+        return height == 0 ? 600 : height;
     }
 
     /**
      * Prikazuje ekran za prijavu.
      */
-    public void showLogInScene(){
+    public void showLogInScene() {
         showScene("login-view.fxml", "Business Travel Expenses Tracker - Log in");
     }
 
@@ -84,28 +96,6 @@ public class SceneManager {
         showScene("new-employee-screen.fxml", "New Employee");
     }
 
-    /**
-     * Prikazuje Scene za uređivanje zaposlenika
-     *
-     * @param employee zaposlenik
-     */
-    public void showEditEmployeeScreen(Employee employee) {
-        FXMLLoader fxmlLoader = new FXMLLoader(BusinessTravelTrackerApplication.class.
-                getResource("edit-employee-screen.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), getWidth(), getHeight());
-
-            EditEmployeeScreenController controller = fxmlLoader.getController();
-            controller.initData(employee);
-        } catch (IOException e) {
-            throw new SceneManagerException(e);
-        }
-
-        BusinessTravelTrackerApplication.getPrimaryStage().setScene(scene);
-        BusinessTravelTrackerApplication.getPrimaryStage().setTitle("Edit Employee");
-        BusinessTravelTrackerApplication.getPrimaryStage().show();
-    }
 
     /**
      * Prikazuje pretragu kategorija troškova
@@ -121,28 +111,6 @@ public class SceneManager {
         showScene("new-expense-category-screen.fxml", "New Expense Category");
     }
 
-    /**
-     * Prikazuje Scene za uređivanje kategorije troškova.
-     *
-     * @param expenseCategory
-     */
-    public void showEditExpenseCategoryScreen(ExpenseCategory expenseCategory) {
-        FXMLLoader fxmlLoader = new FXMLLoader(BusinessTravelTrackerApplication.class.
-                getResource("edit-expense-category-screen.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), getWidth(), getHeight());
-
-            EditExpenseCategoryController controller = fxmlLoader.getController();
-            controller.initData(expenseCategory);
-        } catch (IOException e) {
-            throw new SceneManagerException(e);
-        }
-
-        BusinessTravelTrackerApplication.getPrimaryStage().setScene(scene);
-        BusinessTravelTrackerApplication.getPrimaryStage().setTitle("Edit Expense Category");
-        BusinessTravelTrackerApplication.getPrimaryStage().show();
-    }
 
     /**
      * Prikazuje pretragu troškova
@@ -158,28 +126,6 @@ public class SceneManager {
         showScene("new-expense-screen.fxml", "New Expense");
     }
 
-    /**
-     * Prikazuje Scene za uređivanje troška.
-     *
-     * @param expense
-     */
-    public void showEditExpenseScreen(Expense expense) {
-        FXMLLoader fxmlLoader = new FXMLLoader(BusinessTravelTrackerApplication.class.
-                getResource("edit-expense-screen.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), getWidth(), getHeight());
-
-            EditExpenseScreenController controller = fxmlLoader.getController();
-            controller.initData(expense);
-        } catch (IOException e) {
-            throw new SceneManagerException(e);
-        }
-
-        BusinessTravelTrackerApplication.getPrimaryStage().setScene(scene);
-        BusinessTravelTrackerApplication.getPrimaryStage().setTitle("Edit Expense");
-        BusinessTravelTrackerApplication.getPrimaryStage().show();
-    }
 
     /**
      * Prikazuje pretragu zabilješki putovanja
@@ -193,29 +139,6 @@ public class SceneManager {
      */
     public void showNewTravelLogScreen() {
         showScene("new-travel-log-screen.fxml", "New Travel Log");
-    }
-
-    /**
-     * Prikazuje Scene za uređivanje zabilješke putovanja.
-     *
-     * @param travelLog
-     */
-    public void showEditTravelLogScreen(TravelLog travelLog) {
-        FXMLLoader fxmlLoader = new FXMLLoader(BusinessTravelTrackerApplication.class.
-                getResource("edit-travel-log-screen.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), getWidth(), getHeight());
-
-            EditTravelLogController controller = fxmlLoader.getController();
-            controller.initData(travelLog);
-        } catch (IOException e) {
-            throw new SceneManagerException(e);
-        }
-
-        BusinessTravelTrackerApplication.getPrimaryStage().setScene(scene);
-        BusinessTravelTrackerApplication.getPrimaryStage().setTitle("Edit Travel Log");
-        BusinessTravelTrackerApplication.getPrimaryStage().show();
     }
 
     /**
@@ -233,37 +156,75 @@ public class SceneManager {
     }
 
     /**
-     * Prikazuje Scene za uređivanje nadoknade troška.
-     *
-     * @param reimbursement
-     */
-    public void showEditReimbursementScreen(Reimbursement reimbursement) {
-        FXMLLoader fxmlLoader = new FXMLLoader(BusinessTravelTrackerApplication.class.
-                getResource("edit-reimbursement-screen.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), getWidth(), getHeight());
-
-            EditReimbursementScreenController controller = fxmlLoader.getController();
-            controller.initData(reimbursement);
-        } catch (IOException e) {
-            throw new SceneManagerException(e);
-        }
-
-        BusinessTravelTrackerApplication.getPrimaryStage().setScene(scene);
-        BusinessTravelTrackerApplication.getPrimaryStage().setTitle("Edit Reimbursement");
-        BusinessTravelTrackerApplication.getPrimaryStage().show();
-    }
-
-    /**
      * Prikazuje Scene za popisom zabilješki promjena
      */
     public void showChangeLogScreen() {
         showScene("change-log-screen.fxml", "Change Log");
     }
 
-    public void showEmployeeSpendingScreen(){
-        showScene("stats-screen.fxml","Stats");
+    /**
+     * Prikazuje Scene s grafovima o potrošnji.
+     */
+    public void showEmployeeSpendingScreen() {
+        showScene("stats-screen.fxml", "Stats");
     }
 
+    public void showUserSearchScreen() {
+        showScene("user-search.fxml", "Users");
+    }
+
+    public void showNewUserScreen() {
+        showScene("new-user-screen.fxml", "New User");
+    }
+
+    public <T extends Entity> void showEditScreen(String resource, String title, T entity) {
+        try {
+            FXMLLoader loader = new FXMLLoader(BusinessTravelTrackerApplication.class.getResource(resource));
+            Scene scene = new Scene(loader.load(), getWidth(), getHeight());
+            EditScreenController<Entity> controller = loader.getController();
+            controller.initData(entity);
+            BusinessTravelTrackerApplication.getPrimaryStage().setScene(scene);
+            BusinessTravelTrackerApplication.getPrimaryStage().setTitle(title);
+            BusinessTravelTrackerApplication.getPrimaryStage().show();
+        } catch (IOException e) {
+            throw new SceneManagerException(e);
+        }
+    }
+
+    /**
+     * Prikazuje Scene za uređivanje zaposlenika
+     *
+     * @param employee zaposlenik
+     */
+    public void showEditEmployeeScreen(Employee employee) { showEditScreen("edit-employee-screen.fxml", "Edit Employee", employee);}
+
+    /**
+     * Prikazuje Scene za uređivanje kategorije troškova.
+     *
+     * @param category
+     */
+    public void showEditExpenseCategoryScreen(ExpenseCategory category) {showEditScreen("edit-expense-category-screen.fxml", "Edit Expense Category", category); }
+
+    /**
+     * Prikazuje Scene za uređivanje troška.
+     *
+     * @param expense
+     */
+    public void showEditExpenseScreen(Expense expense) {showEditScreen("edit-expense-screen.fxml", "Edit Expense", expense);}
+
+    /**
+     * Prikazuje Scene za uređivanje zabilješke putovanja.
+     *
+     * @param log
+     */
+    public void showEditTravelLogScreen(TravelLog log) {showEditScreen("edit-travel-log-screen.fxml", "Edit Travel Log", log);}
+
+    /**
+     * Prikazuje Scene za uređivanje nadoknade troška.
+     *
+     * @param reimbursement
+     */
+    public void showEditReimbursementScreen(Reimbursement reimbursement) {showEditScreen("edit-reimbursement-screen.fxml", "Edit Reimbursement", reimbursement);}
+
+    public void showEditUserScreen(User user) {showEditScreen("edit-user-screen.fxml", "Edit User", user);}
 }

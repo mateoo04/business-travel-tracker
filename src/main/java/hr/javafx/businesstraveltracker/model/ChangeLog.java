@@ -10,55 +10,29 @@ import java.time.LocalDateTime;
  * Predstavlja bilješku promjene.
  * @param <T> klasa entiteta koji je promijenjen
  */
-public class ChangeLog<T extends Entity> implements Serializable {
-    private T previousValue;
-    private T value;
-    private User user;
-    private LocalDateTime dateTime;
-    private ChangeLogType type;
+public record ChangeLog<T extends Entity>(
+        T previousValue,
+        T logValue,
+        User user,
+        LocalDateTime dateTime,
+        ChangeLogType type
+) implements Serializable {
 
     /**
      * Konstruktor za objekt koji sadrži bilješku modifikacije entiteta.
      * @param previousValue prošla vrijednost
-     * @param value nova vrijednost
+     * @param logValue nova vrijednost
      */
-    public ChangeLog(T previousValue, T value){
-        this.previousValue = previousValue;
-        this.value = value;
-        this.user = LogInController.getCurrentUser();
-        this.dateTime = LocalDateTime.now();
-        this.type = ChangeLogType.MODIFICATION;
+    public ChangeLog(T previousValue, T logValue) {
+        this(previousValue, logValue, LogInController.getCurrentUser(), LocalDateTime.now(), ChangeLogType.MODIFICATION);
     }
 
     /**
-     * Konstruktor koji predstavlja bilješku stvaranje novog entiteta ili brisanje postojećeg
-     * @param value vrijednost entiteta
+     * Konstruktor koji predstavlja bilješku stvaranja novog entiteta ili brisanja postojećeg.
+     * @param logValue vrijednost entiteta
      * @param type vrsta promjene
      */
-    public ChangeLog(T value, ChangeLogType type){
-        this.value = value;
-        this.user = LogInController.getCurrentUser();
-        this.dateTime = LocalDateTime.now();
-        this.type = type;
-    }
-
-    public T getPreviousValue() {
-        return previousValue;
-    }
-
-    public T getLogValue() {
-        return value;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public ChangeLogType getType() {
-        return type;
+    public ChangeLog(T logValue, ChangeLogType type) {
+        this(null, logValue, LogInController.getCurrentUser(), LocalDateTime.now(), type);
     }
 }

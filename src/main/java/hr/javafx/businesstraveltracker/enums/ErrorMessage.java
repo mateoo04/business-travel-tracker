@@ -25,7 +25,10 @@ public enum ErrorMessage {
     EXPENSE_REQUIRED("Expense must be selected!"),
     REIMBURSEMENT_STATUS_REQUIRED("Selecting a reimbursement status is required!"),
     INVALID_EMAIL("Invalid email address! Example of a valid email address: example@example.com"),
-    INVALID_DATE_RANGE("Start date must be before the end date!");
+    INVALID_DATE_RANGE("Start date must be before the end date!"),
+    USERNAME_REQUIRED("Username is required!"),
+    PASSWORD_INVALID_INPUT("Password must match and be at least 6 characters long!"),
+    USER_PRIVILEGES_REQUIRED("Selecting user privileges is required!");
 
     private final String message;
 

@@ -9,6 +9,7 @@ import hr.javafx.businesstraveltracker.model.Reimbursement;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.ReimbursementRepository;
+import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -28,8 +29,6 @@ public class NewReimbursementScreenController {
     @FXML
     public ComboBox<ReimbursementStatus> reimbursementStatusComboBox;
 
-    private final ExpenseRepository expenseRepository = new ExpenseRepository();
-
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
@@ -37,41 +36,8 @@ public class NewReimbursementScreenController {
      * Inicijalizira ekran.
      */
     public void initialize() {
-        expenseComboBox.getItems().addAll(expenseRepository.findAll());
-        expenseComboBox.getSelectionModel().select(0);
-        expenseComboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(Expense expense, boolean b) {
-                super.updateItem(expense, b);
-                setText(b || expense == null ? "" : expense.getCategory().getName() + ", " + expense.getAmount() + "€, " +
-                        CustomDateTimeFormatter.formatDate(expense.getDate()));
-            }
-        });
-        expenseComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Expense expense, boolean b) {
-                super.updateItem(expense, b);
-                setText(b || expense == null ? "" : expense.getCategory().getName() + ", " + expense.getAmount() + "€, " +
-                        CustomDateTimeFormatter.formatDate(expense.getDate()));
-            }
-        });
-
-        reimbursementStatusComboBox.getItems().addAll(ReimbursementStatus.values());
-        reimbursementStatusComboBox.getSelectionModel().select(0);
-        reimbursementStatusComboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(ReimbursementStatus reimbursementStatus, boolean b) {
-                super.updateItem(reimbursementStatus, b);
-                setText(b || reimbursementStatus == null ? "" : reimbursementStatus.getStatus());
-            }
-        });
-        reimbursementStatusComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(ReimbursementStatus reimbursementStatus, boolean b) {
-                super.updateItem(reimbursementStatus, b);
-                setText(b || reimbursementStatus == null ? "" : reimbursementStatus.getStatus());
-            }
-        });
+        ComboBoxSetter.setExpenseComboBox(expenseComboBox);
+        ComboBoxSetter.setReimbursementStatusComboBox(reimbursementStatusComboBox);
     }
 
     /**

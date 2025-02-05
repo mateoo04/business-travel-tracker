@@ -8,6 +8,7 @@ import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.ReimbursementRepository;
+import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import hr.javafx.businesstraveltracker.util.ConfirmDeletionDialog;
 import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import hr.javafx.businesstraveltracker.util.SceneManager;
@@ -64,22 +65,8 @@ public class ReimbursementSearchController {
      */
     public void initialize() {
         reimbursementStatusComboBox.getItems().add(null);
-        reimbursementStatusComboBox.getItems().addAll(ReimbursementStatus.values());
         reimbursementStatusComboBox.getSelectionModel().select(0);
-        reimbursementStatusComboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(ReimbursementStatus reimbursementStatus, boolean b) {
-                super.updateItem(reimbursementStatus, b);
-                setText(b || reimbursementStatus == null ? "" : reimbursementStatus.getStatus());
-            }
-        });
-        reimbursementStatusComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(ReimbursementStatus reimbursementStatus, boolean b) {
-                super.updateItem(reimbursementStatus, b);
-                setText(b || reimbursementStatus == null ? "" : reimbursementStatus.getStatus());
-            }
-        });
+        ComboBoxSetter.setReimbursementStatusComboBox(reimbursementStatusComboBox);
 
         idColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getId()));
 
@@ -97,12 +84,14 @@ public class ReimbursementSearchController {
                 (CustomDateTimeFormatter.formatDate(cellData.getValue().getApprovalDate())));
 
         List<Expense> expenseList = expenseRepository.findAll();
-        setUpExpenseComboBox(expenseList);
+        expenseComboBox.getItems().add(null);
+        expenseComboBox.getSelectionModel().select(0);
+        ComboBoxSetter.setExpenseComboBox(expenseComboBox);
         setUpEmployeeComboBox(expenseList);
 
         reimbursementTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        if(LogInController.getCurrentUser().privileges().equals(UserPrivileges.HIGH))
+        if(LogInController.getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH))
             setContextMenuOnRowItems();
     }
 
@@ -166,53 +155,13 @@ public class ReimbursementSearchController {
     }
 
     /**
-     * Postavlja izbornik troškova.
-     * @param expenseList lista troškova
-     */
-    private void setUpExpenseComboBox(List<Expense> expenseList){
-        expenseComboBox.getItems().add(null);
-        expenseComboBox.getItems().addAll(expenseList);
-        expenseComboBox.getSelectionModel().select(0);
-        expenseComboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(Expense expense, boolean b) {
-                super.updateItem(expense, b);
-                setText(b || expense == null ? "" : expense.getCategory().getName() + ", " + expense.getAmount() + "€, " +
-                        CustomDateTimeFormatter.formatDate(expense.getDate()));
-            }
-        });
-        expenseComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Expense expense, boolean b) {
-                super.updateItem(expense, b);
-                setText(b || expense == null ? "" : expense.getCategory().getName() + ", " + expense.getAmount() + "€, " +
-                        CustomDateTimeFormatter.formatDate(expense.getDate()));
-            }
-        });
-    }
-
-    /**
      * Postavlja izbornik zaposlenika
      * @param expenseList lista troškova
      */
     private void setUpEmployeeComboBox(List<Expense> expenseList){
         employeeComboBox.getItems().add(null);
-        employeeComboBox.getItems().addAll(employeeRepository.findAll());
         employeeComboBox.getSelectionModel().select(0);
-        employeeComboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(Employee employee, boolean b) {
-                super.updateItem(employee, b);
-                setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName());
-            }
-        });
-        employeeComboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Employee employee, boolean b) {
-                super.updateItem(employee, b);
-                setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName());
-            }
-        });
+        ComboBoxSetter.setEmployeeComboBox(employeeComboBox);
 
         employeeComboBox.setOnAction(event -> {
             Employee selectedEmployee = employeeComboBox.getValue();

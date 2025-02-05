@@ -25,18 +25,28 @@ public class MenuController {
     @FXML
     public MenuItem addNewReimbursementMenuItem;
 
+    @FXML
+    public MenuItem openNewUserScreenMenuItem;
+
+    @FXML
+    public MenuItem openUserSearchScreenMenuItem;
+
     private final SceneManager sceneManager = SceneManager.getInstance();
 
     /**
      * Inicijalizira menu bar.
      */
     public void initialize(){
-        if(LogInController.getCurrentUser().privileges() == UserPrivileges.LOW){
+        if(LogInController.getCurrentUser().getPrivileges() == UserPrivileges.LOW){
             addNewEmployeeMenuItem.setDisable(true);
             addNewExpenseCategoryMenuItem.setDisable(true);
-            addNewExpenseMenuItem.setDisable(true);
-            addNewTravelLogMenuItem.setDisable(true);
+            if(LogInController.getCurrentUser().getEmployeeId() == null){
+                addNewExpenseMenuItem.setDisable(true);
+                addNewTravelLogMenuItem.setDisable(true);
+            }
             addNewReimbursementMenuItem.setDisable(true);
+            openNewUserScreenMenuItem.setDisable(true);
+            openUserSearchScreenMenuItem.setDisable(true);
         }
     }
 
@@ -127,5 +137,13 @@ public class MenuController {
 
     public void openStats(){
         sceneManager.showEmployeeSpendingScreen();
+    }
+
+    public void openUserSearchScreen(){
+        sceneManager.showUserSearchScreen();
+    }
+
+    public void openNewUserScreen(){
+        sceneManager.showNewUserScreen();
     }
 }
