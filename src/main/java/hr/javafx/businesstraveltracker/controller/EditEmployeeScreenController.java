@@ -151,7 +151,7 @@ public class EditEmployeeScreenController {
      */
     private void checkEmail(StringBuilder errorMessage, String email, ErrorMessage error){
         if(!email.isEmpty() && !DataValidation.isValidEmail(email))
-            errorMessage.append(ErrorMessage.INVALID_EMAIL.getMessage());
+            errorMessage.append(error.getMessage());
     }
 
     /**

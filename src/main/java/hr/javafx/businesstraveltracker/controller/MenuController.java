@@ -26,6 +26,7 @@ public class MenuController {
     public MenuItem addNewReimbursementMenuItem;
 
     private final SceneManager sceneManager = SceneManager.getInstance();
+
     /**
      * Inicijalizira menu bar.
      */

@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.fx.ChartViewer;
@@ -18,7 +17,6 @@ import org.jfree.chart.ui.RectangleInsets;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.*;
@@ -114,7 +112,7 @@ public class StatsScreenController {
         for(EntitySetOfEntitiesPair<TravelLog, Expense> pair : listOfExpensesByTravelLog){
             Optional<BigDecimal> totalSpent = pair.getSetOfEntities().stream().map(Expense::getAmount).reduce(BigDecimal::add);
             totalSpent.ifPresent(bigDecimal -> defaultPieDataset.setValue(pair.getEntity().getDestination() + " (" + CustomDateTimeFormatter.formatDate(pair.getEntity().getStartDate()) +
-                            " - " + CustomDateTimeFormatter.formatDate(pair.getEntity().getEndDate()),bigDecimal)
+                            " - " + CustomDateTimeFormatter.formatDate(pair.getEntity().getEndDate()) + ")",bigDecimal)
                     );
         }
 

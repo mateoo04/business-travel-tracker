@@ -60,6 +60,12 @@ public class EditExpenseScreenController {
 
         preselectedTravelLog.ifPresent(travelLog -> travelLogComboBox.getSelectionModel().select(travelLog));
 
+        Optional<ExpenseCategory> preselectedCategory = expenseCategoryComboBox.getItems().stream()
+                        .filter(item -> item.getId().equals(expense.getCategory().getId()))
+                                .findFirst();
+
+        preselectedCategory.ifPresent(expenseCategory -> expenseCategoryComboBox.getSelectionModel().select(expenseCategory));
+
         expenseAmountTextField.setText(expense.getAmount().toString());
         descriptionTextArea.setText(expense.getDescription());
         expenseDatePicker.setValue(expense.getDate());
