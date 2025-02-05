@@ -24,7 +24,8 @@ public enum ErrorMessage {
     AMOUNT_INPUT_ERROR("Amount is required and must be a whole or a decimal number, for example: 60 or 870.50!"),
     EXPENSE_REQUIRED("Expense must be selected!"),
     REIMBURSEMENT_STATUS_REQUIRED("Selecting a reimbursement status is required!"),
-    INVALID_EMAIL("Invalid email address! Example of a valid email address: example@example.com"),;
+    INVALID_EMAIL("Invalid email address! Example of a valid email address: example@example.com"),
+    INVALID_DATE_RANGE("Start date must be before the end date!");
 
     private final String message;
 

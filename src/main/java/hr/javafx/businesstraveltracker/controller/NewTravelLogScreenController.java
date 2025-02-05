@@ -95,6 +95,9 @@ public class NewTravelLogScreenController {
         LocalDate endDate = endDatePicker.getValue();
         if(endDate == null) errorMessage.append(ErrorMessage.END_DATE_REQUIRED.getMessage());
 
+        if(startDate != null && endDate != null && startDate.isAfter(endDate))
+            errorMessage.append(ErrorMessage.INVALID_DATE_RANGE.getMessage());
+
         TripStatus status = statusComboBox.getSelectionModel().getSelectedItem();
         if(status == null) errorMessage.append(ErrorMessage.TRIP_STATUS_REQUIRED.getMessage());
 

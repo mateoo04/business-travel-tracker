@@ -6,6 +6,7 @@ module hr.javafx.businesstraveltracker.businesstraveltracker {
     requires org.jfree.chart.fx;
     requires org.jfree.jfreechart;
     requires javafx.controls;
+    requires java.desktop;
 
     exports hr.javafx.businesstraveltracker.controller;
     exports hr.javafx.businesstraveltracker;

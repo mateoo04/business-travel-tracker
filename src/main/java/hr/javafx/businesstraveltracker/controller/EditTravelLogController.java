@@ -133,6 +133,9 @@ public class EditTravelLogController {
         TripStatus status = statusComboBox.getSelectionModel().getSelectedItem();
         if (status == null) errorMessage.append(ErrorMessage.TRIP_STATUS_REQUIRED.getMessage());
 
+        if(startDate != null && endDate != null && startDate.isAfter(endDate))
+            errorMessage.append(ErrorMessage.INVALID_DATE_RANGE.getMessage());
+
         return errorMessage;
     }
 
