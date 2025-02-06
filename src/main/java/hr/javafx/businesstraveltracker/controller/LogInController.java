@@ -50,7 +50,8 @@ public class LogInController {
         usernameTextField.setOnKeyPressed(this::handleKeyPressed);
         passwordTextField.setOnKeyPressed(this::handleKeyPressed);
 
-        cancelTimelines();
+        cancelReimbursementNotifTimeline();
+        cancelTotalExpensesTimeline();
     }
 
     /**
@@ -105,22 +106,19 @@ public class LogInController {
         }
     }
 
+    /**
+     * Provodi potrebne radnje nakon uspješne prijave.
+     */
     private static void setApp(){
         sceneManager.showEmployeeSearch();
-        if(getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH) && reimbursementNotifTimeline == null) {
-            reimbursementNotifTimeline = new Timeline(
-                    new KeyFrame(Duration.ZERO, _ -> ReimbursementsDialog.show()),
-                    new KeyFrame(Duration.seconds(10), _ -> {
-                if(getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH)) {
-                    ReimbursementsDialog.show();
-                }else{
-                    reimbursementNotifTimeline.stop();
-                }
-            }));
-            reimbursementNotifTimeline.setCycleCount(INDEFINITE);
-            reimbursementNotifTimeline.play();
-        }
+        setTotalExpensesTimeline();
+        setReimbursementNotifTimeline();
+    }
 
+    /**
+     * Postavlja timeline koji prikazuje ukupne troškove u naslovu prozora.
+     */
+    private static void setTotalExpensesTimeline(){
         if(totalExpensesTimeline == null){
             totalExpensesTimeline = new Timeline(new KeyFrame(Duration.seconds(2), _ -> {
                 TotalExpensesThread thread = new TotalExpensesThread();
@@ -131,14 +129,58 @@ public class LogInController {
         }
     }
 
-    private static void cancelTimelines(){
+    /**
+     * Postavlja dialog koji obavještava korisnike sa HIGH privilegijama da postoje zapisi nadoknada
+     * troškova koji čekaju odobrenje.
+     */
+    private static void setReimbursementNotifTimeline(){
+        if(getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH) && reimbursementNotifTimeline == null) {
+            reimbursementNotifTimeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, _ -> ReimbursementsDialog.show()),
+                    new KeyFrame(Duration.seconds(10), _ -> {
+                        if(getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH)) {
+                            ReimbursementsDialog.show();
+                        }else{
+                            reimbursementNotifTimeline.stop();
+                        }
+                    }));
+            reimbursementNotifTimeline.setCycleCount(INDEFINITE);
+            reimbursementNotifTimeline.play();
+        }
+    }
+
+    /**
+     * Otkazuje timeline koji prikazuje ukupne troškove u naslovu prozora.
+     */
+    private static void cancelTotalExpensesTimeline(){
         if(totalExpensesTimeline != null) {
             totalExpensesTimeline.stop();
             totalExpensesTimeline = null;
         }
+    }
+
+    /**
+     * Otkazuje dialog koji obavještava korisnike sa HIGH privilegijama da postoje zapisi nadoknada
+     * troškova koji čekaju odobrenje.
+     */
+    private static void cancelReimbursementNotifTimeline(){
         if(reimbursementNotifTimeline != null) {
             reimbursementNotifTimeline.stop();
             reimbursementNotifTimeline = null;
+        }
+    }
+
+    /**
+     * Mijenja stavnje timelinea prikazuje ukupne troškove u naslovu prozora.
+     */
+    public static void toggleReimbursementNotifTimeline(){
+        if(reimbursementNotifTimeline == null) setReimbursementNotifTimeline();
+        else {
+            cancelReimbursementNotifTimeline();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Reimbursement Warnings");
+            alert.setHeaderText("You will no longer receive warnings about\n unapproved reimbursements.");
+            alert.showAndWait();
         }
     }
 

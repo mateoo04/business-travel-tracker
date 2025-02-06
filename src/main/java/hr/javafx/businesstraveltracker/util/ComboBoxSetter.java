@@ -11,8 +11,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 
 import java.util.List;
-import java.util.Optional;
-
 /**
  * Klasa koja sadrži metode za postavljanje ComboBox elemenata.
  */
@@ -20,7 +18,6 @@ public class ComboBoxSetter {
 
     private static final TravelLogRepository travelLogRepository = new TravelLogRepository();
     private static final ExpenseCategoryRepository expenseCategoryRepository = new ExpenseCategoryRepository();
-    private static final ExpenseRepository expenseRepository = new ExpenseRepository();
     private static final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     private ComboBoxSetter(){}
@@ -39,24 +36,7 @@ public class ComboBoxSetter {
         } else comboBox.getItems().addAll(travelLogRepository.findAll());
 
         comboBox.getSelectionModel().select(0);
-        comboBox.setCellFactory(item -> new ListCell<>() {
-            @Override
-            protected void updateItem(TravelLog travelLog, boolean b) {
-                super.updateItem(travelLog, b);
-                setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
-            }
-        });
-        comboBox.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(TravelLog travelLog, boolean b) {
-                super.updateItem(travelLog, b);
-                setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
-                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
-            }
-        });
+        setCellFactoriesOnTravelLogComboBox(comboBox);
     }
 
     /**
@@ -202,6 +182,31 @@ public class ComboBoxSetter {
             protected void updateItem(Employee employee, boolean b) {
                 super.updateItem(employee, b);
                 setText(b || employee == null ? "" : employee.getFirstName() + " " + employee.getLastName());
+            }
+        });
+    }
+
+    /**
+     * Postavlja izgled elemenata liste ComboBoxa i gumba ComboBoxa.
+     * @param comboBox
+     */
+    public static void setCellFactoriesOnTravelLogComboBox(ComboBox<TravelLog> comboBox){
+        comboBox.setCellFactory(item -> new ListCell<>() {
+            @Override
+            protected void updateItem(TravelLog travelLog, boolean b) {
+                super.updateItem(travelLog, b);
+                setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
+                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
+                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
+            }
+        });
+        comboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(TravelLog travelLog, boolean b) {
+                super.updateItem(travelLog, b);
+                setText(b || travelLog == null ? "" : travelLog.getDestination() + " (" +
+                        CustomDateTimeFormatter.formatDate(travelLog.getStartDate()) + "-" +
+                        CustomDateTimeFormatter.formatDate(travelLog.getEndDate()) + ")");
             }
         });
     }

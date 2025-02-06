@@ -9,6 +9,7 @@ import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
+import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
 import hr.javafx.businesstraveltracker.util.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -69,6 +70,8 @@ public class ExpenseSearchController {
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
+    private final TravelLogRepository travelLogRepository = new TravelLogRepository();
     /**
      * Inicijalizira ekran.
      */
@@ -88,7 +91,8 @@ public class ExpenseSearchController {
 
         travelLogComboBox.getItems().add(null);
         travelLogComboBox.getSelectionModel().select(0);
-        ComboBoxSetter.setTravelLogComboBox(travelLogComboBox);
+        travelLogComboBox.getItems().addAll(travelLogRepository.findAll());
+        ComboBoxSetter.setCellFactoriesOnTravelLogComboBox(travelLogComboBox);
 
         expenseCategoryComboBox.getItems().add(null);
         expenseCategoryComboBox.getSelectionModel().select(0);

@@ -15,7 +15,6 @@ public final class Reimbursement extends Entity implements Approvable{
 
     /**
      * Konstruktor za objekt s ID-jem.
-     * @param id
      * @param expense trošak
      * @param status status
      * @param approvalDate datum odobrenja

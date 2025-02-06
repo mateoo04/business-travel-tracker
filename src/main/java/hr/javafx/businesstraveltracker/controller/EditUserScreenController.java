@@ -108,14 +108,23 @@ public class EditUserScreenController implements EditScreenController<User> {
 
         if(errorMessage.isEmpty()){
             updateExistingUser(username, password, repeatedPassword, userPrivileges, employee);
-            userDataRepository.update(existingUser);
-            changeLogRepository.log(new ChangeLog<>(previousValue, existingUser));
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Changes saved");
-            alert.setHeaderText("User Updated Successfully");
-            alert.setContentText(existingUser.toString());
-            alert.showAndWait();
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("User");
+            dialog.setHeaderText("Are you sure you want to save changes to this user?");
+            dialog.setContentText(existingUser.toString());
+
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, cancelButtonType);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            result.ifPresent(response -> {
+                if(response == saveButtonType){
+                    userDataRepository.update(existingUser);
+                    changeLogRepository.log(new ChangeLog<>(previousValue, existingUser));
+                }
+            });
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

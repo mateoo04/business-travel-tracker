@@ -135,15 +135,31 @@ public class MenuController {
         sceneManager.showLogInScene();
     }
 
+    /**
+     * Zahtjeva prikaz ekrana sa grafovima.
+     */
     public void openStats(){
         sceneManager.showEmployeeSpendingScreen();
     }
 
+    /**
+     * Zahtjeva prikaz ekrana za pretragu korisnika
+     */
     public void openUserSearchScreen(){
         sceneManager.showUserSearchScreen();
     }
 
+    /**
+     * Zahtjeva prikaz ekrana za dodavanje novog korisnika.
+     */
     public void openNewUserScreen(){
         sceneManager.showNewUserScreen();
+    }
+
+    /**
+     * Zahtjeva promjenu u pojavljivanju dijaloga o zapisima nadoknada troškova koji čekaju odobrenje.
+     */
+    public void toggleReimbursementNotif(){
+        LogInController.toggleReimbursementNotifTimeline();
     }
 }

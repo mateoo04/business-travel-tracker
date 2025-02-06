@@ -47,6 +47,7 @@
             <MenuItem mnemonicParsing="false" onAction="#demandLogOut" text="Log out" />
             <MenuItem mnemonicParsing="false" onAction="#openUserSearchScreen" text="Manage Users" fx:id="openUserSearchScreenMenuItem"/>
             <MenuItem mnemonicParsing="false" onAction="#openNewUserScreen" text="Create New User" fx:id="openNewUserScreenMenuItem"/>
+            <MenuItem mnemonicParsing="false" onAction="#toggleReimbursementNotif" text="Toggle Reimbursement Warnings" fx:id="toggleReimbursementNotif"/>
         </items>
       </Menu>
   </menus>

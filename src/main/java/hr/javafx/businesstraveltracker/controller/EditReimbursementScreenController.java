@@ -6,7 +6,6 @@ import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.Reimbursement;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
-import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.ReimbursementRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import hr.javafx.businesstraveltracker.util.ExpensesWithoutReimbursementRecordsFinder;
@@ -30,8 +29,6 @@ public class EditReimbursementScreenController implements EditScreenController<R
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
-
-    private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
     private Reimbursement reimbursement;
 
