@@ -1,5 +1,8 @@
 package hr.javafx.businesstraveltracker.enums;
 
+/**
+ * Enum vrsta chartova/grafova u aplikaciji.
+ */
 public enum StatsChartType {
 
     SPENDING_BY_EMPLOYEES("Spending by employees"),

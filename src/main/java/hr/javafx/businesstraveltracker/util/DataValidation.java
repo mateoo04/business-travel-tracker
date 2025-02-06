@@ -16,6 +16,11 @@ public class DataValidation {
         return numberString.matches("\\d+(\\.\\d{1,2})?");
     }
 
+    /**
+     * Provjerava ispravnost cijelog broja
+     * @param numberString broj u obliku Stringa
+     * @return boolean koji predstavlja ispravnost cijelog broja
+     */
     public static boolean isValidNumber(String numberString){
         return numberString.matches("-?\\d+");
     }

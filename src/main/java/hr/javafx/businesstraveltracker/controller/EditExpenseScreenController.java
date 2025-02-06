@@ -1,24 +1,19 @@
 package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
-import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Expense;
 import hr.javafx.businesstraveltracker.model.ExpenseCategory;
 import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
-import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
-import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
-import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import hr.javafx.businesstraveltracker.util.DataValidation;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,10 +34,6 @@ public class EditExpenseScreenController implements EditScreenController<Expense
 
     @FXML
     public DatePicker expenseDatePicker;
-
-    private final TravelLogRepository travelLogRepository = new TravelLogRepository();
-
-    private final ExpenseCategoryRepository expenseCategoryRepository = new ExpenseCategoryRepository();
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 

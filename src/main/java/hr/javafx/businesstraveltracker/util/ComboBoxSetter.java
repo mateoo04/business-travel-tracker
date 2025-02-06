@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Klasa koja sadrži metode za postavljanje ComboBox elemenata.
@@ -107,8 +108,8 @@ public class ComboBoxSetter {
      * Postavlja Expense ComboBox.
      * @param comboBox
      */
-    public static void setExpenseComboBox(ComboBox<Expense> comboBox){
-        comboBox.getItems().addAll(expenseRepository.findAll());
+    public static void setExpenseComboBox(ComboBox<Expense> comboBox, List<Expense> expenseList){
+        comboBox.getItems().addAll(expenseList);
         comboBox.getSelectionModel().select(0);
         comboBox.setCellFactory(item -> new ListCell<>() {
             @Override

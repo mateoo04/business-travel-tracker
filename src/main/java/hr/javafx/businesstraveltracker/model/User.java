@@ -13,6 +13,14 @@ public class User extends Entity{
     private UserPrivileges privileges;
     private Long employeeId;
 
+    /**
+     * Privatni konstruktor
+     * @param id ID
+     * @param username korisničko ime
+     * @param hashedPassword hashirana zaporka
+     * @param privileges privilegije
+     * @param employeeId ID zaposlenika koji je povezan s korisnikom
+     */
     private User(Long id, String username, String hashedPassword, UserPrivileges privileges, Long employeeId) {
         super(id);
         this.username = username;
@@ -21,6 +29,10 @@ public class User extends Entity{
         this.employeeId = employeeId;
     }
 
+    /**
+     * Kopirni konstruktor
+     * @param other objekt koji će biti kopiran
+     */
     public User(User other){
         super(other.getId());
         this.username = other.getUsername();
@@ -29,6 +41,9 @@ public class User extends Entity{
         this.employeeId = other.getEmployeeId();
     }
 
+    /**
+     * Builder klasa koja omogućava lakse stvaranje objekata klase.
+     */
     public static class Builder{
         private Long id;
         private final String username;
@@ -83,10 +98,18 @@ public class User extends Entity{
         return hashedPassword;
     }
 
+    /**
+     * Postavlja hashiranu zaporku
+     * @param hashedPassword hashirana zaporka
+     */
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
     }
 
+    /**
+     * Postvlja zaporku nakon hashiranja.
+     * @param password nehashirana zaporka
+     */
     public void setPassword(String password){
         this.hashedPassword = PasswordHasher.hashPassword(password);
     }

@@ -9,10 +9,12 @@ import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.ReimbursementRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
-import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
+import hr.javafx.businesstraveltracker.util.ExpensesWithoutReimbursementRecordsFinder;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,16 +27,22 @@ public class EditReimbursementScreenController implements EditScreenController<R
     @FXML
     public ComboBox<ReimbursementStatus> reimbursementStatusComboBox;
 
-    private final ExpenseRepository expenseRepository = new ExpenseRepository();
-
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
+
+    private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
     private Reimbursement reimbursement;
 
     public void initData(Reimbursement reimbursement){
         this.reimbursement = reimbursement;
+
+        List<Expense> expenseList = new ArrayList<>();
+        expenseList.add(reimbursement.getExpense());
+        expenseList.addAll(ExpensesWithoutReimbursementRecordsFinder.find());
+
+        ComboBoxSetter.setExpenseComboBox(expenseComboBox, expenseList);
 
         Optional<Expense> preselectedExpense = expenseComboBox.getItems().stream()
                 .filter(item -> item.getId().equals(reimbursement.getExpense().getId()))

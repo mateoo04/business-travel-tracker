@@ -2,21 +2,16 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
-import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.*;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
-import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
-import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
-import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
 import hr.javafx.businesstraveltracker.util.DataValidation;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Kontroler za dodavanje novih troškova.

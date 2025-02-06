@@ -2,6 +2,11 @@ package hr.javafx.businesstraveltracker.model;
 
 import java.util.Set;
 
+/**
+ * Klasa koja predstvalja zapis entiteta i set entiteta druge klase.
+ * @param <T>
+ * @param <G>
+ */
 public class EntitySetOfEntitiesPair<T extends Entity, G extends Entity> {
     private T entity;
     private Set<G> setOfEntities;

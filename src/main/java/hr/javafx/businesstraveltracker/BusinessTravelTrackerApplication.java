@@ -25,6 +25,7 @@ public class BusinessTravelTrackerApplication extends Application {
         setPrimaryStage(stage);
 
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("plane-icon.png")));
+        primaryStage.setTitle(SceneManager.APP_TITLE);
 
         SceneManager.getInstance().showLogInScene();
     }

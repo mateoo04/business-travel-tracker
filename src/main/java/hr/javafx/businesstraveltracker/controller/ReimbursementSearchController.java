@@ -86,7 +86,7 @@ public class ReimbursementSearchController {
         List<Expense> expenseList = expenseRepository.findAll();
         expenseComboBox.getItems().add(null);
         expenseComboBox.getSelectionModel().select(0);
-        ComboBoxSetter.setExpenseComboBox(expenseComboBox);
+        ComboBoxSetter.setExpenseComboBox(expenseComboBox, expenseRepository.findAll());
         setUpEmployeeComboBox(expenseList);
 
         reimbursementTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);

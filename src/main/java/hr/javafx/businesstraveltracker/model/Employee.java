@@ -2,6 +2,9 @@ package hr.javafx.businesstraveltracker.model;
 
 import hr.javafx.businesstraveltracker.enums.Department;
 
+/**
+ * Predstavlja zaposlenika
+ */
 public class Employee extends Entity {
 
     private String firstName;
@@ -10,6 +13,9 @@ public class Employee extends Entity {
     private Department department;
     private String email;
 
+    /**
+     * Builder klasa koje omogućava lakše stvaranje objekara klase Employee.
+     */
     public static class Builder{
         private Long id;
         private String firstName;
@@ -40,6 +46,15 @@ public class Employee extends Entity {
         }
     }
 
+    /**
+     * Privatni konstruktor
+     * @param id ID
+     * @param firstName ime
+     * @param lastName prezime
+     * @param role pozicija unutar tvrtke
+     * @param department odjel
+     * @param email email
+     */
     private Employee(Long id, String firstName, String lastName, String role, Department department, String email) {
         super(id);
         this.firstName = firstName;
@@ -49,6 +64,10 @@ public class Employee extends Entity {
         this.email = email;
     }
 
+    /**
+     * Kopirni konstruktor
+     * @param other objekt koji će biti kopiran
+     */
     public Employee(Employee other) {
         super(other.getId());
         this.firstName = other.getFirstName();

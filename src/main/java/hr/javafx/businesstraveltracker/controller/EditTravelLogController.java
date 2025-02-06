@@ -6,7 +6,6 @@ import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
-import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import javafx.fxml.FXML;
@@ -33,8 +32,6 @@ public class EditTravelLogController implements EditScreenController<TravelLog> 
 
     @FXML
     public ComboBox<TripStatus> statusComboBox;
-
-    private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     private final TravelLogRepository travelLogRepository = new TravelLogRepository();
 

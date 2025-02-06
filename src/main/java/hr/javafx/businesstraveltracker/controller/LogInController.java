@@ -4,15 +4,22 @@ import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.model.User;
 import hr.javafx.businesstraveltracker.repository.UserDataRepository;
 import hr.javafx.businesstraveltracker.util.PasswordHasher;
+import hr.javafx.businesstraveltracker.util.ReimbursementsDialog;
 import hr.javafx.businesstraveltracker.util.SceneManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Duration;
+import production.threads.TotalExpensesThread;
 
 import java.util.List;
+
+import static javafx.animation.Animation.INDEFINITE;
 
 /**
  * Kontroler za prijavu.
@@ -27,9 +34,13 @@ public class LogInController {
 
     private final UserDataRepository userDataRepository = new UserDataRepository();
 
-    private final SceneManager sceneManager = SceneManager.getInstance();
+    private static final SceneManager sceneManager = SceneManager.getInstance();
     
     private static final String ADMIN = "admin";
+
+    private static Timeline totalExpensesTimeline = null;
+
+    private static Timeline reimbursementNotifTimeline = null;
 
     private static User currentUser;
     /**
@@ -38,6 +49,8 @@ public class LogInController {
     public void initialize() {
         usernameTextField.setOnKeyPressed(this::handleKeyPressed);
         passwordTextField.setOnKeyPressed(this::handleKeyPressed);
+
+        cancelTimelines();
     }
 
     /**
@@ -63,8 +76,7 @@ public class LogInController {
         
         if(username.equals(ADMIN) && password.equals(ADMIN)){
             setCurrentUser(new User.Builder(ADMIN, UserPrivileges.HIGH).build());
-            
-            sceneManager.showEmployeeSearch();
+            setApp();
         }else {
             List<User> users = userDataRepository.findAllUsers();
 
@@ -74,8 +86,7 @@ public class LogInController {
                     userFound = true;
                     if (PasswordHasher.checkPassword(password, user.getHashedPassword())) {
                         setCurrentUser(user);
-
-                        sceneManager.showEmployeeSearch();
+                        setApp();
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Password Mismatch");
@@ -91,6 +102,43 @@ public class LogInController {
                 alert.setHeaderText("User not found!");
                 alert.showAndWait();
             }
+        }
+    }
+
+    private static void setApp(){
+        sceneManager.showEmployeeSearch();
+        if(getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH) && reimbursementNotifTimeline == null) {
+            reimbursementNotifTimeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, _ -> ReimbursementsDialog.show()),
+                    new KeyFrame(Duration.seconds(10), _ -> {
+                if(getCurrentUser().getPrivileges().equals(UserPrivileges.HIGH)) {
+                    ReimbursementsDialog.show();
+                }else{
+                    reimbursementNotifTimeline.stop();
+                }
+            }));
+            reimbursementNotifTimeline.setCycleCount(INDEFINITE);
+            reimbursementNotifTimeline.play();
+        }
+
+        if(totalExpensesTimeline == null){
+            totalExpensesTimeline = new Timeline(new KeyFrame(Duration.seconds(2), _ -> {
+                TotalExpensesThread thread = new TotalExpensesThread();
+                thread.start();
+            }));
+            totalExpensesTimeline.setCycleCount(INDEFINITE);
+            totalExpensesTimeline.play();
+        }
+    }
+
+    private static void cancelTimelines(){
+        if(totalExpensesTimeline != null) {
+            totalExpensesTimeline.stop();
+            totalExpensesTimeline = null;
+        }
+        if(reimbursementNotifTimeline != null) {
+            reimbursementNotifTimeline.stop();
+            reimbursementNotifTimeline = null;
         }
     }
 

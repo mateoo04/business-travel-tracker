@@ -10,13 +10,13 @@ import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.ReimbursementRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
-import hr.javafx.businesstraveltracker.util.CustomDateTimeFormatter;
+import hr.javafx.businesstraveltracker.util.ExpensesWithoutReimbursementRecordsFinder;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Kontroler za unos novih nadoknada troškova u bazu podataka.
@@ -31,12 +31,14 @@ public class NewReimbursementScreenController {
 
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
 
+    private final ExpenseRepository expenseRepository = new ExpenseRepository();
+
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
     /**
      * Inicijalizira ekran.
      */
     public void initialize() {
-        ComboBoxSetter.setExpenseComboBox(expenseComboBox);
+        ComboBoxSetter.setExpenseComboBox(expenseComboBox, ExpensesWithoutReimbursementRecordsFinder.find());
         ComboBoxSetter.setReimbursementStatusComboBox(reimbursementStatusComboBox);
     }
 
