@@ -2,7 +2,10 @@ package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.ChangeLogType;
 import hr.javafx.businesstraveltracker.enums.ErrorMessage;
-import hr.javafx.businesstraveltracker.model.*;
+import hr.javafx.businesstraveltracker.model.ChangeLog;
+import hr.javafx.businesstraveltracker.model.Expense;
+import hr.javafx.businesstraveltracker.model.ExpenseCategory;
+import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;

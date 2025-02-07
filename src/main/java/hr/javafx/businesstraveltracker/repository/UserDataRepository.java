@@ -1,9 +1,11 @@
 package hr.javafx.businesstraveltracker.repository;
 
+import hr.javafx.businesstraveltracker.controller.LogInController;
 import hr.javafx.businesstraveltracker.enums.UserPrivileges;
 import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
 import hr.javafx.businesstraveltracker.model.User;
 import hr.javafx.businesstraveltracker.util.DataValidation;
+import hr.javafx.businesstraveltracker.util.SceneManager;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -92,6 +94,19 @@ public class UserDataRepository {
     public void delete(User user){
         List<User> userList = findAllUsers();
         save(userList.stream().filter(item -> !item.getId().equals(user.getId())).toList());
+    }
+
+    public void deleteByEmployeeId(Long employeeId){
+        Long currentUserEmployeeId = LogInController.getCurrentUser().getEmployeeId();
+
+        List<User> userList = findAllUsers();
+        if(userList.stream().map(User::getEmployeeId).anyMatch(employeeId::equals)) {
+            save(userList.stream().filter(user -> !user.getEmployeeId().equals(employeeId)).toList());
+
+            if(currentUserEmployeeId.equals(employeeId)) {
+                SceneManager.getInstance().showLogInScene();
+            }
+        }
     }
 
     public void update(User user){

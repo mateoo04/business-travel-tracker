@@ -1,7 +1,7 @@
 package hr.javafx.businesstraveltracker.util;
 
 import hr.javafx.businesstraveltracker.BusinessTravelTrackerApplication;
-import hr.javafx.businesstraveltracker.controller.*;
+import hr.javafx.businesstraveltracker.controller.EditScreenController;
 import hr.javafx.businesstraveltracker.exception.SceneManagerException;
 import hr.javafx.businesstraveltracker.model.*;
 import javafx.fxml.FXMLLoader;

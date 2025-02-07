@@ -9,8 +9,8 @@ public enum ReimbursementStatus {
     UNAPPROVED(0L, "Unapproved"),
     APPROVED(1L, "Approved");
 
-    private Long id;
-    private String status;
+    private final Long id;
+    private final String status;
 
     ReimbursementStatus(Long id, String status) {
         this.id = id;

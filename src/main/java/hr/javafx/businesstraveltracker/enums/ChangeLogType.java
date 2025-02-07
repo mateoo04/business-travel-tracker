@@ -8,7 +8,7 @@ public enum ChangeLogType {
     MODIFICATION("Modification"),
     DELETE("Delete");
 
-    private String name;
+    private final String name;
 
     ChangeLogType(String name) {
         this.name = name;

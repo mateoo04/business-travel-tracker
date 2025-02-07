@@ -18,10 +18,10 @@ public class Employee extends Entity {
      */
     public static class Builder{
         private Long id;
-        private String firstName;
-        private String lastName;
-        private String role;
-        private Department department;
+        private final String firstName;
+        private final String lastName;
+        private final String role;
+        private final Department department;
         private String email;
 
         public Builder(String firstName, String lastName, String role, Department department){

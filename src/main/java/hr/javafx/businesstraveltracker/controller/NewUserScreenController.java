@@ -10,7 +10,10 @@ import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
 import hr.javafx.businesstraveltracker.repository.UserDataRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 /**
  * Kontrolira dodavanje novog korisnika.

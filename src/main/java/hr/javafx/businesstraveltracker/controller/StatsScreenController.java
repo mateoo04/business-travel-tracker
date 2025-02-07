@@ -1,7 +1,10 @@
 package hr.javafx.businesstraveltracker.controller;
 
 import hr.javafx.businesstraveltracker.enums.StatsChartType;
-import hr.javafx.businesstraveltracker.model.*;
+import hr.javafx.businesstraveltracker.model.Employee;
+import hr.javafx.businesstraveltracker.model.EntitySetOfEntitiesPair;
+import hr.javafx.businesstraveltracker.model.Expense;
+import hr.javafx.businesstraveltracker.model.TravelLog;
 import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.ExpenseRepository;
 import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
@@ -20,7 +23,6 @@ import org.jfree.data.general.DefaultPieDataset;
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -149,14 +151,14 @@ public class StatsScreenController {
                 .map(expense -> YearMonth.of(expense.getDate().getYear(), expense.getDate().getMonth()))
                 .distinct().toList();
 
-        Map<YearMonth, Set<Expense>> expensesByMonth = new HashMap<>();
+        Map<YearMonth, Set<Expense>> expensesByMonth = new TreeMap<>();
         for(YearMonth yearMonth : yearMonthList){
             Set<Expense> expensesOfTheMonth = expenseList.stream()
                     .filter(expense -> yearMonth.equals(YearMonth.of(expense.getDate().getYear(), expense.getDate().getMonth())))
                     .collect(Collectors.toSet());
             expensesByMonth.put(yearMonth, expensesOfTheMonth);
         }
-
+        
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         expensesByMonth.forEach((yearMonth, expenseSet) ->{
             Optional<BigDecimal> totalSpent = expenseSet.stream().map(Expense::getAmount).reduce(BigDecimal::add);

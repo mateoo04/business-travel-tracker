@@ -142,10 +142,16 @@ public class UserSearchController {
         dialog.setTitle("Delete User");
         dialog.setHeaderText("Are you sure you want to delete the user " + user.getUsername() +"?");
         ConfirmDeletionDialog.show(user, dialog, () -> {
-            userDataRepository.delete(user);
-            changeLogRepository.log(new ChangeLog<>(user, ChangeLogType.DELETE));
-
-            filterUsers();
+            if(!LogInController.getCurrentUser().getId().equals(user.getId())) {
+                userDataRepository.delete(user);
+                changeLogRepository.log(new ChangeLog<>(user, ChangeLogType.DELETE));
+                filterUsers();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("User cannot be deleted");
+                alert.showAndWait();
+            }
         });
 
     }

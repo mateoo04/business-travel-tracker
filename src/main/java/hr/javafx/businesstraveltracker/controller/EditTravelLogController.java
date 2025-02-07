@@ -110,6 +110,8 @@ public class EditTravelLogController implements EditScreenController<TravelLog> 
      * Prikazuje dijalog potvrde ažuriranja.
      */
     private void showConfirmationDialog() {
+        updateExistingTravelLogObject();
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Travel Log");
         dialog.setHeaderText("Are you sure you want to save changes to this travel log?");
@@ -125,12 +127,7 @@ public class EditTravelLogController implements EditScreenController<TravelLog> 
         }
     }
 
-    /**
-     * Šalje zahtjev za ažuriranje u repozitorij.
-     */
-    private void updateTravelLog() {
-        TravelLog prevTravelLog = new TravelLog(travelLog);
-
+    private void updateExistingTravelLogObject(){
         Employee employee = employeeComboBox.getSelectionModel().getSelectedItem();
         String destination = destinationTextField.getText();
         LocalDate startDate = startDatePicker.getValue();
@@ -144,6 +141,13 @@ public class EditTravelLogController implements EditScreenController<TravelLog> 
         if (!travelLog.getStartDate().equals(startDate)) travelLog.setStartDate(startDate);
         if (!travelLog.getEndDate().equals(endDate)) travelLog.setEndDate(endDate);
         if (!travelLog.getStatus().equals(status)) travelLog.setStatus(status);
+    }
+
+    /**
+     * Šalje zahtjev za ažuriranje u repozitorij.
+     */
+    private void updateTravelLog() {
+        TravelLog prevTravelLog = new TravelLog(travelLog);
 
         travelLogRepository.update(travelLog);
         changeLogRepository.log(new ChangeLog<>(prevTravelLog, travelLog));

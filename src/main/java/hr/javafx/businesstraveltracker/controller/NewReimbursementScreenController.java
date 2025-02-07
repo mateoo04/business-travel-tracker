@@ -33,8 +33,16 @@ public class NewReimbursementScreenController {
      * Inicijalizira ekran.
      */
     public void initialize() {
-        ComboBoxSetter.setExpenseComboBox(expenseComboBox, ExpensesWithoutReimbursementRecordsFinder.find());
+        setExpenseComboBox();
         ComboBoxSetter.setReimbursementStatusComboBox(reimbursementStatusComboBox);
+    }
+
+    /**
+     * Postavlja ComboBox koji omogućava izbor troška za kojeg se kreira nadokada.
+     */
+    private void setExpenseComboBox(){
+        expenseComboBox.getItems().clear();
+        ComboBoxSetter.setExpenseComboBox(expenseComboBox, ExpensesWithoutReimbursementRecordsFinder.find());
     }
 
     /**
@@ -53,6 +61,8 @@ public class NewReimbursementScreenController {
             Reimbursement reimbursement = new Reimbursement(expense, reimbursementStatus, LocalDate.now());
             reimbursementRepository.save(reimbursement);
             changeLogRepository.log(new ChangeLog<>(reimbursement, ChangeLogType.NEW));
+
+            setExpenseComboBox();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Reimbursement");

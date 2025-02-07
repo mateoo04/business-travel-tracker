@@ -5,8 +5,13 @@ import hr.javafx.businesstraveltracker.enums.Department;
 import hr.javafx.businesstraveltracker.enums.ReimbursementStatus;
 import hr.javafx.businesstraveltracker.enums.TripStatus;
 import hr.javafx.businesstraveltracker.enums.UserPrivileges;
-import hr.javafx.businesstraveltracker.model.*;
-import hr.javafx.businesstraveltracker.repository.*;
+import hr.javafx.businesstraveltracker.model.Employee;
+import hr.javafx.businesstraveltracker.model.Expense;
+import hr.javafx.businesstraveltracker.model.ExpenseCategory;
+import hr.javafx.businesstraveltracker.model.TravelLog;
+import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
+import hr.javafx.businesstraveltracker.repository.ExpenseCategoryRepository;
+import hr.javafx.businesstraveltracker.repository.TravelLogRepository;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 

@@ -1,13 +1,7 @@
 package hr.javafx.businesstraveltracker.repository;
 
-import hr.javafx.businesstraveltracker.exception.RepositoryAccessException;
 import hr.javafx.businesstraveltracker.model.Entity;
-import production.threads.DatabaseOperationThread;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,23 +40,4 @@ public interface CrudRepository<T extends Entity> {
      * @param id
      */
     void deleteById(Long id);
-
-    /**
-     * Zadana metoda koja olakšava brisanje podataka klasama koje implementiraju sučelje.
-     * @param tableName naziv tablice
-     * @param id ID zapisa
-     */
-    default void deleteFromTable(String tableName, Long id) {
-        DatabaseOperationThread thread = new DatabaseOperationThread(() -> {
-            try (Connection connection = Database.connectToDatabase()) {
-                String sql = "DELETE FROM " + tableName + " where id = ?";
-                PreparedStatement stmt = connection.prepareStatement(sql);
-                stmt.setInt(1, id.intValue());
-                stmt.executeUpdate();
-            } catch (IOException | SQLException e) {
-                throw new RepositoryAccessException(e);
-            }
-        });
-        thread.start();
-    }
 }

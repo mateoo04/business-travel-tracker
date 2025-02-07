@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class BusinessTravelTrackerApplication extends Application {
 
-    private static Logger log = LoggerFactory.getLogger(BusinessTravelTrackerApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(BusinessTravelTrackerApplication.class);
 
     private static Stage primaryStage;
 
