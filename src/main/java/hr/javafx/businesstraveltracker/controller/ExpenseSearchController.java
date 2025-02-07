@@ -62,7 +62,7 @@ public class ExpenseSearchController {
     public TableColumn<Expense, BigDecimal> amountColumn;
 
     @FXML
-    public TableColumn<Expense, LocalDate> dateColumn;
+    public TableColumn<Expense, String> dateColumn;
 
     @FXML
     public TableColumn<Expense, String> descriptionColumn;
@@ -86,7 +86,7 @@ public class ExpenseSearchController {
         });
         expenseCategoryColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCategory().getName()));
         amountColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getAmount()));
-        dateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDate()));
+        dateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(CustomDateTimeFormatter.formatDate(cellData.getValue().getDate())));
         descriptionColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDescription()));
 
         travelLogComboBox.getItems().add(null);

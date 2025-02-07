@@ -31,6 +31,9 @@ public class MenuController {
     @FXML
     public MenuItem openUserSearchScreenMenuItem;
 
+    @FXML
+    public MenuItem toggleReimbursementNotifMenuItem;
+
     private final SceneManager sceneManager = SceneManager.getInstance();
 
     /**
@@ -47,6 +50,7 @@ public class MenuController {
             addNewReimbursementMenuItem.setDisable(true);
             openNewUserScreenMenuItem.setDisable(true);
             openUserSearchScreenMenuItem.setDisable(true);
+            toggleReimbursementNotifMenuItem.setDisable(true);
         }
     }
 
