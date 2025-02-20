@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Glavna klasa aplikacije za praćenje troškova putovanja
@@ -19,12 +19,12 @@ public class BusinessTravelTrackerApplication extends Application {
     private static Stage primaryStage;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> log.error(thread.getName(), throwable));
 
         setPrimaryStage(stage);
 
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("plane-icon.png")));
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("plane-icon.png"))));
         primaryStage.setTitle(SceneManager.APP_TITLE);
 
         SceneManager.getInstance().showLogInScene();
@@ -38,7 +38,7 @@ public class BusinessTravelTrackerApplication extends Application {
 
     /**
      * Postavlja primarni stage objekt
-     * @param nextPrimaryStage
+     * @param nextPrimaryStage stage objekt
      */
     private static void setPrimaryStage(Stage nextPrimaryStage) { primaryStage = nextPrimaryStage;}
 

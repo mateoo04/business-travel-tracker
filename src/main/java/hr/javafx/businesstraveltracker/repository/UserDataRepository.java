@@ -78,6 +78,10 @@ public class UserDataRepository {
         }
     }
 
+    /**
+     * Sprema listu korisnika u repozitorij.
+     * @param users lista korisnika
+     */
     public void save(List<User> users){
         synchronized (lock){
             try(PrintWriter writer = new PrintWriter(new FileWriter(USER_DATA_FILE_PATH))){
@@ -91,11 +95,19 @@ public class UserDataRepository {
         }
     }
 
+    /**
+     * Briše korisnika iz repozitorija
+     * @param user korisnik koji će biti obrisan
+     */
     public void delete(User user){
         List<User> userList = findAllUsers();
         save(userList.stream().filter(item -> !item.getId().equals(user.getId())).toList());
     }
 
+    /**
+     * Briše korisnika prema ID-u zaposlenika
+     * @param employeeId ID zaposlenika
+     */
     public void deleteByEmployeeId(Long employeeId){
         Long currentUserEmployeeId = LogInController.getCurrentUser().getEmployeeId();
 
@@ -109,6 +121,10 @@ public class UserDataRepository {
         }
     }
 
+    /**
+     * Ažurira korisnika u repozitoriju
+     * @param user korisnik koji će biti ažuriran
+     */
     public void update(User user){
         List<User> userList = findAllUsers();
         userList = userList.stream().map(item -> {

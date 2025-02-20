@@ -7,6 +7,9 @@ import javafx.application.Platform;
 
 import java.math.BigDecimal;
 
+/**
+ * Thread koji dohvaća ukupan iznos troškova i zapisuje rezultat u naslov prozora.
+ */
 public class TotalExpensesThread extends Thread {
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();

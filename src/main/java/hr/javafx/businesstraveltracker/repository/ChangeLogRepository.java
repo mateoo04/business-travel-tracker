@@ -43,7 +43,6 @@ public class ChangeLogRepository {
     /**
      * Iščitava sve zapise o promjenama iz repozitorija
      * @return sve pronađene zapise promjena
-     * @throws NoDataFoundException
      */
     public List<ChangeLog<Entity>> findAll() throws NoDataFoundException {
         synchronized (lock){

@@ -22,19 +22,19 @@ import java.time.LocalDate;
 public class NewExpenseScreenController {
 
     @FXML
-    public ComboBox<TravelLog> travelLogComboBox;
+    private ComboBox<TravelLog> travelLogComboBox;
 
     @FXML
-    public ComboBox<ExpenseCategory> expenseCategoryComboBox;
+    private ComboBox<ExpenseCategory> expenseCategoryComboBox;
 
     @FXML
-    public TextField expenseAmountTextField;
+    private TextField expenseAmountTextField;
 
     @FXML
-    public TextArea descriptionTextArea;
+    private TextArea descriptionTextArea;
 
     @FXML
-    public DatePicker expenseDatePicker;
+    private DatePicker expenseDatePicker;
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 
@@ -76,6 +76,10 @@ public class NewExpenseScreenController {
             Expense expense = new Expense(travelLog, expenseCategory, amount, description, expenseDate);
             expenseRepository.save(expense);
             changeLogRepository.log(new ChangeLog<>(expense, ChangeLogType.NEW));
+
+            expenseAmountTextField.clear();
+            descriptionTextArea.clear();
+            expenseDatePicker.setValue(null);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Expense");

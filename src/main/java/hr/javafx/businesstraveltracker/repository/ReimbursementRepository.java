@@ -53,6 +53,10 @@ public class ReimbursementRepository implements CrudRepository<Reimbursement> {
         return Optional.of(gson.fromJson(response, Reimbursement.class));
     }
 
+    /**
+     * Sprema zabilješku nadoknade troškova u bazu podataka.
+     * @param entity objekt koji će biti spremljen.
+     */
     @Override
     public void save(Reimbursement entity) {
         httpRequestHandler.makeHttpRequest(URI_PATH, "POST", gson.toJson(entity));
@@ -60,7 +64,7 @@ public class ReimbursementRepository implements CrudRepository<Reimbursement> {
 
     /**
      * Ažurira zabilješku nadoknade troškova u bazi podataka.
-     * @param entity
+     * @param entity objekt koji će biti ažuriran
      */
     @Override
     public void update(Reimbursement entity) {

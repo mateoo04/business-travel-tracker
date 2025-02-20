@@ -17,6 +17,10 @@ public class ExpensesWithoutReimbursementRecordsFinder {
 
     private ExpensesWithoutReimbursementRecordsFinder() {}
 
+    /**
+     * Pronalazi sve objekte klase Expense koji nemaju dedicirani Reimbursement objekt
+     * @return listu objekata klase Expense koji nemaju dedicirani Reimbursement objekt
+     */
     public static List<Expense> find(){
         List<Long> idsOfExpensesWithReimbursements = reimbursementRepository.findAll().stream()
                 .map(reimbursement -> reimbursement.getExpense().getId())

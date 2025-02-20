@@ -24,25 +24,25 @@ import java.util.Optional;
 public class UserSearchController {
 
     @FXML
-    public ComboBox<UserPrivileges> userPrivilegesComboBox;
+    private ComboBox<UserPrivileges> userPrivilegesComboBox;
 
     @FXML
-    public TableView<User> userTableView;
+    private TableView<User> userTableView;
 
     @FXML
-    public TableColumn<User, String> usernameColumn;
+    private TableColumn<User, String> usernameColumn;
 
     @FXML
-    public TableColumn<User, UserPrivileges> privilegesColumn;
+    private TableColumn<User, UserPrivileges> privilegesColumn;
 
     @FXML
-    public TableColumn<User, String> employeeIdColumn;
+    private TableColumn<User, String> employeeIdColumn;
 
     @FXML
-    public TableColumn<User, String> employeeDetailsColumn;
+    private TableColumn<User, String> employeeDetailsColumn;
 
     @FXML
-    public TableColumn<User, Long> userIdColumn;
+    private TableColumn<User, Long> userIdColumn;
 
     private final UserDataRepository userDataRepository = new UserDataRepository();
 
@@ -142,7 +142,8 @@ public class UserSearchController {
         dialog.setTitle("Delete User");
         dialog.setHeaderText("Are you sure you want to delete the user " + user.getUsername() +"?");
         ConfirmDeletionDialog.show(user, dialog, () -> {
-            if(!LogInController.getCurrentUser().getId().equals(user.getId())) {
+            if(LogInController.getCurrentUser().getId().equals(-999L) ||
+                    !LogInController.getCurrentUser().getId().equals(user.getId())) {
                 userDataRepository.delete(user);
                 changeLogRepository.log(new ChangeLog<>(user, ChangeLogType.DELETE));
                 filterUsers();

@@ -1,5 +1,8 @@
 package hr.javafx.businesstraveltracker.exception;
 
+/**
+ * Iznimka koja se baca u slučaju pogreške tijekom pokušaja dohvaćanja podataka od API-a.
+ */
 public class ApiRequestException extends RuntimeException {
     public ApiRequestException() {
     }

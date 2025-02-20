@@ -19,19 +19,19 @@ import java.util.Optional;
  */
 public class EditTravelLogController implements EditScreenController<TravelLog> {
     @FXML
-    public ComboBox<Employee> employeeComboBox;
+    private ComboBox<Employee> employeeComboBox;
 
     @FXML
-    public TextField destinationTextField;
+    private TextField destinationTextField;
 
     @FXML
-    public DatePicker startDatePicker;
+    private DatePicker startDatePicker;
 
     @FXML
-    public DatePicker endDatePicker;
+    private DatePicker endDatePicker;
 
     @FXML
-    public ComboBox<TripStatus> statusComboBox;
+    private ComboBox<TripStatus> statusComboBox;
 
     private final TravelLogRepository travelLogRepository = new TravelLogRepository();
 

@@ -21,19 +21,19 @@ import java.util.Optional;
  */
 public class EditExpenseScreenController implements EditScreenController<Expense>{
     @FXML
-    public ComboBox<TravelLog> travelLogComboBox;
+    private ComboBox<TravelLog> travelLogComboBox;
 
     @FXML
-    public ComboBox<ExpenseCategory> expenseCategoryComboBox;
+    private ComboBox<ExpenseCategory> expenseCategoryComboBox;
 
     @FXML
-    public TextField expenseAmountTextField;
+    private TextField expenseAmountTextField;
 
     @FXML
-    public TextArea descriptionTextArea;
+    private TextArea descriptionTextArea;
 
     @FXML
-    public DatePicker expenseDatePicker;
+    private DatePicker expenseDatePicker;
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 

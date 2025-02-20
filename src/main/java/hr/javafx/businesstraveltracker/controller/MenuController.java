@@ -11,28 +11,28 @@ import javafx.scene.control.MenuItem;
 public class MenuController {
 
     @FXML
-    public MenuItem addNewEmployeeMenuItem;
+    private MenuItem addNewEmployeeMenuItem;
 
     @FXML
-    public MenuItem addNewExpenseCategoryMenuItem;
+    private MenuItem addNewExpenseCategoryMenuItem;
 
     @FXML
-    public MenuItem addNewExpenseMenuItem;
+    private MenuItem addNewExpenseMenuItem;
 
     @FXML
-    public MenuItem addNewTravelLogMenuItem;
+    private MenuItem addNewTravelLogMenuItem;
 
     @FXML
-    public MenuItem addNewReimbursementMenuItem;
+    private MenuItem addNewReimbursementMenuItem;
 
     @FXML
-    public MenuItem openNewUserScreenMenuItem;
+    private MenuItem openNewUserScreenMenuItem;
 
     @FXML
-    public MenuItem openUserSearchScreenMenuItem;
+    private MenuItem openUserSearchScreenMenuItem;
 
     @FXML
-    public MenuItem toggleReimbursementNotifMenuItem;
+    private MenuItem toggleReimbursementNotifMenuItem;
 
     private final SceneManager sceneManager = SceneManager.getInstance();
 

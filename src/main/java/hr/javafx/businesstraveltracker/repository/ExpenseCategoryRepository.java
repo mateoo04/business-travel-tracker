@@ -50,7 +50,7 @@ public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory
 
     /**
      * Sprema kategoriju troškova
-     * @param entity
+     * @param entity objekt koji će biti spremljen
      */
     @Override
     public void save(ExpenseCategory entity){
@@ -59,7 +59,7 @@ public class ExpenseCategoryRepository implements CrudRepository<ExpenseCategory
 
     /**
      * Ažurira podatke o kategoriji troškova u bazi podataka
-     * @param entity
+     * @param entity objekt koji će biti ažuriran
      */
     @Override
     public void update(ExpenseCategory entity) {

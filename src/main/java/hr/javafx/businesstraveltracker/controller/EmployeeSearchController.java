@@ -24,40 +24,40 @@ import java.util.List;
 public class EmployeeSearchController {
 
     @FXML
-    public TextField firstNameTextField;
+    private TextField firstNameTextField;
 
     @FXML
-    public TextField lastNameTextField;
+    private TextField lastNameTextField;
 
     @FXML
-    public TextField roleTextField;
+    private TextField roleTextField;
 
     @FXML
-    public TextField emailTextField;
+    private TextField emailTextField;
 
     @FXML
-    public ComboBox<Department> departmentComboBox;
+    private ComboBox<Department> departmentComboBox;
 
     @FXML
-    public TableView<Employee> employeeTableView;
+    private TableView<Employee> employeeTableView;
 
     @FXML
-    public TableColumn<Employee, Long> idColumn;
+    private TableColumn<Employee, Long> idColumn;
 
     @FXML
-    public TableColumn<Employee, String> firstNameColumn;
+    private TableColumn<Employee, String> firstNameColumn;
 
     @FXML
-    public TableColumn<Employee, String> lastNameColumn;
+    private TableColumn<Employee, String> lastNameColumn;
 
     @FXML
-    public TableColumn<Employee, String> roleColumn;
+    private TableColumn<Employee, String> roleColumn;
 
     @FXML
-    public TableColumn<Employee, String> departmentColumn;
+    private TableColumn<Employee, String> departmentColumn;
 
     @FXML
-    public TableColumn<Employee, String> emailColumn;
+    private TableColumn<Employee, String> emailColumn;
 
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 

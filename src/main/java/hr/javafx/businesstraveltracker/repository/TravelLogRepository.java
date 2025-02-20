@@ -55,7 +55,7 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
 
     /**
      * Sprema zabilješku putovanja u bazu podataka
-     * @param entity
+     * @param entity objekt koji će biti spremljen
      */
     @Override
     public void save(TravelLog entity) {
@@ -64,7 +64,7 @@ public class TravelLogRepository implements CrudRepository<TravelLog> {
 
     /**
      * Ažurira zabilješku putovanja u bazi podataka.
-     * @param entity
+     * @param entity objekt koji će biti ažuriran
      */
     @Override
     public void update(TravelLog entity) {

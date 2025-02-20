@@ -21,10 +21,10 @@ import java.time.LocalDate;
 public class NewReimbursementScreenController {
 
     @FXML
-    public ComboBox<Expense> expenseComboBox;
+    private ComboBox<Expense> expenseComboBox;
 
     @FXML
-    public ComboBox<ReimbursementStatus> reimbursementStatusComboBox;
+    private ComboBox<ReimbursementStatus> reimbursementStatusComboBox;
 
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
 
