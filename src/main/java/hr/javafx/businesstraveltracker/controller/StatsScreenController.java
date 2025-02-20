@@ -31,10 +31,10 @@ import java.util.stream.Collectors;
 public class StatsScreenController {
 
     @FXML
-    public GridPane chartsGrid;
+    private GridPane chartsGrid;
 
     @FXML
-    public ComboBox<StatsChartType> statsComboBox;
+    private ComboBox<StatsChartType> statsComboBox;
 
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 

@@ -53,7 +53,7 @@ public class EmployeeRepository implements CrudRepository<Employee> {
     /**
      * Sprema zaposlenika u bazu podataka.
      *
-     * @param entity
+     * @param entity objekt koji će se spremati
      */
     @Override
     public void save(Employee entity) {
@@ -64,7 +64,7 @@ public class EmployeeRepository implements CrudRepository<Employee> {
     /**
      * Ažurira zaposlenika u bazi podataka.
      *
-     * @param entity
+     * @param entity objekt koji će biti ažuriran
      */
     @Override
     public void update(Employee entity) {

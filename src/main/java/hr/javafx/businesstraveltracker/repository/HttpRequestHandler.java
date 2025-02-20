@@ -10,6 +10,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Properties;
 
+/**
+ * Klasa koja provodi slanje zahtjeva API-u.
+ */
 public class HttpRequestHandler {
 
     private final String baseUri;
@@ -30,6 +33,13 @@ public class HttpRequestHandler {
         client = HttpClient.newHttpClient();
     }
 
+    /**
+     * Šalje HTTP zahtjev.
+     * @param uriPath putanja zathtjeva
+     * @param method metoda
+     * @param body tijelo zahtjeva
+     * @return rezultat zahtjeva
+     */
     public String makeHttpRequest(String uriPath, String method, String body) {
         try {
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
@@ -65,6 +75,12 @@ public class HttpRequestHandler {
         }
     }
 
+    /**
+     * Šalje HTTP zahtjev
+     * @param urlPart putanja zahtjeva
+     * @param method metoda
+     * @return rezultat zahtjeva
+     */
     public String makeHttpRequest(String urlPart, String method){
         return makeHttpRequest(urlPart, method, null);
     }

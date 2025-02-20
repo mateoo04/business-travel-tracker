@@ -57,7 +57,7 @@ public class ExpenseRepository implements CrudRepository<Expense> {
 
     /**
      * Sprema zabilješku troška u bazu podataka.
-     * @param expense
+     * @param expense objekt koji će biti spremljen
      */
     @Override
     public void save(Expense expense) {
@@ -66,7 +66,7 @@ public class ExpenseRepository implements CrudRepository<Expense> {
 
     /**
      * Ažurira zapis troška u bazi podataka.
-     * @param entity
+     * @param entity objekt koji će biti ažuriran
      */
     @Override
     public void update(Expense entity) {
@@ -82,6 +82,10 @@ public class ExpenseRepository implements CrudRepository<Expense> {
         httpRequestHandler.makeHttpRequest(URI_PATH + "/"+id, "DELETE");
     }
 
+    /**
+     * Dohvaća ukupne troškove.
+     * @return ukupni iznos troškova.
+     */
     public BigDecimal getTotalExpensesAmount(){
         String response = httpRequestHandler.makeHttpRequest(URI_PATH + "/total-amount", "GET");
         if(DataValidation.isValidDecimalNumber(response)){

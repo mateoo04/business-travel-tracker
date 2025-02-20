@@ -21,40 +21,40 @@ import java.util.List;
 public class TravelLogSearchController {
 
     @FXML
-    public ListView<Employee> employeeListView;
+    private ListView<Employee> employeeListView;
 
     @FXML
-    public TextField destinationTextField;
+    private TextField destinationTextField;
 
     @FXML
-    public DatePicker startDatePicker;
+    private DatePicker startDatePicker;
 
     @FXML
-    public DatePicker endDatePicker;
+    private DatePicker endDatePicker;
 
     @FXML
-    public ComboBox<TripStatus> tripStatusComboBox;
+    private ComboBox<TripStatus> tripStatusComboBox;
 
     @FXML
-    public TableView<TravelLog> travelLogTableView;
+    private TableView<TravelLog> travelLogTableView;
 
     @FXML
-    public TableColumn<TravelLog, Long> idColumn;
+    private TableColumn<TravelLog, Long> idColumn;
 
     @FXML
-    public TableColumn<TravelLog, String> employeeColumn;
+    private TableColumn<TravelLog, String> employeeColumn;
 
     @FXML
-    public TableColumn<TravelLog, String> destinationColumn;
+    private TableColumn<TravelLog, String> destinationColumn;
 
     @FXML
-    public TableColumn<TravelLog, String> startDateColumn;
+    private TableColumn<TravelLog, String> startDateColumn;
 
     @FXML
-    public TableColumn<TravelLog, String> endDateColumn;
+    private TableColumn<TravelLog, String> endDateColumn;
 
     @FXML
-    public TableColumn<TravelLog, String> statusColumn;
+    private TableColumn<TravelLog, String> statusColumn;
 
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
@@ -111,8 +111,10 @@ public class TravelLogSearchController {
                 .filter(travelLog -> employeeIds.isEmpty() || employeeIds.contains(travelLog.getEmployee().getId()))
                 .filter(travelLog -> destination.isEmpty() || travelLog.getDestination().toLowerCase()
                         .contains(destination.toLowerCase()))
-                .filter(travelLog -> startDate == null || travelLog.getStartDate().equals(startDate))
-                .filter(travelLog -> endDate == null || travelLog.getEndDate().equals(endDate))
+                .filter(travelLog -> startDate == null || travelLog.getStartDate().equals(startDate) ||
+                        travelLog.getStartDate().isAfter(startDate))
+                .filter(travelLog -> endDate == null || travelLog.getEndDate().equals(endDate) ||
+                        travelLog.getEndDate().isBefore(endDate))
                 .filter(travelLog -> tripStatus == null || travelLog.getStatus().getId().equals(tripStatus.getId()))
                 .toList();
 

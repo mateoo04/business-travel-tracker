@@ -9,6 +9,10 @@ import javafx.scene.control.Dialog;
 
 import java.util.Optional;
 
+/**
+ * Klasa za dijalog kojim se obavještavaju korisnici s HIGH privilegijama o postojećim neodobrenim
+ * nadoknadama troškova.
+ */
 public class ReimbursementsDialog {
 
     private ReimbursementsDialog(){}
@@ -17,6 +21,9 @@ public class ReimbursementsDialog {
 
     private static boolean isDialogOpen = false;
 
+    /**
+     * Prikazuje dialog element.
+     */
     public static void show(){
         int unapprovedReimbursementsCount = reimbursementRepository.findAll().stream()
                 .filter(reimbursement ->

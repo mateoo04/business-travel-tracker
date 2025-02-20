@@ -21,22 +21,22 @@ import java.util.List;
 public class ExpenseCategorySearchController {
 
     @FXML
-    public TextField nameTextField;
+    private TextField nameTextField;
 
     @FXML
-    public TextArea descriptionTextArea;
+    private TextArea descriptionTextArea;
 
     @FXML
-    public TableView<ExpenseCategory> expenseCategoryTableView;
+    private TableView<ExpenseCategory> expenseCategoryTableView;
 
     @FXML
-    public TableColumn<ExpenseCategory, Long> idTableColumn;
+    private TableColumn<ExpenseCategory, Long> idTableColumn;
 
     @FXML
-    public TableColumn<ExpenseCategory, String> nameTableColumn;
+    private TableColumn<ExpenseCategory, String> nameTableColumn;
 
     @FXML
-    public TableColumn<ExpenseCategory, String> descriptionTableColumn;
+    private TableColumn<ExpenseCategory, String> descriptionTableColumn;
 
     private final ExpenseCategoryRepository expenseCategoryRepository = new ExpenseCategoryRepository();
 

@@ -24,34 +24,34 @@ import java.util.stream.Collectors;
 public class ReimbursementSearchController {
 
     @FXML
-    public ComboBox<Expense> expenseComboBox;
+    private ComboBox<Expense> expenseComboBox;
 
     @FXML
-    public ComboBox<ReimbursementStatus> reimbursementStatusComboBox;
+    private ComboBox<ReimbursementStatus> reimbursementStatusComboBox;
 
     @FXML
-    public DatePicker startDatePicker;
+    private DatePicker startDatePicker;
 
     @FXML
-    public DatePicker endDatePicker;
+    private DatePicker endDatePicker;
 
     @FXML
-    public ComboBox<Employee> employeeComboBox;
+    private ComboBox<Employee> employeeComboBox;
 
     @FXML
-    public TableView<Reimbursement> reimbursementTableView;
+    private TableView<Reimbursement> reimbursementTableView;
 
     @FXML
-    public TableColumn<Reimbursement, Long> idColumn;
+    private TableColumn<Reimbursement, Long> idColumn;
 
     @FXML
-    public TableColumn<Reimbursement, String> expenseColumn;
+    private TableColumn<Reimbursement, String> expenseColumn;
 
     @FXML
-    public TableColumn<Reimbursement, String> statusColumn;
+    private TableColumn<Reimbursement, String> statusColumn;
 
     @FXML
-    public TableColumn<Reimbursement, String> approvalDateColumn;
+    private TableColumn<Reimbursement, String> approvalDateColumn;
 
     private final ReimbursementRepository reimbursementRepository = new ReimbursementRepository();
 

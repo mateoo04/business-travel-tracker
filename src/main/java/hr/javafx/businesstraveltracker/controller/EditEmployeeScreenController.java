@@ -19,19 +19,19 @@ import java.util.Optional;
 public class EditEmployeeScreenController implements EditScreenController<Employee> {
 
     @FXML
-    public TextField firstNameTextField;
+    private TextField firstNameTextField;
 
     @FXML
-    public TextField lastNameTextField;
+    private TextField lastNameTextField;
 
     @FXML
-    public TextField roleTextField;
+    private TextField roleTextField;
 
     @FXML
-    public ComboBox<Department> departmentComboBox;
+    private ComboBox<Department> departmentComboBox;
 
     @FXML
-    public TextField emailTextField;
+    private TextField emailTextField;
 
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 

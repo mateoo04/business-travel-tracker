@@ -25,19 +25,19 @@ import java.util.Optional;
  */
 public class NewTravelLogScreenController {
     @FXML
-    public ComboBox<Employee> employeeComboBox;
+    private ComboBox<Employee> employeeComboBox;
 
     @FXML
-    public TextField destinationTextField;
+    private TextField destinationTextField;
 
     @FXML
-    public DatePicker startDatePicker;
+    private DatePicker startDatePicker;
 
     @FXML
-    public DatePicker endDatePicker;
+    private DatePicker endDatePicker;
 
     @FXML
-    public ComboBox<TripStatus> statusComboBox;
+    private ComboBox<TripStatus> statusComboBox;
 
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
@@ -95,6 +95,10 @@ public class NewTravelLogScreenController {
             TravelLog travelLog = new TravelLog(employee, destination, startDate, endDate, status);
             travelLogRepository.save(travelLog);
             changeLogRepository.log(new ChangeLog<>(travelLog, ChangeLogType.NEW));
+
+            destinationTextField.clear();
+            startDatePicker.setValue(null);
+            endDatePicker.setValue(null);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Travel Log");

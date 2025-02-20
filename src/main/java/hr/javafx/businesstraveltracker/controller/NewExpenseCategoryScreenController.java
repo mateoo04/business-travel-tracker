@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 public class NewExpenseCategoryScreenController {
 
     @FXML
-    public TextField categoryNameTextField;
+    private TextField categoryNameTextField;
 
     @FXML
-    public TextArea categoryDescriptionTextArea;
+    private TextArea categoryDescriptionTextArea;
 
     private final ExpenseCategoryRepository expenseCategoryRepository = new ExpenseCategoryRepository();
 
@@ -53,6 +53,9 @@ public class NewExpenseCategoryScreenController {
 
             expenseCategoryRepository.save(expenseCategory);
             changeLogRepository.log(new ChangeLog<>(expenseCategory, ChangeLogType.NEW));
+
+            categoryNameTextField.clear();
+            categoryDescriptionTextArea.clear();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Expense Category");

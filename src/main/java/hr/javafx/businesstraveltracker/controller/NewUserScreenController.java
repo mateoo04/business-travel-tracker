@@ -7,13 +7,17 @@ import hr.javafx.businesstraveltracker.model.ChangeLog;
 import hr.javafx.businesstraveltracker.model.Employee;
 import hr.javafx.businesstraveltracker.model.User;
 import hr.javafx.businesstraveltracker.repository.ChangeLogRepository;
+import hr.javafx.businesstraveltracker.repository.EmployeeRepository;
 import hr.javafx.businesstraveltracker.repository.UserDataRepository;
 import hr.javafx.businesstraveltracker.util.ComboBoxSetter;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+
+import java.util.List;
 
 /**
  * Kontrolira dodavanje novog korisnika.
@@ -21,21 +25,23 @@ import javafx.scene.control.TextField;
 public class NewUserScreenController {
 
     @FXML
-    public TextField usernameTextField;
+    private TextField usernameTextField;
 
     @FXML
-    public PasswordField passwordField;
+    private PasswordField passwordField;
 
     @FXML
-    public PasswordField repeatedPasswordField;
+    private PasswordField repeatedPasswordField;
 
     @FXML
-    public ComboBox<UserPrivileges> userPrivilegesComboBox;
+    private ComboBox<UserPrivileges> userPrivilegesComboBox;
 
     @FXML
-    public ComboBox<Employee> employeeComboBox;
+    private ComboBox<Employee> employeeComboBox;
 
     private final UserDataRepository userDataRepository = new UserDataRepository();
+
+    private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     private final ChangeLogRepository changeLogRepository = new ChangeLogRepository();
 
@@ -46,7 +52,21 @@ public class NewUserScreenController {
         userPrivilegesComboBox.getItems().addAll(UserPrivileges.values());
         userPrivilegesComboBox.getSelectionModel().select(0);
 
+        adjustEmployeeComboBox();
+    }
+
+    /**
+     * Postavlja ComboBox za izbor zaposlenika.
+     */
+    private void adjustEmployeeComboBox(){
         ComboBoxSetter.setEmployeeComboBox(employeeComboBox);
+
+        List<Long> usersByEmployeeId = userDataRepository.findAllUsers().stream().map(User::getEmployeeId).toList();
+        List<Employee> employeesWithoutAssociatedUser = employeeRepository.findAll().stream()
+                        .filter(employee -> !usersByEmployeeId.contains(employee.getId()))
+                        .toList();
+
+        employeeComboBox.setItems(FXCollections.observableArrayList(employeesWithoutAssociatedUser));
     }
 
     /**
@@ -75,6 +95,14 @@ public class NewUserScreenController {
 
             userDataRepository.save(user);
             changeLogRepository.log(new ChangeLog<>(user, ChangeLogType.NEW));
+
+            adjustEmployeeComboBox();
+
+            usernameTextField.clear();
+            passwordField.clear();
+            repeatedPasswordField.clear();
+            userPrivilegesComboBox.getSelectionModel().select(0);
+            employeeComboBox.getSelectionModel().select(0);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New User");

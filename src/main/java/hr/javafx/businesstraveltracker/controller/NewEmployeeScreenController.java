@@ -20,19 +20,19 @@ import javafx.scene.control.TextField;
 public class NewEmployeeScreenController {
 
     @FXML
-    public TextField firstNameTextField;
+    private TextField firstNameTextField;
 
     @FXML
-    public TextField lastNameTextField;
+    private TextField lastNameTextField;
 
     @FXML
-    public TextField roleTextField;
+    private TextField roleTextField;
 
     @FXML
-    public ComboBox<Department> departmentComboBox;
+    private ComboBox<Department> departmentComboBox;
 
     @FXML
-    public TextField emailTextField;
+    private TextField emailTextField;
 
     private final EmployeeRepository employeeRepository = new EmployeeRepository();
 
@@ -73,6 +73,11 @@ public class NewEmployeeScreenController {
 
             employeeRepository.save(employee);
             changeLogRepository.log(new ChangeLog<>(employee, ChangeLogType.NEW));
+
+            firstNameTextField.clear();
+            lastNameTextField.clear();
+            emailTextField.clear();
+            roleTextField.clear();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("New Employee");

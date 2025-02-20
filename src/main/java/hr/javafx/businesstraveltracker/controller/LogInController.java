@@ -27,10 +27,10 @@ import static javafx.animation.Animation.INDEFINITE;
 public class LogInController {
 
     @FXML
-    public TextField usernameTextField;
+    private TextField usernameTextField;
 
     @FXML
-    public PasswordField passwordTextField;
+    private PasswordField passwordTextField;
 
     private final UserDataRepository userDataRepository = new UserDataRepository();
 
@@ -76,7 +76,7 @@ public class LogInController {
 
         
         if(username.equals(ADMIN) && password.equals(ADMIN)){
-            setCurrentUser(new User.Builder(ADMIN, UserPrivileges.HIGH).build());
+            setCurrentUser(new User.Builder(ADMIN, UserPrivileges.HIGH).withId(-999L).build());
             setApp();
         }else {
             List<User> users = userDataRepository.findAllUsers();

@@ -26,46 +26,46 @@ import java.util.List;
 public class ExpenseSearchController {
 
     @FXML
-    public ComboBox<TravelLog> travelLogComboBox;
+    private ComboBox<TravelLog> travelLogComboBox;
 
     @FXML
-    public ComboBox<ExpenseCategory> expenseCategoryComboBox;
+    private ComboBox<ExpenseCategory> expenseCategoryComboBox;
 
     @FXML
-    public TextArea descriptionTextArea;
+    private TextArea descriptionTextArea;
 
     @FXML
-    public TextField minAmountTextField;
+    private TextField minAmountTextField;
 
     @FXML
-    public TextField maxAmountTextField;
+    private TextField maxAmountTextField;
 
     @FXML
-    public DatePicker startDatePicker;
+    private DatePicker startDatePicker;
 
     @FXML
-    public DatePicker endDatePicker;
+    private DatePicker endDatePicker;
 
     @FXML
-    public TableView<Expense> expenseTableView;
+    private TableView<Expense> expenseTableView;
 
     @FXML
-    public TableColumn<Expense, Long> idColumn;
+    private TableColumn<Expense, Long> idColumn;
 
     @FXML
-    public TableColumn<Expense, String> travelLogColumn;
+    private TableColumn<Expense, String> travelLogColumn;
 
     @FXML
-    public TableColumn<Expense, String> expenseCategoryColumn;
+    private TableColumn<Expense, String> expenseCategoryColumn;
 
     @FXML
-    public TableColumn<Expense, BigDecimal> amountColumn;
+    private TableColumn<Expense, BigDecimal> amountColumn;
 
     @FXML
-    public TableColumn<Expense, String> dateColumn;
+    private TableColumn<Expense, String> dateColumn;
 
     @FXML
-    public TableColumn<Expense, String> descriptionColumn;
+    private TableColumn<Expense, String> descriptionColumn;
 
     private final ExpenseRepository expenseRepository = new ExpenseRepository();
 

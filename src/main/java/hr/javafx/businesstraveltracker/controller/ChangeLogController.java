@@ -18,34 +18,34 @@ import java.util.List;
  */
 public class ChangeLogController {
     @FXML
-    public ComboBox<ChangeLogType> changeLogTypeComboBox;
+    private ComboBox<ChangeLogType> changeLogTypeComboBox;
 
     @FXML
-    public DatePicker startDatePicker;
+    private DatePicker startDatePicker;
 
     @FXML
-    public DatePicker endDatePicker;
+    private DatePicker endDatePicker;
 
     @FXML
-    public TableView<ChangeLog<Entity>> changeLogTableView;
+    private TableView<ChangeLog<Entity>> changeLogTableView;
 
     @FXML
-    public TableColumn<ChangeLog<Entity>, String> dateTimeColumn;
+    private TableColumn<ChangeLog<Entity>, String> dateTimeColumn;
 
     @FXML
-    public TableColumn<ChangeLog<Entity>, String> changeLogTypeColumn;
+    private TableColumn<ChangeLog<Entity>, String> changeLogTypeColumn;
 
     @FXML
-    public TableColumn<ChangeLog<Entity>, String> userColumn;
+    private TableColumn<ChangeLog<Entity>, String> userColumn;
 
     @FXML
-    public TableColumn<ChangeLog<Entity>, String> previousValueColumn;
+    private TableColumn<ChangeLog<Entity>, String> previousValueColumn;
 
     @FXML
-    public TableColumn<ChangeLog<Entity>, String> newValueColumn;
+    private TableColumn<ChangeLog<Entity>, String> newValueColumn;
 
     @FXML
-    public TableColumn<ChangeLog<Entity>, String> entityColumn;
+    private TableColumn<ChangeLog<Entity>, String> entityColumn;
 
     private final ChangeLogRepository changeLogRepository  = new ChangeLogRepository();
 

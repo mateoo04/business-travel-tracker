@@ -19,22 +19,22 @@ import java.util.Optional;
 public class EditUserScreenController implements EditScreenController<User> {
 
     @FXML
-    public TextField usernameTextField;
+    private TextField usernameTextField;
 
     @FXML
-    public PasswordField passwordField;
+    private PasswordField passwordField;
 
     @FXML
-    public PasswordField repeatedPasswordField;
+    private PasswordField repeatedPasswordField;
 
     @FXML
-    public ComboBox<UserPrivileges> userPrivilegesComboBox;
+    private ComboBox<UserPrivileges> userPrivilegesComboBox;
 
     @FXML
-    public ComboBox<Employee> employeeComboBox;
+    private ComboBox<Employee> employeeComboBox;
 
     @FXML
-    public CheckBox passwordCheckbox;
+    private CheckBox passwordCheckbox;
 
     private final UserDataRepository userDataRepository = new UserDataRepository();
 

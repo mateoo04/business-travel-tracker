@@ -15,10 +15,10 @@ import java.util.Optional;
  */
 public class EditExpenseCategoryController implements EditScreenController<ExpenseCategory>{
     @FXML
-    public TextField categoryNameTextField;
+    private TextField categoryNameTextField;
 
     @FXML
-    public TextArea categoryDescriptionTextArea;
+    private TextArea categoryDescriptionTextArea;
 
     private final ExpenseCategoryRepository expenseCategoryRepository = new ExpenseCategoryRepository();
 
