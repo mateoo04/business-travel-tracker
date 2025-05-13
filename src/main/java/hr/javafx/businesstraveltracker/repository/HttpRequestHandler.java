@@ -28,7 +28,7 @@ public class HttpRequestHandler {
             throw new ApiRequestException("app.properties file not found");
         }
 
-        baseUri = props.getProperty("apiUri");
+        baseUri = props.getProperty("api.uri");
 
         client = HttpClient.newHttpClient();
     }
